@@ -25,32 +25,89 @@
 // 👍 1431 👎 0
 
 package leetcode.editor.cn;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class ClimbingStairs {
     public static void main(String[] args) {
         Solution solution = new ClimbingStairs().new Solution();
     }
     //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-        public int climbStairs(int n) {
 
+        //动态规划
+        //        public int climbStairs(int n) {
+//
+//            if (n <= 2) {
+//                return n;
+//            }
+//
+//            //+1是因为有f[0]
+//            int[] f = new int[n + 1];
+//
+//            f[1] = 1;
+//            f[2] = 2;
+//
+//            for (int i = 3; i <= n; i++) {
+//                f[i] = f[i - 1] + f[i - 2];
+//            }
+//
+//
+//            return f[n];
+//
+//        }
+
+
+        //公式求解
+//        public int climbStairs(int n) {
+//
+//            double sqrt5 = Math.sqrt(5);
+//            double fibn = Math.pow((1 + sqrt5) / 2, n + 1) - Math.pow((1 - sqrt5) / 2, n + 1);
+//
+//            return (int) (fibn/sqrt5);
+//        }
+
+        /**
+         * 动态规划优化
+         */
+//        public int climbStairs(int n) {
+//
+//            if (n <= 2) {
+//                return n;
+//            }
+//
+//            int one_step = 2;
+//            int two_step = 1;
+//            int all_way = 0;
+//
+//            for (int i = 3; i <= n; i++) {
+//                all_way = one_step + two_step;
+//                two_step = one_step;
+//                one_step = all_way;
+//            }
+//
+//            return all_way;
+//        }
+
+        /**
+         * 递归加缓存优化
+         */
+        Map<Integer, Integer> dpMap = new HashMap<>();
+        public int climbStairs(int n) {
             if (n <= 2) {
                 return n;
             }
 
-            //+1是因为有f[0]
-            int[] f = new int[n + 1];
-
-            f[1] = 1;
-            f[2] = 2;
-
-            for (int i = 3; i <= n; i++) {
-                f[i] = f[i - 1] + f[i - 2];
+            if (dpMap.containsKey(n)) {
+                return dpMap.get(n);
             }
-
-
-            return f[n];
+            int temp = climbStairs(n - 1) + climbStairs(n - 2);
+            dpMap.put(n, temp);
+            return temp;
 
         }
+
 
 }
 //leetcode submit region end(Prohibit modification and deletion)

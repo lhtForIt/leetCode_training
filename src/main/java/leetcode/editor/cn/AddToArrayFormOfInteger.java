@@ -60,26 +60,37 @@ public class AddToArrayFormOfInteger {
     }
     //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    public List<Integer> addToArrayForm(int[] A, int K) {
+//    public List<Integer> addToArrayForm(int[] A, int K) {
+//
+//        LinkedList result = new LinkedList();
+//        int i = A.length - 1, sum = 0, carry = 0;
+//        while (i >= 0 || K > 0) {
+//            int a = i >= 0 ? A[i] : 0;
+//            int b = (K > 0 ? K : 0) % 10;
+//            sum = a + b + carry;
+//            result.addFirst(sum % 10);
+//            carry = sum / 10;
+//            i--;
+//            K /= 10;
+//        }
+//
+//        if (carry != 0) {
+//            result.addFirst(carry % 10);
+//        }
+//
+//        return result;
+//    }
 
-        LinkedList result = new LinkedList();
-        int i = A.length - 1, sum = 0, carry = 0;
-        while (i >= 0 || K > 0) {
-            int a = i >= 0 ? A[i] : 0;
-            int b = (K > 0 ? K : 0) % 10;
-            sum = a + b + carry;
-            result.addFirst(sum % 10);
-            carry = sum / 10;
-            i--;
-            K /= 10;
+        public List<Integer> addToArrayForm(int[] A, int K) {
+
+            LinkedList result = new LinkedList();
+            for (int i = A.length - 1; i >= 0 || K > 0; i--) {
+                result.addFirst((i >= 0 ? A[i] + K : K) % 10);
+                K = (i >= 0 ? A[i] + K : K) / 10;
+            }
+
+            return result;
         }
-
-        if (carry != 0) {
-            result.addFirst(carry % 10);
-        }
-
-        return result;
-    }
 }
 //leetcode submit region end(Prohibit modification and deletion)
 
