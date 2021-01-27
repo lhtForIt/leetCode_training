@@ -42,6 +42,10 @@
 // 👍 10131 👎 0
 
 package leetcode.editor.cn;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class TwoSum {
     public static void main(String[] args) {
         Solution solution = new TwoSum().new Solution();
@@ -49,6 +53,19 @@ public class TwoSum {
     //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int[] twoSum(int[] nums, int target) {
+
+        Map<Integer, Integer> targetMap = new HashMap<>(nums.length);
+        for (int i = 0; i < nums.length; i++) {
+
+            int temp = target - nums[i];
+            if (targetMap.containsKey(temp)) {
+                return new int[]{i,targetMap.get(temp)};
+            }
+
+            targetMap.put(nums[i], i);
+
+        }
+
         return null;
     }
 }
