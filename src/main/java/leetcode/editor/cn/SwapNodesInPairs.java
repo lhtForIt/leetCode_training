@@ -1,4 +1,5 @@
 //题号：24
+//https://leetcode-cn.com/problems/swap-nodes-in-pairs/
 //给定一个链表，两两交换其中相邻的节点，并返回交换后的链表。
 //
 // 你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
@@ -46,6 +47,7 @@ package leetcode.editor.cn;
 public class SwapNodesInPairs{
     public static void main(String[] args) {
         Solution solution = new SwapNodesInPairs().new Solution();
+        solution.swapPairs(new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4)))));
     }
     //leetcode submit region begin(Prohibit modification and deletion)
     /**
@@ -61,20 +63,60 @@ public class SwapNodesInPairs{
     class Solution {
         public ListNode swapPairs(ListNode head) {
 
-            //没有可以交换的节点，直接返回参数
-            if (head == null || head.next == null) {
-                return head;
+//            //没有可以交换的节点，直接返回参数
+//            if (head == null || head.next == null) {
+//                return head;
+//            }
+//
+//            //定义该单元返回的头结点
+//            ListNode next = head.next;
+//            //将该单元第二个节点原先指向下一节点的指针断掉，指向下一单元的头结点
+//            head.next = swapPairs(next.next);
+//            //反转该单元节点指向
+//            next.next = head;
+//
+//
+//            return next;
+
+
+            /**
+             * 法一，递归法，时间复杂度O(n),空间复杂度O(n)
+             * 空间复杂度偏高
+             */
+//            if (head == null || head.next == null) {
+//                return head;
+//            }
+//
+//            ListNode next = head.next;
+//            head.next = swapPairs(next.next);
+//            next.next = head;
+//
+//            return next;
+
+
+            /**
+             * 非递归法，时间复杂度O(n)，空间复杂度O(1)
+             */
+
+            //为了循环条件统一，引入哑结点，然后都变成temp.next和temp.next.next比较
+            //后面返回的也是pre.next，因为头结点是null的
+            ListNode pre = new ListNode();
+            pre.next = head;
+            ListNode temp = pre;
+
+            while (temp.next != null && temp.next.next != null) {
+                ListNode start = temp.next;
+                ListNode end = temp.next.next;
+                temp.next = end;
+                start.next = end.next;
+                end.next = start;
+                //这儿不能简单的写成temp.next，因为前面已经断开了
+                temp = start;
             }
 
-            //定义该单元返回的头结点
-            ListNode next = head.next;
-            //将该单元第二个节点原先指向下一节点的指针断掉，指向下一单元的头结点
-            head.next = swapPairs(next.next);
-            //反转该单元节点指向
-            next.next = head;
+            //pre.next就是temp.next，其实位置
+            return pre.next;
 
-
-            return next;
         }
 
 //    public ListNode swapPairs(ListNode head) {
@@ -87,7 +129,7 @@ public class SwapNodesInPairs{
 ////            //记录两个节点位置
 ////            ListNode start = temp.next;
 ////            ListNode end = temp.next.next;
-////            //确定第一个节点
+////            //确定第一个节点,这儿开始temp.next和temp.next.next指针已经断开，因此需要用start去指引
 ////            temp.next = end;
 ////            //将第二个节点指向下一组头结点
 ////            start.next = end.next;
@@ -104,7 +146,7 @@ public class SwapNodesInPairs{
 
 
     //leetcode submit region end(Prohibit modification and deletion)
-    public class ListNode {
+    public static class ListNode {
         int val;
         ListNode next;
 
