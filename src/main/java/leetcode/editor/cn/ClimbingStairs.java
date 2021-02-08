@@ -44,20 +44,20 @@ class Solution {
             /**
              * 法一：动态规划
              */
-//            if (n <= 2) {
-//                return n;
-//            }
-//
-//            //这里用数组缓存了算出来的数据，不用每次零时计算
-//            int[] f = new int[n + 1];
-//            f[1] = 1;
-//            f[2] = 2;
-//
-//            for (int i = 3; i <= n; i++) {
-//                f[i] = f[i - 1] + f[i - 2];
-//            }
-//
-//            return f[n];
+            if (n <= 2) {
+                return n;
+            }
+
+            //这里用数组缓存了算出来的数据，不用每次零时计算
+            int[] f = new int[n + 1];
+            f[1] = 1;
+            f[2] = 2;
+
+            for (int i = 3; i <= n; i++) {
+                f[i] = f[i - 1] + f[i - 2];
+            }
+
+            return f[n];
 
             /**
              * 法二：公式求解，不推荐
@@ -69,6 +69,19 @@ class Solution {
 //            return (int) (fibn/sqrt5);
             /**
              * 法三：动态规划优化
+             * 实际上我们不需要缓存所有情况，只需要缓存三个结果即可
+             * f(3)=f(2)+f(1)
+             * f(4)=f(3)+f(2)
+             *
+             * f(4)我们只需要知道前两个状态即可，前两个状态可以根据
+             * 上一次计算得到
+             * int one_step=1;
+             * int two_step=2;
+             * int all_way=one_step+two_step;
+             *
+             * one_step=two_step;
+             * two_step=all_way;
+             *
              */
 
 //            if (n <= 2) {
@@ -92,18 +105,18 @@ class Solution {
              * 法四：递归加hashMap缓存
              */
 
-            if (n <= 2) {
-                return n;
-            }
-
-            if (dpMap.containsKey(n)) {
-                return dpMap.get(n);
-            }
-
-            int temp = climbStairs(n - 1) + climbStairs(n - 2);
-            dpMap.put(n, temp);
-
-            return temp;
+//            if (n <= 2) {
+//                return n;
+//            }
+//
+//            if (dpMap.containsKey(n)) {
+//                return dpMap.get(n);
+//            }
+//
+//            int temp = climbStairs(n - 1) + climbStairs(n - 2);
+//            dpMap.put(n, temp);
+//
+//            return temp;
 
         }
 

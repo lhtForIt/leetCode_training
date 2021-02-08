@@ -16,6 +16,9 @@
 // Related Topics 数组 双指针 
 // 👍 935 👎 0
 
+/**
+ * 2021-02-03 1
+ */
   
   package leetcode.editor.cn;
   public class MoveZeroes{
@@ -44,7 +47,7 @@ class Solution {
 //                  }
 //              }
 //
-//              //前面有j个非0的，因为下标从0开始，因此其实位置刚好是j
+//              //前面有j个非0的，因为下标从0开始，因此起始位置刚好是j
 //              for (int i = j; i < nums.length; i++) {
 //                  nums[i] = 0;
 //              }
@@ -55,24 +58,40 @@ class Solution {
                */
 
 
+//              if (nums == null) {
+//                  return;
+//              }
+//
+//              //因为非0数据要保持原先位置，因此需要用非0的与0替换
+//              int j = 0;
+//              for (int i = 0; i < nums.length; i++) {
+//                  //因为i,j起点一样，当nums[i]不等于0，j会加1，因此j一定是在0的位置
+//                  if (nums[i] != 0) {
+//                      //只有不同位置才需要交换
+//                      if (i != j) {
+//                          int temp = nums[i];
+//                          nums[i] = nums[j];
+//                          nums[j] = temp;
+//                      }
+//                      j++;
+//                  }
+//              }
+
               if (nums == null) {
                   return;
               }
 
-              //因为非0数据要保持原先位置，因此需要用非0的与0替换
-              int j = 0;
+              int j=0;
               for (int i = 0; i < nums.length; i++) {
-                  //因为i,j起点一样，当nums[i]不等于0，j会加1，因此j一定是在0的位置
                   if (nums[i] != 0) {
-                      //只有不同位置才需要交换
                       if (i != j) {
-                          int temp = nums[i];
-                          nums[i] = nums[j];
-                          nums[j] = temp;
+                          nums[j] = nums[i];
+                          nums[i] = 0;
                       }
                       j++;
                   }
               }
+
           }
 }
 //leetcode submit region end(Prohibit modification and deletion)

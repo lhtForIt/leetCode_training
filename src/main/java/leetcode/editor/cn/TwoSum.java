@@ -76,15 +76,15 @@ class Solution {
              */
 
 
-            Map<Integer, Integer> targetMap = new HashMap<>(nums.length);
+            Map<Integer, Integer> targetMap = new HashMap<>();
+
             for (int i = 0; i < nums.length; i++) {
-                if (targetMap.containsKey(nums[i])) {
-                    return new int[]{targetMap.get(nums[i]), i};
+                int temp = target - nums[i];
+                if (targetMap.containsKey(temp)) {
+                    return new int[]{targetMap.get(temp), i};
                 }
-                targetMap.putIfAbsent(target - nums[i], i);
+                targetMap.put(nums[i], i);
             }
-
-
 
             return null;
 
