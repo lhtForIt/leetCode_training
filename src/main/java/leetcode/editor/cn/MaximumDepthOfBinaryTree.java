@@ -1,4 +1,5 @@
 //题号：104
+//https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/
 //给定一个二叉树，找出其最大深度。 
 //
 // 二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。 
@@ -23,6 +24,7 @@
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 public class MaximumDepthOfBinaryTree{
       public static void main(String[] args) {
@@ -51,19 +53,19 @@ class Solution {
          * 树大多数解法都适合用递归
          * DFS
          */
-        if (root == null) {
-            return 0;
-        }
-        //分别求左右子树高度
-        int left = maxDepth(root.left);
-        int right = maxDepth(root.right);
-        //返回层数=左右子树最大高度+1
-        return Math.max(left, right) + 1;
+//        if (root == null) {
+//            return 0;
+//        }
+//        //分别求左右子树高度
+//        int left = maxDepth(root.left);
+//        int right = maxDepth(root.right);
+//        //返回层数=左右子树最大高度+1
+//        return Math.max(left, right) + 1;
 
 
 
         /**
-         * BFS
+         * 迭代：BFS
          */
 //        if (root == null) {
 //            return 0;
@@ -89,8 +91,37 @@ class Solution {
 //        }
 //        return ans;
 
+        /**
+         * 迭代：DFS
+         */
 
+        if (root == null) {
+            return 0;
+        }
 
+        Stack<TreeNode> stack = new Stack<>();
+        Stack<Integer> value = new Stack<>();
+
+        stack.push(root);
+        value.push(1);
+
+        int max = 0;
+
+        while (!stack.isEmpty()) {
+            TreeNode node = stack.pop();
+            int temp = value.pop();
+            max = temp > max ? temp : max;
+            if (node.left != null) {
+                stack.push(node.left);
+                value.push(temp + 1);
+            }
+            if (node.right != null) {
+                stack.push(node.right);
+                value.push(temp + 1);
+            }
+        }
+
+        return max;
 
     }
 }
