@@ -31,20 +31,50 @@ public class Permutations{
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    public List<List<Integer>> permute(int[] nums) {
 
-        List<List<Integer>> res = new ArrayList<>();
-        boolean[] visited = new boolean[nums.length];
-        recur(res, new ArrayList<>(), visited, nums);
 
-        return res;
+          public List<List<Integer>> permute(int[] nums) {
 
-    }
+              List<List<Integer>> res = new ArrayList<>();
+              //记录当前哪些元素已经用过，后续就不会使用这些元素
+              boolean[] visited = new boolean[nums.length];
+              recur(res, new ArrayList<>(), visited, nums);
 
-          private void recur(List<List<Integer>> res, List<Integer> subRes, boolean[] visited,int[] nums) {
+              return res;
+
+//              List<List<Integer>> res = new ArrayList<>();
+//              //记录当前哪些元素已经用过，后续就不会使用这些元素
+//              boolean[] visited = new boolean[nums.length];
+//              myRecur(res, new ArrayList<>(), visited, nums);
+//
+//              return res;
+
+
+          }
+
+          private void myRecur(List<List<Integer>> res, ArrayList<Integer> subRes, boolean[] visited, int[] nums) {
 
               if (subRes.size() == nums.length) {
-                  //因为这个subRes会随着递归改变，因此需要copy一个当前的，所以用new ArrayList<>()
+                  res.add(new ArrayList<>(subRes));
+                  return;
+              }
+
+              for (int i = 0; i < nums.length; i++) {
+                  if (visited[i]) continue;
+                  visited[i] = true;
+                  subRes.add(nums[i]);
+                  myRecur(res, subRes, visited, nums);
+                  subRes.remove(subRes.size() - 1);
+                  visited[i] = false;
+              }
+
+          }
+
+          private void recur(List<List<Integer>> res, List<Integer> subRes, boolean[] visited, int[] nums) {
+
+              if (subRes.size() == nums.length) {
+                  //因为这个subRes会随着递归改变，因此需要copy一个当前的list，
+                  //所以用new ArrayList<>()，它会copy一个副本
                   res.add(new ArrayList<>(subRes));
                   return;
               }
@@ -60,18 +90,16 @@ class Solution {
                   if (visited[i]) continue;
                   visited[i] = true;
                   subRes.add(nums[i]);
-                  recur(res, subRes,visited,nums);
+                  recur(res, subRes, visited, nums);
                   /**
                    * revert status 当递归的时候参数会进入到下层梦境会改变时，
-                   * 它回到上层梦境需要删除下层梦境的改变。list的话需要删除最后一个元素
+                   * 它回到上层梦境需要删除下层梦境的改变。
+                   * list的话需要删除最后一个元素,
+                   * 否则它进入下一层会被排斥，直接满足程序终止条件
                    */
                   subRes.remove(subRes.size() - 1);
                   visited[i] = false;
               }
-
-
-
-
 
 
           }

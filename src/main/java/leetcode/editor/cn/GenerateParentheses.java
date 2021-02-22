@@ -29,7 +29,7 @@
 // 👍 1565 👎 0
 
   
-  package leetcode.editor.cn;
+package leetcode.editor.cn;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -45,17 +45,41 @@ public class GenerateParentheses{
 class Solution {
     public List<String> generateParenthesis(int n) {
 
-        List<String> result = new LinkedList<>();
+        List<String> res = new ArrayList<>();
+        recur2(0, 0, n, res, "");
 
-        //第一层初始应该是空串，因为出口判断条件不一样，因此max也不一样
-        recur1(0, 0, n, result, "");
-//        recur(0,2 * 3, result, "");
+        return res;
 
-
-        return result;
+//        List<String> result = new LinkedList<>();
+//
+//        //第一层初始应该是空串，因为出口判断条件不一样，因此max也不一样
+//        recur1(0, 0, n, result, "");
+////        recur(0,2 * 3, result, "");
+//
+//
+//        return result;
     }
 
-    public void recur(int deep,int max,List<String> result,String str){
+          private void recur2(int left, int right, int n, List<String> res, String s) {
+
+              //结束条件
+              if (left == n && right == n) {
+                  res.add(s);
+                  return;
+              }
+
+              //当前逻辑
+              //进入下一层，加上条件剪枝
+              if (left<n) recur2(left + 1, right, n, res, s + "(");
+              if (right<left) recur2(left, right + 1, n, res, s + ")");
+
+              //重置状态，一般回溯会用到，这个不用
+
+
+
+          }
+
+          public void recur(int deep,int max,List<String> result,String str){
 
 
         if (deep == max) {

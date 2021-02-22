@@ -79,8 +79,15 @@ class Solution {
              * int two_step=2;
              * int all_way=one_step+two_step;
              *
+             * 存储倒退两步的结果
              * one_step=two_step;
+             * 存储倒退一步的结果
              * two_step=all_way;
+             * 进而用这两个变量得到下一步的结果
+             *
+             * 可以理解有f(1),f(2),f(3)结果，然后要得到f(4)，
+             * 将f(1)=f(2),f(2)=f(3),f(4)=f(1)+f(2),这样循环，所有都能由f(1)+f(2)得到
+             * 然后将这里的f(1)，f(2)换成one_step,two_step
              *
              */
 

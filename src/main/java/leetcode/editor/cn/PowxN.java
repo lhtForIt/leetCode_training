@@ -38,31 +38,33 @@
 // Related Topics 数学 二分查找 
 // 👍 583 👎 0
 
-  
-  package leetcode.editor.cn;
-  public class PowxN{
-      public static void main(String[] args) {
-           Solution solution = new PowxN().new Solution();
-      }
-      //leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public double myPow(double x, int n) {
 
-        /**
-         * 递归
-         */
-        long N = n;
-        return N >= 0 ? pow(x, N) :1/pow(x,-N);
+package leetcode.editor.cn;
 
-        /**
-         * 迭代
-         */
+public class PowxN {
+    public static void main(String[] args) {
+        Solution solution = new PowxN().new Solution();
+    }
+
+    //leetcode submit region begin(Prohibit modification and deletion)
+    class Solution {
+        public double myPow(double x, int n) {
+
+            /**
+             * 递归
+             */
+            long N = n;
+            return N >= 0 ? pow(x, N) : 1 / pow(x, -N);
+
+            /**
+             * 迭代
+             */
 //        long N = n;
 //        return N >= 0 ? pow1(x, N) :1/pow1(x,-N);
 
-        /**
-         * 非递归,有问题
-         */
+            /**
+             * 非递归,有问题
+             */
 
 //        if (n == 0) {
 //            return 1;
@@ -89,31 +91,31 @@ class Solution {
 //        return ans;
 
 
+        }
+
+        private double pow(double x, long N) {
+            if (N == 0L) {
+                return 1.0;
+            }
+
+            double y = pow(x, N / 2);
+            return N % 2 == 0 ? y * y : y * y * x;
+
+        }
+
+        private double pow1(double x, long N) {
+            double ans = 1.0;
+            double temp = x;
+            while (N > 0) {
+                if (N % 2 == 1) {
+                    ans *= temp;
+                }
+                temp *= temp;
+                N /= 2;
+            }
+            return ans;
+        }
     }
-
-          private double pow1(double x, long N) {
-              double ans = 1.0;
-              double temp = x;
-              while (N > 0) {
-                  if (N % 2 == 1) {
-                      ans *= temp;
-                  }
-                  temp *= temp;
-                  N /= 2;
-              }
-              return ans;
-          }
-
-          private double pow(double x, long N) {
-              if (N == 0L) {
-                  return 1.0;
-              }
-
-              double y = pow(x, N / 2);
-              return N % 2 == 0 ? y * y : y * y * x;
-
-          }
-      }
 //leetcode submit region end(Prohibit modification and deletion)
 
-  }
+}
