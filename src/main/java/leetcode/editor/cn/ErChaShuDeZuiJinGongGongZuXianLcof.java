@@ -40,7 +40,7 @@
 // 👍 191 👎 0
 
   
-  package leetcode.editor.cn;
+package leetcode.editor.cn;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -50,6 +50,18 @@ import java.util.Set;
 public class ErChaShuDeZuiJinGongGongZuXianLcof{
       public static void main(String[] args) {
            Solution solution = new ErChaShuDeZuiJinGongGongZuXianLcof().new Solution();
+//           [3,5,1,6,2,0,8,null,null,7,4]
+           TreeNode root = new TreeNode(3);
+           root.left = new TreeNode(5);
+           root.right = new TreeNode(1);
+           root.left.left = new TreeNode(6);
+           root.left.right = new TreeNode(2);
+           root.left.right.left = new TreeNode(7);
+           root.left.right.right = new TreeNode(4);
+           root.right.left = new TreeNode(0);
+           root.right.right = new TreeNode(8);
+
+          TreeNode t = solution.lowestCommonAncestor(root, new TreeNode(5), new TreeNode(1));
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 /**
@@ -70,13 +82,46 @@ class Solution {
 
         /**
          * 递归
+         *
+         * 若root是p,q最近公共祖先，则只可能是一下几种情况：
+         * 1、p和q在root的子树中，且分别位于两侧(即分别在左右子树中)。
+         * 2、p==root,且q在root左右子树中。
+         * 3、q==root，且p在root左右子树中。
+         *
+         * 因此只需要递归去访问左右子树的LCR(最近公共祖先)，当左子树返回LCR为空，则返回右子树LCR，反之亦然，
+         * 当两个子树LCR都不为空，则返回他们的当前共同祖先即root。
          */
-        if (root == null || root == p || root == q) {
+        //root==null说明到了叶子节点也没找到
+        //root==p||root==q代表找到了p或者q
+        //官方好像忽略了节点引用的比较，而默认用的val去比，且会忽略左右子树
+        //eg.树里面节点5是有左右子树的，但是p其实就new了一个5，没有左右子树，
+        //在着，即使加上左右子树
+        //==比较的是内存地址，新new的树内存地址一定不等
+//        if (root == null || root == p || root == q) {
+////        if (root == null || root.val == p.val || root.val == q.val) {
+//            return root;
+//        }
+//
+//        TreeNode left = lowestCommonAncestor(root.left, p, q);
+//        TreeNode right = lowestCommonAncestor(root.right, p, q);
+//        if (left == null) {
+//            return right;
+//        }
+//
+//        if (right == null) {
+//            return left;
+//        }
+//
+//        return root;
+
+
+        if (root == null || p == root || q == root) {
             return root;
         }
 
         TreeNode left = lowestCommonAncestor(root.left, p, q);
         TreeNode right = lowestCommonAncestor(root.right, p, q);
+
         if (left == null) {
             return right;
         }
@@ -85,7 +130,9 @@ class Solution {
             return left;
         }
 
+
         return root;
+
 
 
 
@@ -98,7 +145,7 @@ class Solution {
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
-public class TreeNode {
+public static class TreeNode {
       int val;
       TreeNode left;
       TreeNode right;

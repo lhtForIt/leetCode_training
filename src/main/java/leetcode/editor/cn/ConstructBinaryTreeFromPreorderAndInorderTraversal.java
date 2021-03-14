@@ -21,18 +21,17 @@
 // 👍 878 👎 0
 
   
-  package leetcode.editor.cn;
+package leetcode.editor.cn;
 
 import jdk.nashorn.internal.runtime.PrototypeObject;
 
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.io.FileReader;
+import java.util.*;
 
 public class ConstructBinaryTreeFromPreorderAndInorderTraversal{
       public static void main(String[] args) {
-           Solution solution = new ConstructBinaryTreeFromPreorderAndInorderTraversal().new Solution();
+          Solution solution = new ConstructBinaryTreeFromPreorderAndInorderTraversal().new Solution();
+          solution.buildTree(new int[]{3, 9, 20, 15, 7}, new int[]{9, 3, 15, 20, 7});
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 /**
@@ -53,7 +52,30 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal{
 class Solution {
 
     private Map<Integer, Integer> indexMap = new HashMap<>();
+    private int in = 0;
+    private int pre = 0;
+
     public TreeNode buildTree(int[] preorder, int[] inorder) {
+
+        if (preorder == null || inorder == null) {
+            return null;
+        }
+
+        for (int i = 0; i < inorder.length; i++) {
+            indexMap.put(inorder[i], i);
+        }
+
+        return recure(preorder, inorder, 0, preorder.length - 1, 0, preorder.length - 1);
+
+
+
+
+
+
+
+
+
+
 
         /**
          * 递归
@@ -66,6 +88,7 @@ class Solution {
 //            indexMap.put(inorder[i], i);
 //        }
 //
+//        //这里的参数其实是限定preorder和inorder数组边界
 //        return recur(preorder, inorder, 0, n - 1, 0, n - 1);
 
         /**
@@ -73,46 +96,90 @@ class Solution {
          * 时间复杂度O(n)，空间复杂度O(n)
          */
 
-        if (preorder == null || preorder.length == 0) {
-            return null;
-        }
+//        if (preorder == null || preorder.length == 0) {
+//            return null;
+//        }
+//
+//        TreeNode root = new TreeNode(preorder[0]);
+//        Deque<TreeNode> stack = new LinkedList<>();
+//        stack.push(root);
+//
+//        int inOrderIndex = 0;
+//        for (int i = 1; i < preorder.length; i++) {
+//
+//            int preOrderVal = preorder[i];
+//            TreeNode node = stack.peek();
+//            if (node.val != inorder[inOrderIndex]) {
+//                node.left = new TreeNode(preOrderVal);
+//                stack.push(node.left);
+//            } else {
+//                while (!stack.isEmpty() && stack.peek().val == inorder[inOrderIndex]) {
+//                    node = stack.pop();
+//                    inOrderIndex++;
+//                }
+//
+//                node.right = new TreeNode(preOrderVal);
+//                stack.push(node.right);
+//            }
+//        }
+//
+//        return root;
 
-        TreeNode root = new TreeNode(preorder[0]);
-        Deque<TreeNode> stack = new LinkedList<>();
-        stack.push(root);
 
-        int inOrderIndex = 0;
-        for (int i = 1; i < preorder.length; i++) {
+        /**
+         * 递归优化
+         */
 
-            int preOrderVal = preorder[i];
-            TreeNode node = stack.peek();
-            if (node.val != inorder[inOrderIndex]) {
-                node.left = new TreeNode(preOrderVal);
-                stack.push(node.left);
-            } else {
-                while (!stack.isEmpty() && stack.peek().val == inorder[inOrderIndex]) {
-                    node = stack.pop();
-                    inOrderIndex++;
-                }
+//        return build(preorder, inorder, Integer.MIN_VALUE);
 
-                node.right = new TreeNode(preOrderVal);
-                stack.push(node.right);
-            }
-        }
 
-        return root;
 
 
     }
 
+    private TreeNode recure(int[] preOrder, int[] inOrder, int preOrder_left, int preOrder_right, int inOrder_left, int inOrder_right) {
+
+        if (preOrder_left > preOrder_right) {
+            return null;
+        }
+
+        TreeNode root = new TreeNode(preOrder[preOrder_left]);
+        int inOrderRoot = indexMap.get(preOrder[preOrder_left]);
+
+        //左子树节点数
+        int sub_left = inOrderRoot - inOrder_left;
+
+
+        root.left = recure(preOrder, inOrder, preOrder_left + 1, preOrder_left + sub_left, inOrder_left, inOrderRoot - 1);
+        root.right = recure(preOrder, inOrder, preOrder_left + sub_left + 1, preOrder_right, inOrderRoot + 1, inOrder_right);
+
+        return root;
+    }
+
+    private TreeNode build(int[] preOrder, int[] inOrder, int stop) {
+
+        if (pre>=preOrder.length) return null;
+
+        if (inOrder[in] == stop) {
+            in++;
+            return null;
+        }
+
+        TreeNode node = new TreeNode(preOrder[pre++]);
+        node.left = build(preOrder, inOrder, node.val);
+        node.right = build(preOrder, inOrder, stop);
+        return node;
+    }
+
     private TreeNode recur(int[] preOrder, int[] inOrder, int preOrder_left, int preOrder_right, int inOrder_left, int inOrder_right) {
 
-        // preOrder 为空，直接返回 null
+        // 前序遍历数组已经到尾部了，直接返回Null
         if (preOrder_left > preOrder_right) {
             return null;
         }
 
         int preOrder_root = preOrder_left;
+        //根据前序的根节点在map得到中序根节点的位置
         int inOrder_root = indexMap.get(preOrder[preOrder_root]);
 
 
@@ -122,6 +189,7 @@ class Solution {
         int subLeft = inOrder_root - inOrder_left;
         // 递归地构造左子树，并连接到根节点
         // 先序遍历中「从 左边界+1 开始的 subLeft」个元素就对应了中序遍历中「从 左边界 开始到 根节点定位-1」的元素
+        //根据上一步得到的左子树节点个数，在前序和中序数组中分别找到左子树的数据，并进行下一层递归
         root.left = recur(preOrder, inOrder, preOrder_left + 1, preOrder_left + subLeft, inOrder_left, inOrder_root - 1);
 
         // 递归地构造右子树，并连接到根节点

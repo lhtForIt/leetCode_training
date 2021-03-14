@@ -56,6 +56,34 @@ public class TwoSum {
 class Solution {
         public int[] twoSum(int[] nums, int target) {
 
+
+            Map<Integer, Integer> targetMap = new HashMap<>(nums.length);
+
+            for (int i = 0; i < nums.length; i++) {
+
+                int temp = target - nums[i];
+                if (targetMap.containsKey(temp)) {
+                    return new int[]{i, targetMap.get(temp)};
+                }
+
+                targetMap.put(nums[i], i);
+
+
+            }
+
+            return null;
+
+
+
+
+
+
+
+
+
+
+
+
             /**
              * 法一，暴力解法，时间复杂度为0（n2）,空间复杂度O(1)
              */
@@ -76,17 +104,17 @@ class Solution {
              */
 
 
-            Map<Integer, Integer> targetMap = new HashMap<>();
-
-            for (int i = 0; i < nums.length; i++) {
-                int temp = target - nums[i];
-                if (targetMap.containsKey(temp)) {
-                    return new int[]{targetMap.get(temp), i};
-                }
-                targetMap.put(nums[i], i);
-            }
-
-            return null;
+//            Map<Integer, Integer> targetMap = new HashMap<>();
+//
+//            for (int i = 0; i < nums.length; i++) {
+//                int temp = target - nums[i];
+//                if (targetMap.containsKey(temp)) {
+//                    return new int[]{targetMap.get(temp), i};
+//                }
+//                targetMap.put(nums[i], i);
+//            }
+//
+//            return null;
 
 
 

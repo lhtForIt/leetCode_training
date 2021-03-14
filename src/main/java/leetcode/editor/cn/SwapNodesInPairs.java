@@ -63,35 +63,28 @@ public class SwapNodesInPairs{
     class Solution {
         public ListNode swapPairs(ListNode head) {
 
-//            //没有可以交换的节点，直接返回参数
-//            if (head == null || head.next == null) {
-//                return head;
-//            }
-//
-//            //定义该单元返回的头结点
-//            ListNode next = head.next;
-//            //将该单元第二个节点原先指向下一节点的指针断掉，指向下一单元的头结点
-//            head.next = swapPairs(next.next);
-//            //反转该单元节点指向
-//            next.next = head;
-//
-//
-//            return next;
-
-
             /**
              * 法一，递归法，时间复杂度O(n),空间复杂度O(n)
              * 空间复杂度偏高
              */
-//            if (head == null || head.next == null) {
-//                return head;
-//            }
-//
-//            ListNode next = head.next;
-//            head.next = swapPairs(next.next);
-//            next.next = head;
-//
-//            return next;
+            /**
+             * 链表代码里所有的左边的.next不要多想,
+             * 直接当成当前接点指向改变即可，这样思路会清晰很多
+             */
+            //没有可以交换的节点，直接返回参数
+            if (head == null || head.next == null) {
+                return head;
+            }
+
+            //定义该单元返回的头结点
+            ListNode next = head.next;
+            //将该单元第二个节点原先指向下一节点的指针断掉，指向下一单元的头结点
+            head.next = swapPairs(next.next);
+            //反转该单元节点指向
+            next.next = head;
+
+
+            return next;
 
 
             /**
@@ -100,22 +93,22 @@ public class SwapNodesInPairs{
 
             //为了循环条件统一，引入哑结点，然后都变成temp.next和temp.next.next比较
             //后面返回的也是pre.next，因为头结点是null的
-            ListNode pre = new ListNode();
-            pre.next = head;
-            ListNode temp = pre;
-
-            while (temp.next != null && temp.next.next != null) {
-                ListNode start = temp.next;
-                ListNode end = temp.next.next;
-                temp.next = end;
-                start.next = end.next;
-                end.next = start;
-                //这儿不能简单的写成temp.next，因为前面已经断开了
-                temp = start;
-            }
-
-            //pre.next就是temp.next，其实位置
-            return pre.next;
+//            ListNode pre = new ListNode();
+//            pre.next = head;
+//            ListNode temp = pre;
+//
+//            while (temp.next != null && temp.next.next != null) {
+//                ListNode start = temp.next;
+//                ListNode end = temp.next.next;
+//                temp.next = end;
+//                start.next = end.next;
+//                end.next = start;
+//                //这儿不能简单的写成temp.next，因为前面已经断开了
+//                temp = start;
+//            }
+//
+//            //pre.next就是temp.next，其实位置
+//            return pre.next;
 
         }
 

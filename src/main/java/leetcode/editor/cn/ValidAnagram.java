@@ -22,7 +22,7 @@
 // 👍 336 👎 0
 
   
-  package leetcode.editor.cn;
+package leetcode.editor.cn;
 
 import java.util.Arrays;
 import java.util.HashMap;

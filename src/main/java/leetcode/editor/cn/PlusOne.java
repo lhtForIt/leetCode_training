@@ -52,38 +52,8 @@ public class PlusOne {
 class Solution {
     public int[] plusOne(int[] digits) {
 
-//        for (int i = digits.length - 1; i >= 0; i--) {
-//            digits[i]++;
-//            digits[i] %= 10;
-//            if (digits[i] != 0) {
-//                return digits;
-//            }
-//        }
-//
-//        //能走到这里只有一种可能，就是9999这种，需要多近一位，new一个全是0的数组即可，然后直接首位赋值1就行
-//        digits = new int[digits.length + 1];
-//        digits[0] = 1;
-//
-//        return digits;
 
         for (int i = digits.length - 1; i >= 0; i--) {
-
-            /**
-             * 这儿有两种写法，效果都差不多，但是第二种会优雅(elegant)很多
-             */
-            /**
-             * 法一：先计算再判断是否溢出
-             */
-
-//            digits[i] %= 10;
-//            digits[i]++;
-//            if (digits[i] != 0) {
-//                return digits;
-//            }
-
-            /**
-             * 法二：先判断是否溢出再计算
-             */
 
             if (digits[i] < 9) {
                 digits[i]++;
@@ -98,6 +68,49 @@ class Solution {
         digits[0] = 1;
 
         return digits;
+
+
+
+
+
+
+
+
+
+
+
+//        for (int i = digits.length - 1; i >= 0; i--) {
+//
+//            /**
+//             * 这儿有两种写法，效果都差不多，但是第二种会优雅(elegant)很多
+//             */
+//            /**
+//             * 法一：先计算再判断是否溢出
+//             */
+//
+////            digits[i]++;
+////            digits[i] %= 10;
+////            if (digits[i] != 0) {
+////                return digits;
+////            }
+//
+//            /**
+//             * 法二：先判断是否溢出再计算
+//             */
+//
+//            if (digits[i] < 9) {
+//                digits[i]++;
+//                return digits;
+//            }
+//
+//            digits[i] = 0;
+//
+//        }
+//        //能走到这里只有一种可能，就是9999这种，需要多近一位，new一个全是0的数组即可，然后直接首位赋值1就行
+//        digits = new int[digits.length + 1];
+//        digits[0] = 1;
+//
+//        return digits;
 
     }
 }

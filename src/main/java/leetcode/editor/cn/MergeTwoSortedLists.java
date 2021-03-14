@@ -64,6 +64,39 @@ public class MergeTwoSortedLists{
          */
         public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
 
+
+            ListNode dummy = new ListNode(0);
+            ListNode pre = dummy;
+
+            while (l1 != null && l2 != null) {
+                if (l1.val <= l2.val) {
+                    pre.next = l1;
+                    l1 = l1.next;
+                } else {
+                    pre.next = l2;
+                    l2 = l2.next;
+                }
+                pre = pre.next;
+            }
+
+            if (l1 != null || l2 != null) {
+                pre.next = l1 == null ? l2 : l1;
+            }
+
+            return dummy.next;
+
+
+
+
+
+
+
+
+
+
+            /**
+             * 法一：递归法，时间复杂度O(n)，空间复杂度O(n)
+             */
 //            if (l1 == null) {
 //                return l2;
 //            }
@@ -83,51 +116,28 @@ public class MergeTwoSortedLists{
 //            }
 
             /**
-             * 法一：递归法，时间复杂度O(n)，空间复杂度O(n)
-             */
-
-//            if (l1 == null) {
-//                return l2;
-//            }
-//
-//            if (l2 == null) {
-//                return l1;
-//            }
-//
-//            //不要试图去人肉递归，只要记住，mergeTwoLists(x,y)这个函数给出的是排好序的
-//            //合并链表，我们只需要将小的链表的下一个节点指向它即可。
-//            if (l1.val < l2.val) {
-//                l1.next = mergeTwoLists(l1.next, l2);
-//                return l1;
-//            } else {
-//                l2.next = mergeTwoLists(l1, l2.next);
-//                return l2;
-//            }
-
-            /**
              * 非递归，迭代法,
              */
 
-
-            ListNode result = new ListNode();
-            ListNode pre = result;
-
-            while (l1 != null && l2 != null) {
-                if (l1.val < l2.val) {
-                    pre.next = l1;
-                    l1 = l1.next;
-                } else {
-                    pre.next = l2;
-                    l2 = l2.next;
-                }
-
-                pre = pre.next;
-
-            }
-
-            pre.next = l1 == null ? l2 : l1;
-
-            return result.next;
+//            ListNode result = new ListNode();
+//            ListNode pre = result;
+//
+//            while (l1 != null && l2 != null) {
+//                if (l1.val < l2.val) {
+//                    pre.next = l1;
+//                    l1 = l1.next;
+//                } else {
+//                    pre.next = l2;
+//                    l2 = l2.next;
+//                }
+//
+//                pre = pre.next;
+//
+//            }
+//
+//            pre.next = l1 == null ? l2 : l1;
+//
+//            return result.next;
 
         }
 

@@ -65,10 +65,14 @@ class Solution {
 
               for (int i = 0; i < nums.length; i++) {
                   /**
-                   * !visited[i]有点没搞懂，先默写吧，后面看看
+                   * !visited[i-1]有点没搞懂，先默写吧，后面看看
                    * 猜想，不知道对不对：{1,1,2} {false,false,true}
                    * 这时候是访问不了的，只有访问了第一个才行，但是访问第一个之后也会continue
                    * 试了下visited[i]也可以通过，但是好像执行时间会慢点，是因为递归是反着的原因，符合程序调用？
+                   *
+                   * note at 2021-12-26 比如{3,,2,1,1}这种
+                   *
+                   * 因为递归是下从往上的，因此当前一个没有被选上时，直接筛掉，默认去访问第一个
                    */
                   if (visited[i] || i > 0 && nums[i] == nums[i - 1] && !visited[i - 1]) continue;
                   visited[i] = true;

@@ -55,7 +55,7 @@
 // 👍 853 👎 0
 
   
-  package leetcode.editor.cn;
+package leetcode.editor.cn;
 
 import java.util.*;
 
@@ -84,6 +84,38 @@ class Solution {
     LinkedList<Integer> result = new LinkedList<>();
 
     public List<Integer> inorderTraversal(TreeNode root) {
+
+        List<Integer> res = new LinkedList<>();
+        Deque<TreeNode> stack = new LinkedList<>();
+
+        while (root != null || !stack.isEmpty()) {
+
+            //这儿需要一直遍历到左边叶子节点
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+
+            root = stack.pop();
+            res.add(root.val);
+            root = root.right;
+
+        }
+
+        return res;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         /**
          * 法一：递归
@@ -118,27 +150,6 @@ class Solution {
 //        }
 //
 //        return res;
-
-        /**
-         * 另一种迭代
-         */
-
-        LinkedList<Integer> list = new LinkedList<>();
-        Stack<TreeNode> stack = new Stack<>();
-
-        TreeNode cur = root;
-
-        while (cur != null || !stack.isEmpty()) {
-            while (cur != null) {
-                stack.add(cur);
-                cur = cur.left;
-            }
-            cur = stack.pop();
-            list.add(cur.val);
-            cur = cur.right;
-        }
-
-        return list;
 
 
     }

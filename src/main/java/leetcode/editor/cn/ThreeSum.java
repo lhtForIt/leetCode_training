@@ -42,10 +42,10 @@
   
 package leetcode.editor.cn;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import com.sun.xml.internal.ws.message.ByteArrayAttachment;
+
+import java.util.*;
+
 
 public class ThreeSum{
       public static void main(String[] args) {
@@ -59,49 +59,101 @@ public class ThreeSum{
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
 
+
+        /**
+         * 暴力
+         * 时间复杂度O(n^4logn)=循环O(n^3)*ArrayList.contain() O(n)时间复杂度
+         * 超时
+         */
+
+//        List<List<Integer>> res = new ArrayList<>();
+//        Arrays.sort(nums);
+//        for (int i = 0; i < nums.length - 2; i++) {
+//            for (int j = i + 1; j < nums.length - 1; j++) {
+//                for (int k = j + 1; k < nums.length; k++) {
+//                    if (nums[i] + nums[j] + nums[k] == 0) {
+//                        List<Integer> tempList = Arrays.asList(nums[i], nums[j], nums[k]);
+//                        if (!res.contains(tempList)) {
+//                            res.add(tempList);
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        return res;
+
+
+        /**
+         * 两层循环+Map
+         */
+
+//        List<List<Integer>> ans = new ArrayList<>();
+//        Arrays.sort(nums);
+//        for (int i = 0; i < nums.length; ++i) {
+//            if (nums[i] > 0) break;
+//            if (i > 0 && nums[i] == nums[i - 1]) continue;
+//            Set<Integer> set = new HashSet<>();
+//            for (int j = i + 1; j < nums.length; ++j) {
+//                Integer value = -nums[i] - nums[j];
+//                if (set.contains(value)) {
+//                    ans.add(Arrays.asList(nums[i], value, nums[j]));
+//                    while ((j + 1) < nums.length && nums[j] == nums[j + 1]) ++j;
+//                }
+//                else set.add(nums[j]);
+//            }
+//        }
+//        return ans;
+
+
+
         /**
          * 排序+双指针 数组双指针很多时候会和排序放一起
+         *
+         * 时间复杂度O(n^2*nlogn),空间复杂度O(n)
+         *
+         *
          */
+
+        List<List<Integer>> res = new ArrayList<>();
+
         if (nums == null || nums.length < 3) {
-            return new LinkedList<>();
+            return res;
         }
-        List<List<Integer>> result = new LinkedList<>();
+
         Arrays.sort(nums);
 
-        /**
-         * 这儿需要一层循环去遍历target的值
-         */
-        for (int target = 0; target < nums.length - 2; target++) {
+        for (int i = 0; i < nums.length - 2; i++) {
 
-            if (nums[target] > 0) break;
-            if (target>0 && nums[target]==nums[target-1]) continue;
+            if (nums[i] > 0) break;
 
-            int left = target + 1;
-            int right = nums.length - 1;
+            //避免重复，将重复元素跳过
+            //因为有i-1，所以要加上i>0的限制，防止下标越界
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+
+            int left = i + 1, right = nums.length - 1;
 
             while (left < right) {
-
-                if (nums[left] + nums[right] + nums[target] == 0) {
-                    result.add(Arrays.asList(nums[left], nums[right], nums[target]));
-                    //判断该哪个指针移动
-                    while (left<right&&nums[left]==nums[left+1]) left++;
-                    while (left<right&&nums[right]==nums[right-1]) right--;
+                if (nums[left] + nums[right] == -nums[i]) {
+                    res.add(Arrays.asList(nums[i], nums[left], nums[right]));
+                    //避免重复，将重复元素跳过
+                    //这里要范围要是left->right之间,不然会下标越界
+                    while (left < right && nums[left] == nums[left + 1]) left++;
+                    while (left < right && nums[right] == nums[right - 1]) right--;
                     left++;
                     right--;
-                } else if (nums[left] + nums[right] + nums[target] < 0) {
-                    //比0小说明数不够大，需将排序后的左指针右移
+                } else if (nums[left] + nums[right] < -nums[i]) {
                     left++;
                 } else {
-                    //比0大说明数小，需将排序后的右指针左移
                     right--;
                 }
-
-
-
             }
         }
 
-        return result;
+        return res;
+
+
+
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

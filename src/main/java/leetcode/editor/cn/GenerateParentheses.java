@@ -31,10 +31,7 @@
   
 package leetcode.editor.cn;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class GenerateParentheses{
       public static void main(String[] args) {
@@ -45,10 +42,94 @@ public class GenerateParentheses{
 class Solution {
     public List<String> generateParenthesis(int n) {
 
-        List<String> res = new ArrayList<>();
-        recur2(0, 0, n, res, "");
+//        List<String> res = new ArrayList<>();
+//        recur2(0, 0, n, res, "");
+//
+//        return res;
 
-        return res;
+        /**
+         * dfs
+         */
+
+//        List<String> res = new ArrayList<>();
+//        dfs(0, 0, n, res, "");
+//        return res;
+
+
+        /**
+         * bfs
+         * 有的题解说下面这种解法是BFS,
+         * 但是我看着不像BFS，因为它没有拿到当前queue的size去遍历的过程，也就是没有每层去
+         * 横扫所有节点的过程，看着就像是dfs的迭代写法，只是stack用了queue，
+         * 这里取出顺序其实并没什么影响
+         *
+         */
+
+//        List<String> res = new ArrayList<>();
+//        if (n == 0) {
+//            return res;
+//        }
+//        Queue<Node> queue = new LinkedList<>();
+//        queue.offer(new Node("", 0, 0));
+//
+//        while (!queue.isEmpty()) {
+//
+//            int size = queue.size();
+//            Node curNode = queue.poll();
+////            for (int i = 0; i < size; i++) {
+//                if (curNode.left == n && curNode.right == n) {
+//                    res.add(curNode.res);
+//                }
+//                if (curNode.left < n) {
+//                    queue.offer(new Node(curNode.res + "(", curNode.left + 1, curNode.right));
+//                }
+//                if (curNode.left > curNode.right) {
+//                    queue.offer(new Node(curNode.res + ")", curNode.left, curNode.right + 1));
+//                }
+////            }
+//        }
+//        return res;
+
+
+        /**
+         * 这个应该才是真正的bfs
+         */
+        Deque<String> strQ = new LinkedList<>();
+        Deque<Integer> leftQ = new LinkedList<>();
+        Deque<Integer> rightQ = new LinkedList<>();
+        strQ.offer("");
+        leftQ.offer(0);
+        rightQ.offer(0);
+        //下面两种终止条件判断都可以
+        while (leftQ.peek() + rightQ.peek() < 2 * n) {
+//        while (strQ.peek().length() < 2 * n) {
+            int size = strQ.size();
+            while (size-- > 0) {
+                String cur = strQ.poll();
+                int left = leftQ.poll();
+                int right = rightQ.poll();
+                if (left < n) {
+                    strQ.offer(cur + "(");
+                    leftQ.offer(left + 1);
+                    rightQ.offer(right);
+                }
+                if (right < left) {
+                    strQ.offer(cur + ")");
+                    leftQ.offer(left);
+                    rightQ.offer(right + 1);
+                }
+
+            }
+        }
+        /**
+         * 因为这种情况下会每层去加括号并且会把上一层的取出来，
+         * 最后得到的queue就是最后一层的括号值
+         */
+        return (List<String>) strQ;
+
+
+
+
 
 //        List<String> result = new LinkedList<>();
 //
@@ -59,6 +140,42 @@ class Solution {
 //
 //        return result;
     }
+
+          private void dfs(int left, int right, int max, List<String> res, String s) {
+
+              if (s.length() == max * 2) {
+                  res.add(s);
+                  return;
+              }
+
+              //当前层逻辑
+              if (left < max) {
+                  dfs(left + 1, right, max, res, s+"(");
+              }
+
+              if (right < left) {
+                  dfs(left, right + 1, max, res, s+")");
+              }
+
+
+
+
+          }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
           private void recur2(int left, int right, int n, List<String> res, String s) {
 
@@ -130,8 +247,30 @@ class Solution {
 
     }
 
+          class Node {
+              /**
+               * 当前得到的字符串
+               */
+              private String res;
+              /**
+               * 剩余左括号数量
+               */
+              private int left;
+              /**
+               * 剩余右括号数量
+               */
+              private int right;
 
-}
+              public Node(String str, int left, int right) {
+                  this.res = str;
+                  this.left = left;
+                  this.right = right;
+              }
+          }
+
+
+
+      }
 //leetcode submit region end(Prohibit modification and deletion)
 
   }

@@ -65,23 +65,26 @@ class Solution {
         /**
          * 递归
          */
-//        if (root == null) {
-//            return 0;
+        if (root == null) {
+            return 0;
+        }
+
+        //1.左孩子和有孩子都为空的情况，说明到达了叶子节点，直接返回1即可
+//        if (root.left == null && root.right == null) {
+//            return 1;
 //        }
-//
-//        //1.左孩子和有孩子都为空的情况，说明到达了叶子节点，直接返回1即可
-////        if (root.left == null && root.right == null) {
-////            return 1;
-////        }
-//
-//        //2.如果左孩子和右孩子其中一个为空，那么需要返回比较大的那个孩子的深度
-//        int left = minDepth(root.left);
-//        int right = minDepth(root.right);
-//
-//        //1.如果左孩子和右孩子有为空的情况，直接返回m1+m2+1(这个也等于Math.max(m1,m2)+1)
-//        //2.如果都不为空，返回较小深度+1
-////        return root.left == null || root.right == null ? left + right + 1 : Math.min(left,right) + 1;
-//        return 1 + (Math.min(left, right) > 0 ? Math.min(left, right) : Math.max(left, right));
+
+        //2.如果左孩子和右孩子其中一个为空，那么需要返回比较大的那个孩子的深度
+        int left = minDepth(root.left);
+        int right = minDepth(root.right);
+
+        //1.如果左孩子和右孩子有为空的情况，left和right里面就会有一个为0，最小深度就是另一个子树深度+1，为了统一就是left+right+1
+        //2.如果都不为空，返回较小深度+1
+//        return root.left == null || root.right == null ? left + right + 1 : Math.min(left,right) + 1;
+        /**
+         * Math.min(left, right) > 0表示没有孩子为空，那就返回最小的值，否则表示有子树为空，则应该返回最大的(不为空的子树)
+         */
+        return 1 + (Math.min(left, right) > 0 ? Math.min(left, right) : Math.max(left, right));
 
         /**
          * 迭代 BFS
@@ -91,33 +94,33 @@ class Solution {
          */
 
 
-        if (root == null) {
-            return 0;
-        }
-
-        int depth = 1;
-        Deque<TreeNode> q = new LinkedList<>();
-        q.offer(root);
-
-        while (!q.isEmpty()) {
-            int size = q.size();
-            //遍历每层
-            for (int i = 0; i < size; i++) {
-                TreeNode node = q.poll();
-                if (node.left == null && node.right == null) {
-                    return depth;
-                }
-                if (node.left != null) {
-                    q.offer(node.left);
-                }
-                if (node.right != null) {
-                    q.offer(node.right);
-                }
-            }
-            depth++;
-        }
-
-        return depth;
+//        if (root == null) {
+//            return 0;
+//        }
+//
+//        int depth = 1;
+//        Deque<TreeNode> q = new LinkedList<>();
+//        q.offer(root);
+//
+//        while (!q.isEmpty()) {
+//            int size = q.size();
+//            //遍历每层
+//            for (int i = 0; i < size; i++) {
+//                TreeNode node = q.poll();
+//                if (node.left == null && node.right == null) {
+//                    return depth;
+//                }
+//                if (node.left != null) {
+//                    q.offer(node.left);
+//                }
+//                if (node.right != null) {
+//                    q.offer(node.right);
+//                }
+//            }
+//            depth++;
+//        }
+//
+//        return depth;
 
 
     }

@@ -35,13 +35,14 @@
 // 👍 926 👎 0
 
   
-  package leetcode.editor.cn;
+package leetcode.editor.cn;
 
 import java.util.Stack;
 
 public class ValidateBinarySearchTree{
       public static void main(String[] args) {
            Solution solution = new ValidateBinarySearchTree().new Solution();
+          solution.isValidBST(new TreeNode(5, new TreeNode(1), new TreeNode(4, new TreeNode(3), new TreeNode(6))));
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 /**
@@ -65,6 +66,9 @@ class Solution {
         /**
          * 递归法：时间复杂度O(n)，空间复杂度O(n)
          */
+
+//        return isValidBST1(root, Long.MIN_VALUE, Long.MAX_VALUE);
+
 
 //        return isValidBST(root, Long.MIN_VALUE, Long.MAX_VALUE);
 
@@ -134,6 +138,21 @@ class Solution {
         return true;
     }
 
+    private boolean isValidBST1(TreeNode root, long minValue, long maxValue) {
+
+        if (root == null) {
+            return true;
+        }
+
+        //这里不能直接用root.left.val比，因为root.left可能为空，因此要用参数里的min和max
+        if (minValue >= root.val || root.val >= maxValue) {
+            return false;
+        }
+
+        return isValidBST1(root.left, minValue, root.val) && isValidBST1(root.right, root.val, maxValue);
+
+    }
+
     private boolean isValidBST(TreeNode root, long min, long max) {
 
         if (root == null) {
@@ -150,7 +169,7 @@ class Solution {
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
-public class TreeNode {
+public static class TreeNode {
       int val;
       TreeNode left;
       TreeNode right;

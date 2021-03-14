@@ -55,7 +55,7 @@
 // 👍 511 👎 0
 
   
-  package leetcode.editor.cn;
+package leetcode.editor.cn;
 
 import java.util.Deque;
 import java.util.LinkedList;
@@ -87,6 +87,7 @@ class Solution {
 
     public List<Integer> preorderTraversal(TreeNode root) {
 
+
         /**
          * 法一：递归
          */
@@ -107,23 +108,17 @@ class Solution {
          */
 
         LinkedList<Integer> res = new LinkedList<>();
-        if (root == null) {
-            return res;
-        }
-
         Deque<TreeNode> stack = new LinkedList<>();
-        TreeNode node = root;
 
-        while (!stack.isEmpty() || node != null) {
-            while (node != null) {
-                res.add(node.val);
-                stack.push(node);
-                node = node.left;
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) {
+                res.add(root.val);
+                stack.push(root);
+                root = root.left;
             }
 
-            node = stack.pop();
-            node = node.right;
-
+            root = stack.pop();
+            root = root.right;
         }
 
 

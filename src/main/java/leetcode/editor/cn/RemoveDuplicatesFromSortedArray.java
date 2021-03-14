@@ -50,41 +50,49 @@
   public class RemoveDuplicatesFromSortedArray{
       public static void main(String[] args) {
            Solution solution = new RemoveDuplicatesFromSortedArray().new Solution();
-          solution.removeDuplicates(new int[]{0, 0, 1, 1, 1, 2, 2, 3, 3, 4});
+          solution.removeDuplicates(new int[]{1,1,2});
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int removeDuplicates(int[] nums) {
 
-        if (nums.length == 0) {
+        if (nums == null) {
             return 0;
         }
 
-        int i = 0;
-        for (int j = 1; j < nums.length; j++) {
-            if (nums[j] != nums[i]) {
-                i++;
-                nums[i] = nums[j];
+        int j = 0;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] != nums[j]) {
+                nums[++j] = nums[i];
             }
         }
 
-        return i + 1;
+        return j + 1;
 
 
+
+
+
+
+        /**
+         * 这是个排好序的数组，因此当下一次nums[i]!=nums[j]时，
+         * 第一组相等的所有元素都已经走完，所以直接将nums[i]换到nums[j+1]处即
+         * nums[j+1]=nums[i]，简便点可以写成nums[++j]=nums[i]
+         */
 //        if (nums == null || nums.length == 0) {
 //            return 0;
 //        }
 //
-//        int p = 0;
-//        int q = 1;
-//        while(q<nums.length){
-//            if (nums[p] != nums[q]) {
-//                nums[p + 1] = nums[q];
-//                p++;
+//        int j = 0;
+//        //这里0一定是相等的，优化一下从1开始
+//        for (int i = 1; i < nums.length; i++) {
+//            if (nums[j] != nums[i]) {
+//                nums[++j] = nums[i];
 //            }
-//            q++;
 //        }
-//        return p + 1;
+//        //j=0时也算一个，因此要+1
+//        return j + 1;
+
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

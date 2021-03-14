@@ -18,13 +18,11 @@
 // 👍 137 👎 0
 
   
-  package leetcode.editor.cn;
+package leetcode.editor.cn;
 
 import lombok.val;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class NAryTreePreorderTraversal{
       public static void main(String[] args) {
@@ -57,6 +55,26 @@ class Solution {
 
     public List<Integer> preorder(Node root) {
 
+        List<Integer> res = new ArrayList<>();
+
+        if (root == null) {
+            return res;
+        }
+
+        Deque<Node> stack = new LinkedList<>();
+        stack.push(root);
+
+        while (!stack.isEmpty()) {
+            Node node = stack.pop();
+            res.add(node.val);
+            int size = node.children.size();
+            for (int i = size - 1; i >= 0; i--) {
+                stack.push(node.children.get(i));
+            }
+        }
+
+
+        return res;
 
         /**
          * 法一，递归 时间复杂度O(n2)，空间复杂度O(n)
@@ -80,29 +98,31 @@ class Solution {
          *
          * 自己维护一个栈模拟递归过程
          *
-         * 时间复杂度O(n2)，空间复杂度O(n)
+         * 时间复杂度O(n)，空间复杂度O(n)
          *
          *
          */
 
-        if (root == null) {
-            return res;
-        }
-
-        Stack<Node> temp = new Stack<>();
-        temp.add(root);
-        while (!temp.isEmpty()) {
-            root = temp.pop();
-            res.add(root.val);
-            for (int i = root.children.size() - 1; i >= 0; i--) {
-                if (root.children.get(i) != null) {
-                    //利用栈先进后出的特性，减少一次反转操作
-                    temp.add(root.children.get(i));
-                }
-            }
-        }
-
-        return res;
+//        List<Integer> res = new ArrayList<>();
+//
+//        if (root == null) {
+//            return res;
+//        }
+//
+//        Deque<Node> stack = new LinkedList<>();
+//        stack.push(root);
+//
+//        while (!stack.isEmpty()) {
+//            Node node = stack.pop();
+//            res.add(node.val);
+//            int size = node.children.size();
+//            for (int i = size - 1; i >= 0; i--) {
+//                stack.push(node.children.get(i));
+//            }
+//        }
+//
+//
+//        return res;
 
     }
 

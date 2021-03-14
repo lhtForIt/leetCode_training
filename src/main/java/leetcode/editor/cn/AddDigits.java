@@ -15,8 +15,8 @@
 // 👍 311 👎 0
 
   
-  package leetcode.editor.cn;
-  public class AddDigits{
+package leetcode.editor.cn;
+public class AddDigits{
       public static void main(String[] args) {
            Solution solution = new AddDigits().new Solution();
       }

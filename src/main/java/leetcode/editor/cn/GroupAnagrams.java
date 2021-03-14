@@ -22,7 +22,7 @@
 // 👍 652 👎 0
 
   
-  package leetcode.editor.cn;
+package leetcode.editor.cn;
 
 import java.util.*;
 

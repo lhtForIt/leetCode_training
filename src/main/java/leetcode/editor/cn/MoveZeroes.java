@@ -20,8 +20,8 @@
  * 2021-02-03 1
  */
   
-  package leetcode.editor.cn;
-  public class MoveZeroes{
+package leetcode.editor.cn;
+public class MoveZeroes{
       public static void main(String[] args) {
            Solution solution = new MoveZeroes().new Solution();
            solution.moveZeroes(new int[]{1,0, 3, 0, 12});
@@ -30,9 +30,9 @@
 class Solution {
           public void moveZeroes(int[] nums) {
 
-
               /**
                * 法一：两次循环
+               * 时间复杂度O(n+m)m是0的数量，空间复杂度O(1)
                */
 
 
@@ -43,11 +43,12 @@ class Solution {
 //              int j = 0;
 //              for (int i = 0; i < nums.length; i++) {
 //                  if (nums[i]!=0) {
+//                      //这儿可以直接写成nums[j++]=nums[i]，下面这种好理解点
 //                      nums[j++] = nums[i];
 //                  }
 //              }
 //
-//              //前面有j个非0的，因为下标从0开始，因此起始位置刚好是j
+//              //初始值j为0是没用的，因此++之后j也是没有使用的，直接用j
 //              for (int i = j; i < nums.length; i++) {
 //                  nums[i] = 0;
 //              }
@@ -55,35 +56,23 @@ class Solution {
 
               /**
                * 法二：双指针
+               *
+               *
+               *
+               *
                */
 
-
-//              if (nums == null) {
-//                  return;
-//              }
-//
-//              //因为非0数据要保持原先位置，因此需要用非0的与0替换
-//              int j = 0;
-//              for (int i = 0; i < nums.length; i++) {
-//                  //因为i,j起点一样，当nums[i]不等于0，j会加1，因此j一定是在0的位置
-//                  if (nums[i] != 0) {
-//                      //只有不同位置才需要交换
-//                      if (i != j) {
-//                          int temp = nums[i];
-//                          nums[i] = nums[j];
-//                          nums[j] = temp;
-//                      }
-//                      j++;
-//                  }
-//              }
 
               if (nums == null) {
                   return;
               }
 
-              int j=0;
+              //用j记录0的位置，默认第一个为0，当不为0时，用nums[j]=nums[i]
+              int j = 0;
               for (int i = 0; i < nums.length; i++) {
+                  //因为i,j起点一样，i会一直往前走，当nums[i]不等于0，j才会加1，因此j一定是在0的位置
                   if (nums[i] != 0) {
+                      //只有不同位置才需要交换
                       if (i != j) {
                           nums[j] = nums[i];
                           nums[i] = 0;

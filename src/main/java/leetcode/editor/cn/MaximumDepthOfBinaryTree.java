@@ -9,7 +9,7 @@
 // 示例： 
 //给定二叉树 [3,9,20,null,null,15,7]， 
 //
-//     3
+//    3
 //   / \
 //  9  20
 //    /  \
@@ -20,7 +20,7 @@
 // 👍 786 👎 0
 
   
-  package leetcode.editor.cn;
+package leetcode.editor.cn;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -29,6 +29,7 @@ import java.util.Stack;
 public class MaximumDepthOfBinaryTree{
       public static void main(String[] args) {
            Solution solution = new MaximumDepthOfBinaryTree().new Solution();
+          solution.maxDepth(new TreeNode(3, new TreeNode(9), new TreeNode(20, new TreeNode(15), new TreeNode(7))));
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 /**
@@ -53,6 +54,7 @@ class Solution {
          * 树大多数解法都适合用递归
          * DFS
          */
+
 //        if (root == null) {
 //            return 0;
 //        }
@@ -67,68 +69,71 @@ class Solution {
         /**
          * 迭代：BFS
          */
-//        if (root == null) {
-//            return 0;
-//        }
-//
-//        Queue<TreeNode> queue = new LinkedList<>();
-//        queue.offer(root);
-//        //记录访问的层数
-//        int ans = 0;
-//        while (!queue.isEmpty()) {
-//            int size = queue.size();
-//            while (size > 0) {
-//                TreeNode node = queue.poll();
-//                if (node.left != null) {
-//                    queue.offer(node.left);
-//                }
-//                if (node.right != null) {
-//                    queue.offer(node.right);
-//                }
-//                size--;
-//            }
-//            ans++;
-//        }
-//        return ans;
+        if (root == null) {
+            return 0;
+        }
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        //记录访问的层数
+        int ans = 0;
+        while (!queue.isEmpty()) {
+            //获取队列中的树的个数
+            int size = queue.size();
+            //分别将树取出并将左右子树放入队列
+            while (size > 0) {
+                TreeNode node = queue.poll();
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+                size--;
+            }
+            //该层遍历完毕，高度+1
+            ans++;
+        }
+        return ans;
 
         /**
          * 迭代：DFS
          */
 
-        if (root == null) {
-            return 0;
-        }
-
-        Stack<TreeNode> stack = new Stack<>();
-        Stack<Integer> value = new Stack<>();
-
-        stack.push(root);
-        value.push(1);
-
-        int max = 0;
-
-        while (!stack.isEmpty()) {
-            TreeNode node = stack.pop();
-            int temp = value.pop();
-            max = temp > max ? temp : max;
-            if (node.left != null) {
-                stack.push(node.left);
-                value.push(temp + 1);
-            }
-            if (node.right != null) {
-                stack.push(node.right);
-                value.push(temp + 1);
-            }
-        }
-
-        return max;
+//        if (root == null) {
+//            return 0;
+//        }
+//
+//        Stack<TreeNode> stack = new Stack<>();
+//        Stack<Integer> value = new Stack<>();
+//
+//        stack.push(root);
+//        value.push(1);
+//
+//        int max = 0;
+//
+//        while (!stack.isEmpty()) {
+//            TreeNode node = stack.pop();
+//            int temp = value.pop();
+//            max = temp > max ? temp : max;
+//            if (node.left != null) {
+//                stack.push(node.left);
+//                value.push(temp + 1);
+//            }
+//            if (node.right != null) {
+//                stack.push(node.right);
+//                value.push(temp + 1);
+//            }
+//        }
+//
+//        return max;
 
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
 
 
-      public class TreeNode {
+      public static class TreeNode {
        int val;
        TreeNode left;
        TreeNode right;

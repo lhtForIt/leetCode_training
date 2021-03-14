@@ -50,8 +50,8 @@
 // 👍 2157 👎 0
 
   
-  package leetcode.editor.cn;
-  public class ContainerWithMostWater{
+package leetcode.editor.cn;
+public class ContainerWithMostWater{
       public static void main(String[] args) {
            Solution solution = new ContainerWithMostWater().new Solution();
           solution.maxArea(new int[]{1, 8, 6, 2, 5, 4, 8, 3, 7});
@@ -63,12 +63,16 @@ class Solution {
 
         /**
          * 暴力法
+         * 时间复杂度O(n^2)，空间复杂度O(1)
+         *
+         * 超时
+         *
          */
 
 //        int max = 0;
-//        for (int i = 0; i < height.length - 1; i++) {
-//            for (int j = i + 1; j < height.length; j++) {
-//                max = Math.max(max, (j - i) * Math.min(height[i], height[j]));
+//        for (int i = 0; i < a.length - 1; i++) {
+//            for (int j = i + 1; j < a.length; j++) {
+//                max = Math.max(max, (j - i) * Math.min(a[i], a[j]));
 //            }
 //        }
 //
@@ -92,13 +96,17 @@ class Solution {
 //            }
 //        }
 
+
         int max = 0;
+
         /**
          * 边界条件，i==j时宽度为0，因此边界是i<j
+         *
+         * Math.max(a,b)速度慢于三目运算
          */
-        for (int i = 0, j = a.length - 1; i < j; ) {
-            int h = a[i] < a[j] ? a[i++] : a[j--];
-            max = Math.max(max, (j - i) * h);
+        for (int left = 0, right = a.length - 1; left < right; ) {
+            int v = (right - left) * (a[left] < a[right] ? a[left++] : a[right--]);
+            max = max > v ? max : v;
         }
 
         return max;

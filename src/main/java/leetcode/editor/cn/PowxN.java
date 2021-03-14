@@ -53,8 +53,8 @@ public class PowxN {
             /**
              * 递归
              */
-            long N = n;
-            return N >= 0 ? pow(x, N) : 1 / pow(x, -N);
+//            long N = n;
+//            return N >= 0 ? pow(x, N) : 1 / pow(x, -N);
 
             /**
              * 迭代
@@ -66,29 +66,18 @@ public class PowxN {
              * 非递归,有问题
              */
 
-//        if (n == 0) {
-//            return 1;
-//        }
-//
-//        if (n < 0) {
-//            n = -n;
-//            x = 1 / x;
-//        }
-//
-//        long N = n;
-//        double ans = 1;
-//
-//        while (N > 0) {
-//            //n&1==1为奇数，否则为偶数
-//            if ((N&1)==1) {
-//                ans *= x;
-//            }
-//            x *= x;
-//            N >>= 1;
-//        }
-//
-//
-//        return ans;
+        if (n == 0) {
+            return 1;
+        }
+
+        //当为负数时，其实求得1/x的n次
+        if (n < 0) {
+            n = -n;
+            x = 1 / x;
+        }
+
+        //这里思路是每次将pow的x扩大为原来的平方，且n/2，当n不为奇数时，结果为x*x，当n为奇数时，需要在乘以个x
+        return (n % 2 == 0) ? pow(x * x, n / 2) : x * pow(x * x, n / 2);
 
 
         }
