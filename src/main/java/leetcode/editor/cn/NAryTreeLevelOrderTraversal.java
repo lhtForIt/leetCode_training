@@ -40,8 +40,6 @@
 package leetcode.editor.cn;
 
 import java.util.ArrayList;
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.List;
 
 public class NAryTreeLevelOrderTraversal{
@@ -74,37 +72,54 @@ class Solution {
 
     public List<List<Integer>> levelOrder(Node root) {
 
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+
+        recur(0, root, res);
+
+
+        return res;
+
+
+
+
+
+
+
+
         /**
          * bfs
          *
          * 时间复杂度O(n)，空间复杂度O(n)
          */
 
-        List<List<Integer>> res = new ArrayList<>();
-
-        if (root == null) {
-            return res;
-        }
-        Deque<Node> queue = new LinkedList<>();
-        queue.offer(root);
-
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-            List<Integer> subRes = new ArrayList<>();
-            for (int i = 0; i < size; i++) {
-                Node node = queue.poll();
-                subRes.add(node.val);
-//                for (int j = 0; j < node.children.size(); j++) {
-//                    queue.offer(node.children.get(j));
-//                }
-                //queue也是一个linkedList，可以直接通过addAll()方法添加
-                queue.addAll(node.children);
-            }
-            res.add(subRes);
-        }
-
-
-        return res;
+//        List<List<Integer>> res = new ArrayList<>();
+//
+//        if (root == null) {
+//            return res;
+//        }
+//        Deque<Node> queue = new LinkedList<>();
+//        queue.offer(root);
+//
+//        while (!queue.isEmpty()) {
+//            int size = queue.size();
+//            List<Integer> subRes = new ArrayList<>();
+//            for (int i = 0; i < size; i++) {
+//                Node node = queue.poll();
+//                subRes.add(node.val);
+////                for (int j = 0; j < node.children.size(); j++) {
+////                    queue.offer(node.children.get(j));
+////                }
+//                //queue也是一个linkedList，可以直接通过addAll()方法添加
+//                queue.addAll(node.children);
+//            }
+//            res.add(subRes);
+//        }
+//
+//
+//        return res;
 
 
         /**
@@ -121,6 +136,27 @@ class Solution {
 //        dfs(root, 0, res);
 //
 //        return res;
+
+    }
+
+    private void recur(int level, Node root, List<List<Integer>> res) {
+
+        if (root == null) {
+            return;
+        }
+
+        if (res.size() == level) {
+            res.add(new ArrayList<>());
+        }
+
+
+        res.get(level).add(root.val);
+
+        for (Node child : root.children) {
+            recur(level + 1, child, res);
+        }
+
+
 
     }
 

@@ -44,6 +44,7 @@ package leetcode.editor.cn;
 
 import com.sun.xml.internal.ws.message.ByteArrayAttachment;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 
@@ -59,8 +60,57 @@ public class ThreeSum{
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
 
+        List<List<Integer>> res = new ArrayList<>();
 
-        /**
+        if (nums == null || nums.length < 3) {
+            return res;
+        }
+
+        Arrays.sort(nums);
+
+        for (int i = 0; i < nums.length - 2; i++) {
+            if (nums[i] > 0) {
+                break;
+            }
+
+            //只能和过去的比，和没比过的比会出问题
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+
+            int left = i + 1, right = nums.length - 1;
+
+            while (left < right) {
+
+                if (nums[left] + nums[right] == -nums[i]) {
+                    res.add(Arrays.asList(nums[i], nums[left], nums[right]));
+                    while (left < right && nums[left] == nums[left + 1]) left++;
+                    while (left < right && nums[right] == nums[right - 1]) right--;
+                    left++;
+                    right--;
+                } else if (nums[left] + nums[right] < -nums[i]) {
+                    left++;
+                } else {
+                    right--;
+                }
+            }
+        }
+
+
+        return res;
+
+
+
+
+
+
+
+
+
+
+
+
+         /**
          * 暴力
          * 时间复杂度O(n^4logn)=循环O(n^3)*ArrayList.contain() O(n)时间复杂度
          * 超时
@@ -115,42 +165,42 @@ class Solution {
          *
          */
 
-        List<List<Integer>> res = new ArrayList<>();
-
-        if (nums == null || nums.length < 3) {
-            return res;
-        }
-
-        Arrays.sort(nums);
-
-        for (int i = 0; i < nums.length - 2; i++) {
-
-            if (nums[i] > 0) break;
-
-            //避免重复，将重复元素跳过
-            //因为有i-1，所以要加上i>0的限制，防止下标越界
-            if (i > 0 && nums[i] == nums[i - 1]) continue;
-
-            int left = i + 1, right = nums.length - 1;
-
-            while (left < right) {
-                if (nums[left] + nums[right] == -nums[i]) {
-                    res.add(Arrays.asList(nums[i], nums[left], nums[right]));
-                    //避免重复，将重复元素跳过
-                    //这里要范围要是left->right之间,不然会下标越界
-                    while (left < right && nums[left] == nums[left + 1]) left++;
-                    while (left < right && nums[right] == nums[right - 1]) right--;
-                    left++;
-                    right--;
-                } else if (nums[left] + nums[right] < -nums[i]) {
-                    left++;
-                } else {
-                    right--;
-                }
-            }
-        }
-
-        return res;
+//        List<List<Integer>> res = new ArrayList<>();
+//
+//        if (nums == null || nums.length < 3) {
+//            return res;
+//        }
+//
+//        Arrays.sort(nums);
+//
+//        for (int i = 0; i < nums.length - 2; i++) {
+//
+//            if (nums[i] > 0) break;
+//
+//            //避免重复，将重复元素跳过
+//            //因为有i-1，所以要加上i>0的限制，防止下标越界
+//            if (i > 0 && nums[i] == nums[i - 1]) continue;
+//
+//            int left = i + 1, right = nums.length - 1;
+//
+//            while (left < right) {
+//                if (nums[left] + nums[right] == -nums[i]) {
+//                    res.add(Arrays.asList(nums[i], nums[left], nums[right]));
+//                    //避免重复，将重复元素跳过
+//                    //这里要范围要是left->right之间,不然会下标越界
+//                    while (left < right && nums[left] == nums[left + 1]) left++;
+//                    while (left < right && nums[right] == nums[right - 1]) right--;
+//                    left++;
+//                    right--;
+//                } else if (nums[left] + nums[right] < -nums[i]) {
+//                    left++;
+//                } else {
+//                    right--;
+//                }
+//            }
+//        }
+//
+//        return res;
 
 
 

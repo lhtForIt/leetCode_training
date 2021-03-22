@@ -85,24 +85,57 @@ class Solution {
 
     public List<Integer> inorderTraversal(TreeNode root) {
 
-        List<Integer> res = new LinkedList<>();
+
+        /**
+         * 迭代思路：
+         * 依次将根节点及其左儿子压入栈中，直到找到其左边叶子节点，
+         * 然后弹出栈顶元素，将值放入result中，然后将根节点替换成右子树重复上述过程
+         */
+
+        List<Integer> res = new ArrayList<>();
         Deque<TreeNode> stack = new LinkedList<>();
 
         while (root != null || !stack.isEmpty()) {
-
-            //这儿需要一直遍历到左边叶子节点
             while (root != null) {
                 stack.push(root);
                 root = root.left;
             }
-
             root = stack.pop();
             res.add(root.val);
             root = root.right;
-
         }
 
         return res;
+
+
+
+
+
+
+
+
+
+
+
+
+//        List<Integer> res = new LinkedList<>();
+//        Deque<TreeNode> stack = new LinkedList<>();
+//
+//        while (root != null || !stack.isEmpty()) {
+//
+//            //这儿需要一直遍历到左边叶子节点
+//            while (root != null) {
+//                stack.push(root);
+//                root = root.left;
+//            }
+//
+//            root = stack.pop();
+//            res.add(root.val);
+//            root = root.right;
+//
+//        }
+//
+//        return res;
 
 
 

@@ -41,14 +41,41 @@ class Solution {
     public int[] getLeastNumbers(int[] arr, int k) {
 
         /**
+         * sort 然后直接取前四个数
+         * 时间复杂度O(nlogn),空间复杂度O(logn)排序需要额外logn空间
+         */
+
+        /**
+         * 快排变形
+         * 时间复杂度O(n)，空间复杂度O(1)
+         */
+
+
+        /**
          * 运用堆
          * 堆的插入删除操作都是logn的
+         *
+         * 注意，这里不能直接维护小顶堆，虽然写着简单，但是时间复杂度就是nlogn，而不是nlogk，
+         * 当n和k差别很大的时候时间差距会很明显
+         * 正确做法是维护一个大顶堆（大根堆），对里只有k个元素，当堆满了且遇到大于顶部元素时，
+         * 将堆顶元素拿出并将改元素放入堆中
+         *
          * 时间复杂度O(n * logk),空间复杂度O(n)
          */
-        Queue<Integer> priQueue = new PriorityQueue<>();
+        if (arr == null || arr.length == 0 || k == 0) {
+            return new int[]{};
+        }
+        Queue<Integer> priQueue = new PriorityQueue<>((v1, v2) -> v2 - v1);
         int[] res = new int[k];
+
         for (int i = 0; i < arr.length; i++) {
-            priQueue.offer(arr[i]);
+            if (i < k) {
+                priQueue.offer(arr[i]);
+            } else if (priQueue.peek() > arr[i]) {
+                //当前元素比堆顶元素小放入堆中
+                    priQueue.poll();
+                    priQueue.offer(arr[i]);
+            }
         }
 
         for (int i = 0; i < k; i++) {
@@ -56,6 +83,7 @@ class Solution {
         }
 
         return res;
+
 
     }
 }

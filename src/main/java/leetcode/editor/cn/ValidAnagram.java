@@ -36,6 +36,37 @@ public class ValidAnagram{
 class Solution {
     public boolean isAnagram(String s, String t) {
 
+        if (s.length() != t.length()) {
+            return false;
+        }
+
+        //只会有26个字母，且都是小写
+        int[] chars = new int[26];
+
+        for (char c : s.toCharArray()) {
+            chars[c - 'a']++;
+        }
+
+        for (char c : t.toCharArray()) {
+            chars[c - 'a']--;
+            if (chars[c - 'a'] < 0) {
+                return false;
+            }
+        }
+        return true;
+
+
+
+
+
+
+
+
+
+
+
+
+
         /**
          * 法一：直接用封装的hashMap
          * 时间复杂度O（n）,空间复杂度O(n)
@@ -52,6 +83,7 @@ class Solution {
 //
 //        for (char c : t.toCharArray()) {
 //            int count = charMap.getOrDefault(c, -1) - 1;
+//            //这里只要在这里面动态判断是否小于0即可
 //            if (count < 0) {
 //                return false;
 //            }
@@ -73,7 +105,7 @@ class Solution {
 //        if (s.length() != t.length()) {
 //            return false;
 //        }
-//
+//        //只会有26个字母，且都是小写
 //        int[] table = new int[26];
 //
 //        for (char c : s.toCharArray()) {
@@ -93,14 +125,14 @@ class Solution {
          * 时间复杂度O(nlogn)，空间复杂度O(logn)
          */
 
-        if (s.length() != t.length()) {
-            return false;
-        }
-        char[] str1 = s.toCharArray();
-        char[] str2 = t.toCharArray();
-        Arrays.sort(str1);
-        Arrays.sort(str2);
-        return Arrays.equals(str1, str2);
+//        if (s.length() != t.length()) {
+//            return false;
+//        }
+//        char[] str1 = s.toCharArray();
+//        char[] str2 = t.toCharArray();
+//        Arrays.sort(str1);
+//        Arrays.sort(str2);
+//        return Arrays.equals(str1, str2);
 
     }
 }

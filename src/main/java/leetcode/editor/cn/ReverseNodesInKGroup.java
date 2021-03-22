@@ -78,17 +78,6 @@ public class ReverseNodesInKGroup{
 class Solution {
     public ListNode reverseKGroup(ListNode head, int k) {
 
-
-
-
-
-
-
-
-
-
-
-
         /**
          * 法一：用栈先进后出的特性，
          * 需要额外判断最后一个是否够k个元素

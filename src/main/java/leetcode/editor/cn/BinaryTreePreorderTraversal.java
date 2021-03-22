@@ -57,6 +57,7 @@
   
 package leetcode.editor.cn;
 
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
@@ -88,6 +89,7 @@ class Solution {
     public List<Integer> preorderTraversal(TreeNode root) {
 
 
+
         /**
          * 法一：递归
          */
@@ -107,22 +109,41 @@ class Solution {
          * 法二：迭代
          */
 
-        LinkedList<Integer> res = new LinkedList<>();
-        Deque<TreeNode> stack = new LinkedList<>();
+//        LinkedList<Integer> res = new LinkedList<>();
+//        Deque<TreeNode> stack = new LinkedList<>();
+//
+//        while (root != null || !stack.isEmpty()) {
+//            while (root != null) {
+//                res.add(root.val);
+//                stack.push(root);
+//                root = root.left;
+//            }
+//
+//            root = stack.pop();
+//            root = root.right;
+//        }
+//
+//
+//        return res;
 
-        while (root != null || !stack.isEmpty()) {
-            while (root != null) {
-                res.add(root.val);
-                stack.push(root);
-                root = root.left;
-            }
+        /**
+         * 迭代二：
+         * 逆向递推栈
+         */
 
-            root = stack.pop();
-            root = root.right;
+        List<Integer> ress = new LinkedList<>();
+        if (root == null) {
+            return ress;
         }
-
-
-        return res;
+        Deque<TreeNode> stack = new LinkedList<>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            TreeNode node = stack.pop();
+            ress.add(node.val);
+            if (node.right != null) stack.push(node.right);
+            if (node.left != null) stack.push(node.left);
+        }
+        return ress;
 
     }
 }

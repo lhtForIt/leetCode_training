@@ -42,10 +42,12 @@ public class GenerateParentheses{
 class Solution {
     public List<String> generateParenthesis(int n) {
 
-//        List<String> res = new ArrayList<>();
-//        recur2(0, 0, n, res, "");
-//
-//        return res;
+        List<String> res = new ArrayList<>();
+
+        recu(0, 0,n, res, "");
+
+
+        return res;
 
         /**
          * dfs
@@ -94,38 +96,38 @@ class Solution {
         /**
          * 这个应该才是真正的bfs
          */
-        Deque<String> strQ = new LinkedList<>();
-        Deque<Integer> leftQ = new LinkedList<>();
-        Deque<Integer> rightQ = new LinkedList<>();
-        strQ.offer("");
-        leftQ.offer(0);
-        rightQ.offer(0);
-        //下面两种终止条件判断都可以
-        while (leftQ.peek() + rightQ.peek() < 2 * n) {
-//        while (strQ.peek().length() < 2 * n) {
-            int size = strQ.size();
-            while (size-- > 0) {
-                String cur = strQ.poll();
-                int left = leftQ.poll();
-                int right = rightQ.poll();
-                if (left < n) {
-                    strQ.offer(cur + "(");
-                    leftQ.offer(left + 1);
-                    rightQ.offer(right);
-                }
-                if (right < left) {
-                    strQ.offer(cur + ")");
-                    leftQ.offer(left);
-                    rightQ.offer(right + 1);
-                }
-
-            }
-        }
-        /**
-         * 因为这种情况下会每层去加括号并且会把上一层的取出来，
-         * 最后得到的queue就是最后一层的括号值
-         */
-        return (List<String>) strQ;
+//        Deque<String> strQ = new LinkedList<>();
+//        Deque<Integer> leftQ = new LinkedList<>();
+//        Deque<Integer> rightQ = new LinkedList<>();
+//        strQ.offer("");
+//        leftQ.offer(0);
+//        rightQ.offer(0);
+//        //下面两种终止条件判断都可以
+//        while (leftQ.peek() + rightQ.peek() < 2 * n) {
+////        while (strQ.peek().length() < 2 * n) {
+//            int size = strQ.size();
+//            while (size-- > 0) {
+//                String cur = strQ.poll();
+//                int left = leftQ.poll();
+//                int right = rightQ.poll();
+//                if (left < n) {
+//                    strQ.offer(cur + "(");
+//                    leftQ.offer(left + 1);
+//                    rightQ.offer(right);
+//                }
+//                if (right < left) {
+//                    strQ.offer(cur + ")");
+//                    leftQ.offer(left);
+//                    rightQ.offer(right + 1);
+//                }
+//
+//            }
+//        }
+//        /**
+//         * 因为这种情况下会每层去加括号并且会把上一层的取出来，
+//         * 最后得到的queue就是最后一层的括号值
+//         */
+//        return (List<String>) strQ;
 
 
 
@@ -140,6 +142,19 @@ class Solution {
 //
 //        return result;
     }
+
+          private void recu(int left, int right, int max, List<String> res, String s) {
+
+              if (left == max && right == max) {
+                  res.add(s);
+                  return;
+              }
+
+              if(left < max) recu(left + 1, right, max, res, s + "(");
+              if(right < left) recu(left, right + 1, max, res, s + ")");
+
+          }
+
 
           private void dfs(int left, int right, int max, List<String> res, String s) {
 
@@ -177,24 +192,7 @@ class Solution {
 
 
 
-          private void recur2(int left, int right, int n, List<String> res, String s) {
 
-              //结束条件
-              if (left == n && right == n) {
-                  res.add(s);
-                  return;
-              }
-
-              //当前逻辑
-              //进入下一层，加上条件剪枝
-              if (left<n) recur2(left + 1, right, n, res, s + "(");
-              if (right<left) recur2(left, right + 1, n, res, s + ")");
-
-              //重置状态，一般回溯会用到，这个不用
-
-
-
-          }
 
           public void recur(int deep,int max,List<String> result,String str){
 

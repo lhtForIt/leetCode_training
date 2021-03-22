@@ -47,26 +47,48 @@ public class MergeSortedArray{
 class Solution {
     public void merge(int[] nums1, int m, int[] nums2, int n) {
 
-        /**
-         * 正着赋值会覆盖nums1的值，所以我们反着赋值
-         */
         int p = m - 1, q = n - 1, curr = m + n - 1;
 
-        while (p >=0 && q >= 0) {
-            if (nums1[p] >= nums2[q]) {
-                nums1[curr] = nums1[p];
-                p--;
+        while (p >= 0 && q >= 0) {
+            if (nums1[p] <= nums2[q]) {
+                nums1[curr--] = nums2[q--];
             } else {
-                nums1[curr] = nums2[q];
-                q--;
+                nums1[curr--] = nums1[p--];
             }
-            curr--;
         }
 
-        //如果nums2有元素未挪过去，直接依次加到nums1前面
         while (q >= 0) {
             nums1[curr--] = nums2[q--];
         }
+
+
+
+
+
+
+
+
+
+        /**
+         * 正着赋值会覆盖nums1的值，所以我们反着赋值
+         */
+//        int p = m - 1, q = n - 1, curr = m + n - 1;
+//
+//        while (p >=0 && q >= 0) {
+//            if (nums1[p] >= nums2[q]) {
+//                nums1[curr] = nums1[p];
+//                p--;
+//            } else {
+//                nums1[curr] = nums2[q];
+//                q--;
+//            }
+//            curr--;
+//        }
+//
+//        //如果nums2有元素未挪过去，直接依次加到nums1前面
+//        while (q >= 0) {
+//            nums1[curr--] = nums2[q--];
+//        }
 
     }
 }

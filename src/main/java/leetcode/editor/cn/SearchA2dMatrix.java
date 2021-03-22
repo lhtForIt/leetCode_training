@@ -49,6 +49,30 @@ public class SearchA2dMatrix {
     class Solution {
         public boolean searchMatrix(int[][] matrix, int target) {
 
+            int m = matrix.length;
+            int n = matrix[0].length;
+
+            int left = 0, right = m * n - 1;
+            while (left < right) {
+
+                int mid = left + (right - left) / 2;
+
+                if (matrix[mid / n][mid % n] == target) {
+                    return true;
+                } else if (matrix[mid / n][mid % n] < target) {
+                    left = mid + 1;
+                } else {
+                    right = mid;
+                }
+
+            }
+
+            return matrix[right / n][right % n] == target;
+
+
+
+
+
 //            int m = matrix.length;
 //            int n = matrix[0].length;
 //            int left = 0, right = m * n - 1;
@@ -63,7 +87,7 @@ public class SearchA2dMatrix {
 //                    left = mid + 1;
 //                }
 //            }
-//
+//            //这儿除和模的都是列，即n
 //            return matrix[right / n][right % n] == target;
 
 
@@ -83,21 +107,21 @@ public class SearchA2dMatrix {
              * 时间复杂度O(log(m*n)),空间复杂度O(1)
              *
              */
-            int n = matrix.length;
-            int m = matrix[0].length;
-            int l = 0, r = m * n - 1;
-            while (l < r) {
-                int mid = (l + r - 1) >> 1;
-//                int mid = l + (r - l) / 2;
-                //这儿相当于用数组a[mid]和target比较
-                if (matrix[mid / m][mid % m] < target) {
-                    l = mid + 1;
-                } else {
-                    //最后是right%n，要保证right在数组范围内，如果元素只有两个，mid-1可能会变成-1导致下标越界，因此right=mid
-                    r = mid;
-                }
-            }
-            return matrix[r / m][r % m] == target;
+//            int n = matrix.length;
+//            int m = matrix[0].length;
+//            int l = 0, r = m * n - 1;
+//            while (l < r) {
+//                int mid = (l + r - 1) >> 1;
+////                int mid = l + (r - l) / 2;
+//                //这儿相当于用数组a[mid]和target比较
+//                if (matrix[mid / m][mid % m] < target) {
+//                    l = mid + 1;
+//                } else {
+//                    //最后是right%n，要保证right在数组范围内，如果元素只有两个，mid-1可能会变成-1导致下标越界，因此right=mid
+//                    r = mid;
+//                }
+//            }
+//            return matrix[r / m][r % m] == target;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)

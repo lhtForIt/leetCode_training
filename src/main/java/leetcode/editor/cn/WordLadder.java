@@ -63,6 +63,65 @@ class Solution {
     int minLength = Integer.MAX_VALUE;
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
 
+        Set<String> wordSet = new HashSet<>(wordList);
+        if (beginWord.length() != endWord.length() || !wordSet.contains(endWord)) {
+            return 0;
+        }
+
+        Set<String> beginSet = new HashSet<>();
+        Set<String> endSet = new HashSet<>();
+
+        beginSet.add(beginWord);
+        endSet.add(endWord);
+
+        int len = 1;
+        while (!beginSet.isEmpty()) {
+
+            if (beginSet.size() > endSet.size()) {
+                Set<String> temp = beginSet;
+                beginSet = endSet;
+                endSet = temp;
+            }
+
+            Set<String> set = new HashSet<>();
+
+            for (String word : beginSet) {
+
+                char[] chars = word.toCharArray();
+
+                for (int i = 0; i < chars.length; i++) {
+                    char old = chars[i];
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        if (c == chars[i]) continue;
+
+                        chars[i] = c;
+                        String target = new String(chars);
+
+                        if (endSet.contains(target)) {
+                            return len + 1;
+                        }
+
+                        if (wordSet.contains(target)) {
+                            wordSet.remove(target);
+                            set.add(target);
+                        }
+                    }
+                    chars[i] = old;
+                }
+
+            }
+
+            beginSet = set;
+            len++;
+        }
+
+
+        return 0;
+
+
+
+
+
 
         /**
          * dfs 超时，
@@ -129,44 +188,44 @@ class Solution {
          * 为了寻求更快的速度，用Set代替了queue
          * 这里可以直接用wordSet保存访问记录，减少一个visitedSet变量，且wordSet会变小
          */
-        Set<String> wordSet = new HashSet<>(wordList);
-        if (beginWord.length()!=endWord.length()||!wordList.contains(endWord)) return 0;
-        Set<String> beginSet = new HashSet<>();
-        Set<String> endSet = new HashSet<>();
-        beginSet.add(beginWord);
-        endSet.add(endWord);
-        int len = 1;
-        //这里endSet不可能为空的，一开始endSet size为1，后面只有beginSet.size()>endSet才会交换，所以endSet一定是>=1的
-        while (!beginSet.isEmpty()) {
-            if (beginSet.size() > endSet.size()) {
-                Set<String> set = beginSet;
-                beginSet = endSet;
-                endSet = set;
-            }
-            //这个set替换代替了queue.poll()的过程
-            Set<String> temp = new HashSet<>();
-            for (String word : beginSet) {
-                char[] chs = word.toCharArray();
-                for (int i = 0; i < chs.length; i++) {
-                    char old = chs[i];
-                    for (char c = 'a'; c <= 'z'; c++) {
-                        if (chs[i] == c) continue;
-                        chs[i] = c;
-                        String target = new String(chs);
-                        //两端都有这个元素即返回
-                        if (endSet.contains(target)) return len + 1;
-                        if (wordSet.contains(target)) {
-                            wordSet.remove(target);
-                            temp.add(target);
-                        }
-                    }
-                    chs[i]=old;
-                }
-            }
-            beginSet = temp;
-            len++;
-        }
-        return 0;
+//        Set<String> wordSet = new HashSet<>(wordList);
+//        if (beginWord.length()!=endWord.length()||!wordList.contains(endWord)) return 0;
+//        Set<String> beginSet = new HashSet<>();
+//        Set<String> endSet = new HashSet<>();
+//        beginSet.add(beginWord);
+//        endSet.add(endWord);
+//        int len = 1;
+//        //这里endSet不可能为空的，一开始endSet size为1，后面只有beginSet.size()>endSet才会交换，所以endSet一定是>=1的
+//        while (!beginSet.isEmpty()) {
+//            if (beginSet.size() > endSet.size()) {
+//                Set<String> set = beginSet;
+//                beginSet = endSet;
+//                endSet = set;
+//            }
+//            //这个set替换代替了queue.poll()的过程
+//            Set<String> temp = new HashSet<>();
+//            for (String word : beginSet) {
+//                char[] chs = word.toCharArray();
+//                for (int i = 0; i < chs.length; i++) {
+//                    char old = chs[i];
+//                    for (char c = 'a'; c <= 'z'; c++) {
+//                        if (chs[i] == c) continue;
+//                        chs[i] = c;
+//                        String target = new String(chs);
+//                        //两端都有这个元素即返回
+//                        if (endSet.contains(target)) return len + 1;
+//                        if (wordSet.contains(target)) {
+//                            wordSet.remove(target);
+//                            temp.add(target);
+//                        }
+//                    }
+//                    chs[i]=old;
+//                }
+//            }
+//            beginSet = temp;
+//            len++;
+//        }
+//        return 0;
 
         /**
          * 全球站高赞双向BFS

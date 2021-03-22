@@ -46,8 +46,8 @@
 // 👍 1805 👎 0
 
   
-  package leetcode.editor.cn;
-  public class RemoveDuplicatesFromSortedArray{
+package leetcode.editor.cn;
+public class RemoveDuplicatesFromSortedArray{
       public static void main(String[] args) {
            Solution solution = new RemoveDuplicatesFromSortedArray().new Solution();
           solution.removeDuplicates(new int[]{1,1,2});
@@ -56,9 +56,11 @@
 class Solution {
     public int removeDuplicates(int[] nums) {
 
-        if (nums == null) {
+
+        if (nums == null || nums.length == 0) {
             return 0;
         }
+
 
         int j = 0;
         for (int i = 1; i < nums.length; i++) {
@@ -68,6 +70,20 @@ class Solution {
         }
 
         return j + 1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

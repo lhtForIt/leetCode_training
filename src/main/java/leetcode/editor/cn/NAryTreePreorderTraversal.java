@@ -55,6 +55,7 @@ class Solution {
 
     public List<Integer> preorder(Node root) {
 
+
         List<Integer> res = new ArrayList<>();
 
         if (root == null) {
@@ -62,23 +63,39 @@ class Solution {
         }
 
         Deque<Node> stack = new LinkedList<>();
+
         stack.push(root);
 
         while (!stack.isEmpty()) {
+
             Node node = stack.pop();
+
             res.add(node.val);
-            int size = node.children.size();
-            for (int i = size - 1; i >= 0; i--) {
+
+            for (int i = node.children.size() - 1; i >= 0; i--) {
                 stack.push(node.children.get(i));
             }
+
         }
 
-
         return res;
+
+
+
+
+
+
+
+
+
+
+
+
 
         /**
          * 法一，递归 时间复杂度O(n2)，空间复杂度O(n)
          * 树的递归怎么缓存？
+         * 这会看来当时想法还真奇怪，树递归是每个节点访问一次且仅访问一次，哪需要缓存。。
          */
 
 //        if (root == null) {

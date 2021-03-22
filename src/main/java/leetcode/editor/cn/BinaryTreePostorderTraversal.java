@@ -20,6 +20,7 @@
   
 package leetcode.editor.cn;
 
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
@@ -50,6 +51,7 @@ class Solution {
 
     public List<Integer> postorderTraversal(TreeNode root) {
 
+
         /**
          * 递归
          */
@@ -65,27 +67,54 @@ class Solution {
 
 
         /**
-         * 迭代
+         * 迭代1
          */
 
-        LinkedList<Integer> res = new LinkedList<>();
+//        LinkedList<Integer> res = new LinkedList<>();
+//        Deque<TreeNode> stack = new LinkedList<>();
+//
+//        while (root != null || !stack.isEmpty()) {
+//
+//            while (root != null) {
+//                stack.push(root);
+//                res.addFirst(root.val);
+//                root = root.right;
+//            }
+//
+//            root = stack.pop();
+//            root = root.left;
+//
+//
+//        }
+//
+//        return res;
+
+
+        /**
+         * 迭代2
+         */
+        LinkedList<Integer> ress = new LinkedList<>();
         Deque<TreeNode> stack = new LinkedList<>();
 
-        while (root != null || !stack.isEmpty()) {
+        stack.push(root);
 
-            while (root != null) {
-                stack.push(root);
-                res.addFirst(root.val);
-                root = root.right;
+        while (!stack.isEmpty()) {
+
+            TreeNode node = stack.pop();
+
+            ress.addFirst(node.val);
+
+            if (node.left != null) {
+                stack.push(node.left);
             }
 
-            root = stack.pop();
-            root = root.left;
-
+            if (node.right != null) {
+                stack.push(node.right);
+            }
 
         }
 
-        return res;
+        return ress;
 
 
 

@@ -75,6 +75,7 @@ class Solution {
 
             char[] ca = new char[26];
             for (char c : s.toCharArray()) {
+                //这里统计的分别是'a'的次数一直到'z'的次数，因此即使位置不一样后面得到的字符串也是一样的
                 ca[c - 'a']++;
             }
 

@@ -56,15 +56,13 @@ class Solution{
 class MinStack {
 
         private Node head;
-
         //我们可以在节点中保存数值的信息并同时保存最小值
         public void push(int x) {
 
             if (head == null) {
                 head = new Node(x, x);
             } else {
-                //如果是新节点将原来的节点变成下一个，即插入头节点
-                head = new Node(x, Math.min(x, head.min), head);
+                head = new Node(x, Math.min(head.min, x), head);
             }
 
 
@@ -82,21 +80,21 @@ class MinStack {
             return head.min;
         }
 
-        private class Node{
-            int val;
-            int min;
-            Node next;
+       private class Node{
+           int val;
+           int min;
+           Node next;
 
-            public Node(int val, int min, Node next) {
-                this.val = val;
-                this.min = min;
-                this.next = next;
-            }
+           public Node(int val, int min, Node next) {
+               this.val = val;
+               this.min = min;
+               this.next = next;
+           }
 
-            public Node(int val, int min) {
-                this(val, min, null);
-            }
-        }
+           public Node(int val, int min) {
+               this(val, min, null);
+           }
+       }
 
 
     }

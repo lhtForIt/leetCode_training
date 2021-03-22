@@ -81,19 +81,16 @@ class Solution {
 
 
         if (nums == null || nums.length < k) {
-            return new int[0];
+            return null;
         }
 
-        int[] res = new int[nums.length - k + 1];
-
         Deque<Integer> deque = new LinkedList<>();
-
-        for (int i=0;i<nums.length;i++) {
+        int[] res = new int[nums.length - k + 1];
+        for (int i = 0; i < nums.length; i++) {
 
             if (!deque.isEmpty() && deque.peekFirst() == i - k) {
                 deque.pollFirst();
             }
-
 
             while (!deque.isEmpty() && nums[deque.peekLast()] < nums[i]) {
                 deque.pollLast();
@@ -101,19 +98,13 @@ class Solution {
 
             deque.offerLast(i);
 
-
             if (i - k + 1 >= 0) {
                 res[i - k + 1] = nums[deque.peekFirst()];
             }
 
         }
 
-
         return res;
-
-
-
-
 
 
 
@@ -175,6 +166,14 @@ class Solution {
         /**
          * 堆
          * 时间复杂度O(nlogn),空间复杂度O(n)
+         *
+         *
+         * 这个堆和topk的思路还不太一样，那个是n个数里面求最小k个，
+         * 所以用大顶堆将时间复杂度弄成O(nlogk),
+         * 这儿是k里面最大的数，所以直接就是logk，直接用大顶堆即可
+         *
+         *
+         *
          */
 
 //        int n = nums.length;

@@ -65,6 +65,29 @@
 class Solution {
     public int maxSubArray(int[] nums) {
 
+        int max = nums[0];
+        int[] dp = new int[nums.length + 1];
+        dp[0] = nums[0];
+
+        for (int i = 1; i < nums.length; i++) {
+            dp[i] = Math.max(dp[i - 1] + nums[i], nums[i]);
+            max = max > dp[i] ? max : dp[i];
+        }
+
+        return max;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         /**
          * 因为这个有连续性，一旦Nums[i]不要，
@@ -118,18 +141,18 @@ class Solution {
          * 时间复杂度O(n)，空间复杂度O(1)
          */
 
-        int max = nums[0];
-        int preMax = 0;
-
-        for (int i = 0; i < nums.length; i++) {
-
-            preMax = Math.max(preMax + nums[i], nums[i]);
-            max = Math.max(preMax, max);
-
-        }
-
-
-        return max;
+//        int max = nums[0];
+//        int preMax = 0;
+//
+//        for (int i = 0; i < nums.length; i++) {
+//
+//            preMax = Math.max(preMax + nums[i], nums[i]);
+//            max = Math.max(preMax, max);
+//
+//        }
+//
+//
+//        return max;
 
 
 
