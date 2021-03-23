@@ -138,7 +138,7 @@ class Solution {
 //        if (root == null) {
 //            return 0;
 //        }
-//
+//        //depth++是在for循环之后这里初始值就是1，如果在for循环之前，初始值为0也可以
 //        int depth = 1;
 //        Deque<TreeNode> q = new LinkedList<>();
 //        q.offer(root);

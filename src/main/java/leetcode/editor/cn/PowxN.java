@@ -44,6 +44,7 @@ package leetcode.editor.cn;
 public class PowxN {
     public static void main(String[] args) {
         Solution solution = new PowxN().new Solution();
+        solution.myPow(2, 10);
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
@@ -72,12 +73,15 @@ public class PowxN {
 
         //当为负数时，其实求得1/x的n次
         if (n < 0) {
+            if(n == Integer.MIN_VALUE) {
+                n += 2;
+            }
             n = -n;
             x = 1 / x;
         }
 
         //这里思路是每次将pow的x扩大为原来的平方，且n/2，当n不为奇数时，结果为x*x，当n为奇数时，需要在乘以个x
-        return (n % 2 == 0) ? pow(x * x, n / 2) : x * pow(x * x, n / 2);
+        return (n % 2 == 0) ? myPow(x * x, n / 2) : x * myPow(x * x, n / 2);
 
 
         }

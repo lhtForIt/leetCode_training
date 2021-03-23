@@ -41,10 +41,7 @@
   
 package leetcode.editor.cn;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class NQueens{
       public static void main(String[] args) {
@@ -52,23 +49,122 @@ public class NQueens{
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+
+    private  Set<Integer> col = new HashSet<>();
+    private  Set<Integer> diag1 = new HashSet<>();
+    private  Set<Integer> diag2 = new HashSet<>();
+
+
+
     public List<List<String>> solveNQueens(int n) {
 
-        char[][] chess = new char[n][n];
+        /**
+         * 直接递归
+         */
+//        char[][] chess = new char[n][n];
+//
+//        for (int i = 0; i < n; i++) {
+////            Arrays.fill(chess[i], '.');
+//            for (int j = 0; j < n; j++) {
+//                chess[i][j] = '.';
+//            }
+//        }
+//
+//        List<List<String>> result = new ArrayList<>();
+//
+//        recurce(result, chess, 0);
+//
+//        return result;
 
-        for (int i = 0; i < n; i++) {
-//            Arrays.fill(chess[i], '.');
-            for (int j = 0; j < n; j++) {
-                chess[i][j] = '.';
-            }
-        }
+        /**
+         * 递归+Set缓存优化
+         * 这个为啥还没不加缓存快啊？
+         */
+//        List<List<String>> res = new ArrayList<>();
+//        dfs(0, res, new ArrayList<>(), n);
+//        return res;
 
-        List<List<String>> result = new ArrayList<>();
+        /**
+         * 递归+数组缓存优化
+         */
+        List<List<String>> res = new ArrayList<>();
+        boolean[] visited = new boolean[n];
+        //2*n-1个斜对角线
+        boolean[] dia1 = new boolean[2*n-1];
+        boolean[] dia2 = new boolean[2*n-1];
 
-        recurce(result, chess, 0);
+        dfsArray(0, visited, dia1, dia2, new ArrayList<>(),res, n);
 
-        return result;
+        return res;
+
     }
+
+          private void dfsArray(int rowIndex, boolean[] visited, boolean[] dia1, boolean[] dia2, ArrayList<String> list,List<List<String>> res, int n) {
+              if(rowIndex == n){
+                  res.add(new ArrayList<String>(list));
+                  return;
+              }
+
+              for(int i=0;i<n;i++){
+                  //列、正对角线、反对角线有皇后已经放了
+                  if(visited[i] || dia1[rowIndex+i] || dia2[rowIndex-i+n-1])
+                      continue;
+
+                  char[] charArray = new char[n];
+                  Arrays.fill(charArray,'.');
+
+                  charArray[i] = 'Q';
+                  String stringArray = new String(charArray);
+                  list.add(stringArray);
+                  visited[i] = true;
+                  dia1[rowIndex+i] = true;
+                  dia2[rowIndex-i+n-1] = true;
+
+                  dfsArray(rowIndex + 1, visited, dia1, dia2, list, res, n);
+
+                  //重置状态
+                  list.remove(list.size()-1);
+                  charArray[i] = '.';
+                  visited[i] = false;
+                  dia1[rowIndex+i] = false;
+                  dia2[rowIndex-i+n-1] = false;
+              }
+          }
+
+          private void dfs(int row, List<List<String>> res, List<String> list, int n) {
+
+              if (n == row) {
+                  res.add(new ArrayList<>(list));
+                  return;
+              }
+
+
+              for (int i = 0; i < n; i++) {
+                  if (col.contains(i) || diag1.contains(row + i) || diag2.contains(row - i)) {
+                      continue;
+                  }
+                  char[] charArray = new char[n];
+                  Arrays.fill(charArray, '.');
+                  charArray[i] = 'Q';
+                  String rowString = new String(charArray);
+
+                  list.add(rowString);
+                  col.add(i);
+                  diag1.add(row + i);
+                  diag2.add(row - i);
+
+                  dfs(row + 1, res, list, n);
+
+                  list.remove(list.size() - 1);
+                  col.remove(i);
+                  diag1.remove(row + i);
+                  diag2.remove(row - i);
+
+              }
+
+
+          }
+
 
           private void recurce(List<List<String>> res, char[][] chess, int row) {
               if (row == chess.length) {
@@ -90,7 +186,7 @@ class Solution {
           private boolean isValid(char[][] chess, int row,int col) {
 
               for (int i = 0; i < row; i++) {
-
+                  //同一列有皇后
                   if (chess[i][col] == 'Q') {
                       return false;
                   }
@@ -103,6 +199,7 @@ class Solution {
                   if (col - rowDiff >= 0 && chess[i][col - rowDiff] == 'Q') {
                       return false;
                   }
+
 
 //                  if (chess[i][col] == 'Q') {
 //                      return false;

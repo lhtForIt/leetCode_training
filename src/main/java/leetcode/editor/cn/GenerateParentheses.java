@@ -42,12 +42,125 @@ public class GenerateParentheses{
 class Solution {
     public List<String> generateParenthesis(int n) {
 
-        List<String> res = new ArrayList<>();
+        /**
+         * 动态规划法一：
+         *
+         * 中国站的动态规划感觉写的不是很好，不易于理解，通过全国站这个
+         * 去理解吧
+         * 主要就是分为左右两个部分，然后动态转移方程为S[n]="("+s[n-1-i]+")"+s[i]
+         *
+         *
+         * Keypoints: divide pattern into left and right part.
+         * Left part is wrapped by symbol "(" and ")".
+         * So, we get the sequence with these pattern. (LEFT)RIGHT.
+         *
+         * F[0] = [""]
+         *
+         * F[1] = (F[0])F0[0] = ["()"]
+         *
+         * F[2] = (F[0])F[1], (F[1])F[0]
+         * -> (F[0])F[1] = ()F[1] = ()() = ["()()"]
+         * -> (F[1])F[0] = (())F[0] = (()) = ["(())"]
+         * so, F[2] = ["()()", "(())"]
+         *
+         * F[3] = (F[0])F[2], (F[1])F[1], (F[2])F[0] = ["()()()", "()(())", "(())()", "(()())", "((()))"]
+         *
+         */
 
-        recu(0, 0,n, res, "");
+        HashMap<Integer, List<String>> map = new HashMap<>();
+        map.put(0, new ArrayList<>(Arrays.asList("")));
+        for (int i=1; i<=n; i++) {
+        //这儿每次右边对应的都是i-1-j,第一次j是0，因此右边就是i-1，后面因为j++,k--始终让k就是右边的值
+            for (int j=0, k=i-1; j<i; j++, k--) {
+                for (String left : map.get(j)) {
+                    StringBuilder sb1 = new StringBuilder();
+                    sb1 = sb1.append("(");
+                    sb1 = sb1.append(left);
+                    sb1 = sb1.append(")");
+                    for (String right : map.get(k)) {
+                        StringBuilder sb2 = new StringBuilder(sb1);
+                        String tmp = sb2.append(right).toString();
+                        if (!map.containsKey(i)) {
+                            map.put(i, new ArrayList<>(Arrays.asList(tmp)));
+                        } else {
+                            map.get(i).add(tmp);
+                        }
+                    }
+                }
+            }
+        }
+        return map.get(n);
 
 
-        return res;
+        /**
+         * 动态规划法二：
+         * f(n) = [ (f(0))f(n-1), (f(1))f(n-2), ..., (f(n-1)) ], andf(0) = "".
+         *
+         * 动态转移方程S(n)="("+S(n-1-i)+")"+S(i)
+         */
+
+
+//        List<List<String>> parens = new ArrayList<>();
+//        List<String> zero_list = Arrays.asList("");
+//        parens.add(zero_list);
+//        for (int i = 1; i < n + 1; i++) {
+//            List<String> n_list = new ArrayList<>();
+//            for (int j = 0; j < i; j++) {
+//                for (String s1: parens.get(j)) {
+//                    for (String s2: parens.get(i - j - 1)) {
+//                        n_list.add('(' + s1 + ')' + s2);
+//                    }
+//                }
+//            }
+//            parens.add(n_list);
+//        }
+//        return parens.get(n);
+
+
+        /**
+         * 动态规划法三：
+         * 大概看了下，这个和上面法二一样的，但是丑了很多，感觉像是抄的全国站的解法。。。理解上面解法即可
+         *
+         */
+
+//        List<List<String>> res = new ArrayList<>();
+//
+//        List<String> list = new ArrayList<>();
+//        list.add("");
+//        res.add(list);
+//
+//
+//        for (int i = 1; i <= n; i++) {
+//            List<String> cur = new ArrayList<>();
+//            for (int j = 0; j < i; j++) {
+//                //note:i+j=n-1
+//                List<String> str1 = res.get(j);
+//                List<String> str2 = res.get(i - j - 1);
+//
+//                for (String s1 : str1) {
+//                    for (String s2 : str2) {
+//                        String temp = "(" + s1 + ")" + s2;
+//                        cur.add(temp);
+//                    }
+//                }
+//            }
+//            res.add(cur);
+//        }
+//
+//        return res.get(n);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         /**
          * dfs
@@ -56,6 +169,22 @@ class Solution {
 //        List<String> res = new ArrayList<>();
 //        dfs(0, 0, n, res, "");
 //        return res;
+
+
+        /**
+         * dfs优化
+         *
+         * 在原来dfs的基础上可以将字符串拼接改成char[]数组赋值，减去了
+         * string在拼接的时候的时间动态构建StringBuilder的消耗
+         *
+         */
+
+//        List<String> res = new ArrayList<>();
+//        //这里第三个参数i是用来记录char当前层的位置的
+//        dfsChars(0, 0, 0, n, res, new char[2 * n]);
+//
+//        return res;
+
 
 
         /**
@@ -143,15 +272,23 @@ class Solution {
 //        return result;
     }
 
-          private void recu(int left, int right, int max, List<String> res, String s) {
+          private void dfsChars(int left, int right, int i, int n, List<String> res, char[] chars) {
 
-              if (left == max && right == max) {
-                  res.add(s);
+              //curr.length一定是2*n,不能用curr.length==2*n
+              if (chars.length == i) {
+                  res.add(new String(chars));
                   return;
               }
 
-              if(left < max) recu(left + 1, right, max, res, s + "(");
-              if(right < left) recu(left, right + 1, max, res, s + ")");
+              if (left < n) {
+                  chars[i] = '(';
+                  dfsChars(left + 1, right, i + 1, n, res, chars);
+              }
+
+              if (right < left) {
+                  chars[i] = ')';
+                  dfsChars(left, right + 1, i + 1, n, res, chars);
+              }
 
           }
 
@@ -178,21 +315,24 @@ class Solution {
           }
 
 
+          private void recur2(int left, int right, int n, List<String> res, String s) {
+
+              //结束条件
+              if (left == n && right == n) {
+                  res.add(s);
+                  return;
+              }
+
+              //当前逻辑
+              //进入下一层，加上条件剪枝
+              if (left<n) recur2(left + 1, right, n, res, s + "(");
+              if (right<left) recur2(left, right + 1, n, res, s + ")");
+
+              //重置状态，一般回溯会用到，这个不用
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+          }
 
           public void recur(int deep,int max,List<String> result,String str){
 

@@ -44,21 +44,21 @@ class Solution {
             /**
              * 法一：动态规划
              */
-            if (n <= 2) {
-                return n;
-            }
-
-            //这里用数组缓存了算出来的数据，不用每次零时计算
-            //因为下标是从1开始，而不是0，因此到n需要多加1
-            int[] f = new int[n + 1];
-            f[1] = 1;
-            f[2] = 2;
-
-            for (int i = 3; i <= n; i++) {
-                f[i] = f[i - 1] + f[i - 2];
-            }
-
-            return f[n];
+//            if (n <= 2) {
+//                return n;
+//            }
+//
+//            //这里用数组缓存了算出来的数据，不用每次零时计算
+//            //因为下标是从1开始，而不是0，因此到n需要多加1
+//            int[] f = new int[n + 1];
+//            f[1] = 1;
+//            f[2] = 2;
+//
+//            for (int i = 3; i <= n; i++) {
+//                f[i] = f[i - 1] + f[i - 2];
+//            }
+//
+//            return f[n];
 
             /**
              * 法二：公式求解，不推荐
@@ -89,6 +89,7 @@ class Solution {
              * 可以理解有f(1),f(2),f(3)结果，然后要得到f(4)，
              * 将f(1)=f(2),f(2)=f(3),f(4)=f(1)+f(2),这样循环，所有都能由f(1)+f(2)得到
              * 然后将这里的f(1)，f(2)换成one_step,two_step
+             *
              * 2021-02-23
              *
              * 1、f(3)=f(2)+f(1)
@@ -107,21 +108,21 @@ class Solution {
              *
              */
 
-//            if (n <= 2) {
-//                return n;
-//            }
-//
-//            int one_step = 2;
-//            int two_step = 1;
-//            int all_way = 0;
-//
-//            for (int i = 3; i <= n; i++) {
-//                all_way = one_step + two_step;
-//                two_step = one_step;
-//                one_step = all_way;
-//            }
-//
-//            return all_way;
+            if (n <= 2) {
+                return n;
+            }
+
+            int one_step = 2;
+            int two_step = 1;
+            int all_way = 0;
+
+            for (int i = 3; i <= n; i++) {
+                all_way = one_step + two_step;
+                two_step = one_step;
+                one_step = all_way;
+            }
+
+            return all_way;
 
 
             /**

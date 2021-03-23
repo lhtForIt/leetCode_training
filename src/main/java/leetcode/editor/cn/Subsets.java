@@ -36,6 +36,7 @@
 package leetcode.editor.cn;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Subsets{
@@ -59,25 +60,46 @@ class Solution {
 //
 //        return res;
 
+        /**
+         * 递归 法二
+         * 实质是根据状态树进行dfs
+         */
+
+        List<List<Integer>> list = new ArrayList<>();
+//        Arrays.sort(nums);
+        backtrack(list, new ArrayList<>(), nums, 0);
+        return list;
+
+
 
         /**
          * 迭代
          */
 
-        List<List<Integer>> res = new ArrayList<>();
-        res.add(new ArrayList<>());
-        for (int n : nums) {
-            int size = res.size();
-            for (int i = 0; i < size; i++) {
-                List<Integer> newSub = new ArrayList<>(res.get(i));
-                newSub.add(n);
-                res.add(newSub);
-            }
-        }
-
-        return res;
+//        List<List<Integer>> res = new ArrayList<>();
+//        res.add(new ArrayList<>());
+//        for (int n : nums) {
+//            int size = res.size();
+//            for (int i = 0; i < size; i++) {
+//                List<Integer> newSub = new ArrayList<>(res.get(i));
+//                newSub.add(n);
+//                res.add(newSub);
+//            }
+//        }
+//
+//        return res;
 
     }
+
+          private void backtrack(List<List<Integer>> list, ArrayList<Integer> tempList, int[] nums, int start) {
+              list.add(new ArrayList<>(tempList));
+              //这儿的递归出口在for循环里，其实就是start>=nums.length
+              for(int i = start; i < nums.length; i++){
+                  tempList.add(nums[i]);
+                  backtrack(list, tempList, nums, i + 1);
+                  tempList.remove(tempList.size() - 1);
+              }
+          }
 
           private void recur(List<List<Integer>> res, int level, List<Integer> subRes, int[] nums) {
 
