@@ -28,14 +28,15 @@
 // 👍 178 👎 0
 
   
-  package leetcode.editor.cn;
+package leetcode.editor.cn;
 
+import java.util.Deque;
 import java.util.LinkedList;
 
 public class HuaDongChuangKouDeZuiDaZhiLcof{
       public static void main(String[] args) {
            Solution solution = new HuaDongChuangKouDeZuiDaZhiLcof().new Solution();
-          solution.maxSlidingWindow(new int[]{1, 3, -1, -3, 5, 3, 6, 7}, 3);
+          solution.maxSlidingWindow(new int[]{}, 0);
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
@@ -60,32 +61,33 @@ class Solution {
 //        return result;
 
         if (nums == null || nums.length == 0) {
-            return nums;
+            return new int[]{};
         }
 
-        int[] result = new int[nums.length - k + 1];
+        Deque<Integer> deque = new LinkedList<>();
 
-        LinkedList<Integer> queue = new LinkedList<>();
-        int index = 0;
+        int[] res = new int[nums.length - k + 1];
 
         for (int i = 0; i < nums.length; i++) {
 
-            while (!queue.isEmpty() && nums[i] >= nums[queue.peekLast()]) {
-                queue.pollLast();
+            if (!deque.isEmpty() && deque.peekFirst() == i - k) {
+                deque.pollFirst();
             }
 
-            queue.addLast(i);
-
-            if (queue.peekFirst() <= i - k) {
-                queue.pollFirst();
+            while (!deque.isEmpty() && nums[deque.peekLast()] < nums[i]) {
+                deque.pollLast();
             }
 
-            if (i >= k - 1) {
-                result[index++] = nums[queue.peekFirst()];
+            deque.offerLast(i);
+
+            if (i - k + 1 >= 0) {
+                res[i - k + 1] = nums[deque.peekFirst()];
             }
+
         }
 
-        return result;
+
+        return res;
 
     }
 }

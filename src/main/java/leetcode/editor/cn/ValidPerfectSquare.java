@@ -27,29 +27,59 @@
 class Solution {
     public boolean isPerfectSquare(int num) {
 
-        /**
-         * 二分：时间复杂度O(logN),空间复杂度O(1)
-         */
         if (num < 2) {
             return true;
         }
 
-        long left = 2, right = num / 2, x, pinfang;
-        while (left <= right) {
-            //防止溢出
-            x = left + (right - left) / 2;
-            pinfang = x * x;
-            if (pinfang == num) {
-                return true;
-            }else if (pinfang > num) {
-                right = x - 1;
-            } else {
-                left = x + 1;
-            }
 
+        long left = 2, right = num / 2, x, pingfang;
+        while (left <= right) {
+            x = left + (right - left) / 2;
+            pingfang = x * x;
+            if (pingfang == num) {
+                return true;
+            } else if (pingfang < num) {
+                left = x + 1;
+            } else {
+                right = x - 1;
+            }
         }
 
         return false;
+
+
+
+
+
+
+
+
+
+
+
+        /**
+         * 二分：时间复杂度O(logN),空间复杂度O(1)
+         */
+//        if (num < 2) {
+//            return true;
+//        }
+//        //考虑溢出要用long型，且左边界可以从2开始，右边界从num/2开始
+//        long left = 2, right = num / 2, x, pinfang;
+//        while (left <= right) {
+//            //防止溢出
+//            x = left + (right - left) / 2;
+//            pinfang = x * x;
+//            if (pinfang == num) {
+//                return true;
+//            }else if (pinfang > num) {
+//                right = x - 1;
+//            } else {
+//                left = x + 1;
+//            }
+//
+//        }
+//
+//        return false;
     }
 
         /**

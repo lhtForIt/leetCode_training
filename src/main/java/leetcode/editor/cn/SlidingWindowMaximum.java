@@ -80,12 +80,14 @@ class Solution {
     public int[] maxSlidingWindow(int[] nums, int k) {
 
 
-        if (nums == null || nums.length < k) {
-            return null;
+        if (nums == null || nums.length == 0) {
+            return new int[]{};
         }
 
         Deque<Integer> deque = new LinkedList<>();
+
         int[] res = new int[nums.length - k + 1];
+
         for (int i = 0; i < nums.length; i++) {
 
             if (!deque.isEmpty() && deque.peekFirst() == i - k) {
@@ -104,7 +106,12 @@ class Solution {
 
         }
 
+
         return res;
+
+
+
+
 
 
 

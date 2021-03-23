@@ -35,6 +35,15 @@ class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
 
         /**
+         * HashMap题型总结；
+         * 1、字母异位：统计字母出现频次，第一个单词得到一个字母对应count，第二个单词在减去，最后看count是否为0
+         * 2、字母异位分组：构建一个key，将字母异位词都转成同一个key，然后放入value中。
+         * 可以sort，也可以自建char数组，然后根据char数组为key去判定
+         */
+
+
+
+        /**
          * 法一：排序+hashMap
          *
          * 时间复杂度O(nlogn)，空间复杂度O(n)

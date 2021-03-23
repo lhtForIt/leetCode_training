@@ -34,7 +34,7 @@
 // 👍 455 👎 0
 
   
-  package leetcode.editor.cn;
+package leetcode.editor.cn;
 
 import java.util.Deque;
 import java.util.LinkedList;
@@ -62,29 +62,70 @@ public class MinimumDepthOfBinaryTree{
 class Solution {
     public int minDepth(TreeNode root) {
 
-        /**
-         * 递归
-         */
         if (root == null) {
             return 0;
         }
 
-        //1.左孩子和有孩子都为空的情况，说明到达了叶子节点，直接返回1即可
-//        if (root.left == null && root.right == null) {
-//            return 1;
-//        }
+        Deque<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        int depth = 1;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
 
-        //2.如果左孩子和右孩子其中一个为空，那么需要返回比较大的那个孩子的深度
-        int left = minDepth(root.left);
-        int right = minDepth(root.right);
+                TreeNode node = queue.poll();
+                if (node.left == null && node.right == null) {
+                    return depth;
+                }
 
-        //1.如果左孩子和右孩子有为空的情况，left和right里面就会有一个为0，最小深度就是另一个子树深度+1，为了统一就是left+right+1
-        //2.如果都不为空，返回较小深度+1
-//        return root.left == null || root.right == null ? left + right + 1 : Math.min(left,right) + 1;
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+
+            }
+            depth++;
+        }
+
+        return depth;
+
+
+
+
+
+
+
+
+
         /**
-         * Math.min(left, right) > 0表示没有孩子为空，那就返回最小的值，否则表示有子树为空，则应该返回最大的(不为空的子树)
+         * 递归
+         * * 最小深度需要注意的点是要考虑左右子树为空的情况，
+         * 1、当左右子树都不为空时，直接返回左右子树中小的那个
+         * 2、当左右子树有一个为空时，需要返回不为空的那个
          */
-        return 1 + (Math.min(left, right) > 0 ? Math.min(left, right) : Math.max(left, right));
+//        if (root == null) {
+//            return 0;
+//        }
+//
+//        //1.左孩子和有孩子都为空的情况，说明到达了叶子节点，直接返回1即可
+////        if (root.left == null && root.right == null) {
+////            return 1;
+////        }
+//
+//        //2.如果左孩子和右孩子其中一个为空，那么需要返回比较大的那个孩子的深度
+//        int left = minDepth(root.left);
+//        int right = minDepth(root.right);
+//
+//        //1.如果左孩子和右孩子有为空的情况，left和right里面就会有一个为0，最小深度就是另一个子树深度+1，为了统一就是left+right+1
+//        //2.如果都不为空，返回较小深度+1
+////        return root.left == null || root.right == null ? left + right + 1 : Math.min(left,right) + 1;
+//        /**
+//         * Math.min(left, right) > 0表示没有孩子为空，那就返回最小的值，否则表示有子树为空，则应该返回最大的(不为空的子树)
+//         */
+//        return 1 + (Math.min(left, right) > 0 ? Math.min(left, right) : Math.max(left, right));
 
         /**
          * 迭代 BFS

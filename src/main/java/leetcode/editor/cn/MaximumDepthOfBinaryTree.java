@@ -22,6 +22,7 @@
   
 package leetcode.editor.cn;
 
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
@@ -50,6 +51,39 @@ public class MaximumDepthOfBinaryTree{
 class Solution {
     public int maxDepth(TreeNode root) {
 
+        if (root == null) {
+            return 0;
+        }
+
+        Deque<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        int hight = 0;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+
+                TreeNode node = queue.poll();
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+            hight++;
+        }
+
+        return hight;
+
+
+
+
+
+
+
+
         /**
          * 树大多数解法都适合用递归
          * DFS
@@ -69,32 +103,33 @@ class Solution {
         /**
          * 迭代：BFS
          */
-        if (root == null) {
-            return 0;
-        }
-
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
-        //记录访问的层数
-        int ans = 0;
-        while (!queue.isEmpty()) {
-            //获取队列中的树的个数
-            int size = queue.size();
-            //分别将树取出并将左右子树放入队列
-            while (size > 0) {
-                TreeNode node = queue.poll();
-                if (node.left != null) {
-                    queue.offer(node.left);
-                }
-                if (node.right != null) {
-                    queue.offer(node.right);
-                }
-                size--;
-            }
-            //该层遍历完毕，高度+1
-            ans++;
-        }
-        return ans;
+//        if (root == null) {
+//            return 0;
+//        }
+//
+//        Queue<TreeNode> queue = new LinkedList<>();
+//        queue.offer(root);
+//        //记录访问的层数
+//        int ans = 0;
+//        while (!queue.isEmpty()) {
+//            //获取队列中的树的个数
+//            int size = queue.size();
+//            //分别将树取出并将左右子树放入队列
+//            while (size > 0) {
+//                TreeNode node = queue.poll();
+//                if (node.left != null) {
+//                    queue.offer(node.left);
+//                }
+//                if (node.right != null) {
+//                    queue.offer(node.right);
+//                }
+//                size--;
+//            }
+//            //该层遍历完毕，高度+1
+//            ans++;
+//        }
+        //这儿不需要+1，因为是从跟开始计算高度的，这和递归从左右子树计算高度有点不一样
+//        return ans;
 
         /**
          * 迭代：DFS

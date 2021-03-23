@@ -27,7 +27,7 @@
 // Related Topics 树 
 // 👍 762 👎 0
 
-  
+
 package leetcode.editor.cn;
 
 import com.sun.istack.internal.NotNull;
@@ -59,6 +59,37 @@ public class InvertBinaryTree{
  */
 class Solution {
     public TreeNode invertTree(TreeNode root) {
+
+
+        if (root == null) {
+            return null;
+        }
+
+        Deque<TreeNode> stack = new LinkedList<>();
+        stack.push(root);
+
+        while (!stack.isEmpty()) {
+
+            TreeNode node = stack.pop();
+            TreeNode temp = node.left;
+            node.left = node.right;
+            node.right = temp;
+
+            if (node.left != null) {
+                stack.push(node.left);
+            }
+
+            if (node.right != null) {
+                stack.push(node.right);
+            }
+        }
+
+        return root;
+
+
+
+
+
 
         /**
          * 递归法：时间复杂度O(n)，空间复杂度O(h),h是树的高度
@@ -92,33 +123,33 @@ class Solution {
          * 时间复杂度O(n)，空间复杂度O(n)
          */
 
-        if (root == null) {
-            return null;
-        }
-
-        final Deque<TreeNode> stack = new LinkedList<>();
-        stack.push(root);
-
-        while (!stack.isEmpty()) {
-            //出栈，交换左右子节点
-            final TreeNode node = stack.pop();
-            final TreeNode left = node.left;
-            node.left = node.right;
-            node.right = left;
-
-            /**
-             * 分别判断左右子树是否为空，不为空则放入栈里，重复上述步骤
-             */
-            if (node.left != null) {
-                stack.push(node.left);
-            }
-
-            if (node.right != null) {
-                stack.push(node.right);
-            }
-
-        }
-        return root;
+//        if (root == null) {
+//            return null;
+//        }
+//
+//        final Deque<TreeNode> stack = new LinkedList<>();
+//        stack.push(root);
+//
+//        while (!stack.isEmpty()) {
+//            //出栈，交换左右子节点
+//            final TreeNode node = stack.pop();
+//            final TreeNode left = node.left;
+//            node.left = node.right;
+//            node.right = left;
+//
+//            /**
+//             * 分别判断左右子树是否为空，不为空则放入栈里，重复上述步骤
+//             */
+//            if (node.left != null) {
+//                stack.push(node.left);
+//            }
+//
+//            if (node.right != null) {
+//                stack.push(node.right);
+//            }
+//
+//        }
+//        return root;
 
         /**
          * 迭代法：运用队列,这儿是先进先出->BFS，栈是后进先出

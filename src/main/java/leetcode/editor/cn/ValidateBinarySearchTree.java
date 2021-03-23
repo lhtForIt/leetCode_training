@@ -37,6 +37,8 @@
   
 package leetcode.editor.cn;
 
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.Stack;
 
 public class ValidateBinarySearchTree{
@@ -63,12 +65,42 @@ public class ValidateBinarySearchTree{
 class Solution {
     public boolean isValidBST(TreeNode root) {
 
-        /**
-         * 递归法：时间复杂度O(n)，空间复杂度O(n)
-         */
+
+        Deque<TreeNode> stack = new LinkedList<>();
+        TreeNode pre = null;
+
+        while (root != null || !stack.isEmpty()) {
+
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+
+            root = stack.pop();
+            if (pre != null && root.val <= pre.val) {
+                return false;
+            }
+            pre = root;
+            root = root.right;
+
+        }
+
+        return true;
+
+
+
+
+
+
 
 //        return isValidBST1(root, Long.MIN_VALUE, Long.MAX_VALUE);
 
+        /**
+         * 递归法：时间复杂度O(n)，空间复杂度O(n)
+         *
+         * 当测试用例很大时，int型会出现溢出，因此需要用long型
+         *
+         */
 
 //        return isValidBST(root, Long.MIN_VALUE, Long.MAX_VALUE);
 
@@ -115,27 +147,43 @@ class Solution {
          *
           */
 
+//        if (root == null) {
+//            return true;
+//        }
+//
+//        Stack<TreeNode> stack = new Stack<>();
+//        TreeNode pre = null;
+//
+//        while (root != null || !stack.isEmpty()) {
+//            while (root != null) {
+//                stack.push(root);
+//                root = root.left;
+//            }
+//            root = stack.pop();
+//            //这里的pre代表的左儿子
+//            if (pre != null && root.val <= pre.val) {
+//                return false;
+//            }
+//            pre = root;
+//            root = root.right;
+//        }
+//
+//        return true;
+    }
+
+    private boolean validBST(TreeNode root, long minValue, long maxValue) {
+
+
         if (root == null) {
             return true;
         }
 
-        Stack<TreeNode> stack = new Stack<>();
-        TreeNode pre = null;
-
-        while (root != null || !stack.isEmpty()) {
-            while (root != null) {
-                stack.push(root);
-                root = root.left;
-            }
-            root = stack.pop();
-            if (pre != null && root.val <= pre.val) {
-                return false;
-            }
-            pre = root;
-            root = root.right;
+        if (root.val >= maxValue || root.val <= minValue) {
+            return false;
         }
 
-        return true;
+        return validBST(root.left, minValue, root.val) && validBST(root.right, root.val, maxValue);
+
     }
 
     private boolean isValidBST1(TreeNode root, long minValue, long maxValue) {
