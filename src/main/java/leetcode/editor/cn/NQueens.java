@@ -46,6 +46,7 @@ import java.util.*;
 public class NQueens{
       public static void main(String[] args) {
            Solution solution = new NQueens().new Solution();
+          solution.solveNQueens(4);
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
@@ -57,6 +58,33 @@ class Solution {
 
 
     public List<List<String>> solveNQueens(int n) {
+
+
+        List<List<String>> res = new ArrayList<>();
+        char[] chess = new char[n];
+        Arrays.fill(chess, '.');
+
+        recurMap(0, res, new ArrayList<>(), chess, n);
+
+        return res;
+
+
+
+
+
+
+//        char[][] chess = new char[n][n];
+//        for (int i = 0; i < n; i++) {
+//            Arrays.fill(chess[i], '.');
+//        }
+//
+//        List<List<String>> res = new ArrayList<>();
+//
+//        recur(0, res, chess);
+//        return res;
+
+
+
 
         /**
          * 直接递归
@@ -81,27 +109,142 @@ class Solution {
          * 这个为啥还没不加缓存快啊？
          */
 //        List<List<String>> res = new ArrayList<>();
-//        dfs(0, res, new ArrayList<>(), n);
+//        char[] charArray = new char[n];
+//        Arrays.fill(charArray, '.');
+//        dfs(0, res, new ArrayList<>(), n, charArray);
 //        return res;
 
         /**
          * 递归+数组缓存优化
          */
-        List<List<String>> res = new ArrayList<>();
-        boolean[] visited = new boolean[n];
-        //2*n-1个斜对角线
-        boolean[] dia1 = new boolean[2*n-1];
-        boolean[] dia2 = new boolean[2*n-1];
-
-        dfsArray(0, visited, dia1, dia2, new ArrayList<>(),res, n);
-
-        return res;
+//        List<List<String>> res = new ArrayList<>();
+//        boolean[] visited = new boolean[n];
+//        //2*n-1个斜对角线
+//        //因为数组下标会存在越界，比如row-i的时候可能为负，因此需要一些特殊处理，在row-i的时候扩大n-1，让所有保持一致
+//        boolean[] dia1 = new boolean[2*n-1];
+//        boolean[] dia2 = new boolean[2*n-1];
+//        char[] charArray = new char[n];
+//        Arrays.fill(charArray,'.');
+//        dfsArray(0, visited, dia1, dia2, new ArrayList<>(), res, n, charArray);
+//
+//        return res;
 
     }
 
-          private void dfsArray(int rowIndex, boolean[] visited, boolean[] dia1, boolean[] dia2, ArrayList<String> list,List<List<String>> res, int n) {
+          private void recurMap(int row, List<List<String>> res, ArrayList<String> list, char[] chess, int n) {
+
+              if (row == n) {
+                  res.add(new ArrayList<>(list));
+                  return;
+              }
+
+              for (int i = 0; i < n; i++) {
+
+                  if (col.contains(i) || diag1.contains(row + i) || diag2.contains(row - i)) {
+                      continue;
+                  }
+
+                  chess[i] = 'Q';
+                  list.add(new String(chess));
+                  chess[i] = '.';
+
+                  col.add(i);
+                  diag1.add(row + i);
+                  diag2.add(row - i);
+
+                  recurMap(row + 1, res, list, chess, n);
+
+                  list.remove(list.size() - 1);
+                  col.remove(i);
+                  diag1.remove(row + i);
+                  diag2.remove(row - i);
+              }
+
+
+
+
+
+
+          }
+
+
+
+
+          private void recur(int row, List<List<String>> res, char[][] chess) {
+
+              if (row == chess.length) {
+                  res.add(buildBroad(chess));
+                  return;
+              }
+
+              for (int i = 0; i < chess.length; i++) {
+                  if (vadite(chess, row, i)) {
+                      chess[row][i] = 'Q';
+                      recur(row + 1, res, chess);
+                      chess[row][i] = ',';
+                  }
+              }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          }
+
+          private boolean vadite(char[][] chess, int row, int col) {
+
+              for (int i = 0; i < row; i++) {
+
+                  if (chess[i][col] == 'Q') {
+                      return false;
+                  }
+
+
+                  //(x1-x2)=+-(y1-y2)
+                  int rowDiff = row - i;
+
+                  if (col + rowDiff < chess.length && chess[i][col + rowDiff] == 'Q') {
+                      return false;
+                  }
+
+                  if (col - rowDiff >= 0 && chess[i][col - rowDiff] == 'Q') {
+                      return false;
+                  }
+
+              }
+
+              return true;
+          }
+
+          private List<String> buildBroad(char[][] chess) {
+
+              List<String> list = new ArrayList<>();
+              for (char[] c : chess) {
+                  list.add(new String(c));
+              }
+
+              return list;
+
+
+
+          }
+
+
+          private void dfsArray(int rowIndex, boolean[] visited, boolean[] dia1, boolean[] dia2, ArrayList<String> list, List<List<String>> res, int n, char[] charArray) {
               if(rowIndex == n){
-                  res.add(new ArrayList<String>(list));
+                  res.add(new ArrayList<>(list));
                   return;
               }
 
@@ -110,17 +253,17 @@ class Solution {
                   if(visited[i] || dia1[rowIndex+i] || dia2[rowIndex-i+n-1])
                       continue;
 
-                  char[] charArray = new char[n];
-                  Arrays.fill(charArray,'.');
+
 
                   charArray[i] = 'Q';
                   String stringArray = new String(charArray);
                   list.add(stringArray);
+                  charArray[i] = '.';
                   visited[i] = true;
                   dia1[rowIndex+i] = true;
                   dia2[rowIndex-i+n-1] = true;
 
-                  dfsArray(rowIndex + 1, visited, dia1, dia2, list, res, n);
+                  dfsArray(rowIndex + 1, visited, dia1, dia2, list, res, n, charArray);
 
                   //重置状态
                   list.remove(list.size()-1);
@@ -131,7 +274,7 @@ class Solution {
               }
           }
 
-          private void dfs(int row, List<List<String>> res, List<String> list, int n) {
+          private void dfs(int row, List<List<String>> res, List<String> list, int n, char[] charArray) {
 
               if (n == row) {
                   res.add(new ArrayList<>(list));
@@ -143,17 +286,17 @@ class Solution {
                   if (col.contains(i) || diag1.contains(row + i) || diag2.contains(row - i)) {
                       continue;
                   }
-                  char[] charArray = new char[n];
-                  Arrays.fill(charArray, '.');
                   charArray[i] = 'Q';
                   String rowString = new String(charArray);
 
                   list.add(rowString);
+                  //要保证每次递归的charArray都是'....'这个
+                  charArray[i] = '.';
                   col.add(i);
                   diag1.add(row + i);
                   diag2.add(row - i);
 
-                  dfs(row + 1, res, list, n);
+                  dfs(row + 1, res, list, n, charArray);
 
                   list.remove(list.size() - 1);
                   col.remove(i);
@@ -183,6 +326,19 @@ class Solution {
 
           }
 
+          /**
+           * 前提：x1-y1=x2-y2||x1+y1=x2+y2
+           * 得到：x1-y1=x2-y2||x1-x2=-(y1-y2)
+           * 进而推出：(x2-x1)/(y2-y1) == 1 or -1
+           *
+           * 因此在知道x1,y1,x2的情况下怎么得到y2?
+           * 直接用y2=y1-(x1-x2)||y2=y1+(x1-x2)
+           * 当前点：(row,col)=(x2,y2)
+           * 以前的点：(i,y)=(x1,y1)
+           * x2-x1=y2-y1||x2-x1=y1-y2
+           * row-i=col-y||row-i=y-col
+           * y=col-(row-i)||y=col+(row-i)
+           */
           private boolean isValid(char[][] chess, int row,int col) {
 
               for (int i = 0; i < row; i++) {

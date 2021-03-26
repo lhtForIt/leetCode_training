@@ -44,6 +44,7 @@ public class MajorityElement {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int majorityElement(int[] nums) {
+
             /**
              * 法一：Map记录每个数出现次数，遍历map得到count>n/2的即可
              *
@@ -88,22 +89,59 @@ public class MajorityElement {
 
             //这个思路其实很简单，拿第一个数，然后初始化为1，每次碰到这个数+1，
             // 其他数就-1，当所有数都走完，最后剩下的那个一定是多数
-            int cand_num = nums[0], count = 1;
-            for (int i = 1; i < nums.length; i++) {
-                if (cand_num == nums[i]) {
-                    ++count;
-                } else if (--count == 0) {
-                    cand_num = nums[i];
-                    count = 1;
-                }
+//            int cand_num = nums[0], count = 1;
+//            for (int i = 1; i < nums.length; i++) {
+//                if (cand_num == nums[i]) {
+//                    ++count;
+//                } else if (--count == 0) {
+//                    cand_num = nums[i];
+//                    count = 1;
+//                }
+//
+//            }
+//
+//            return cand_num;
 
+            /**
+             * 法四：分治
+             */
+            return majorityElementRec(nums, 0, nums.length - 1);
+
+
+        }
+
+        private int majorityElementRec(int[] nums, int lo, int hi) {
+            //递归终止条件，只有一个元素
+            if (lo == hi) {
+                return nums[lo];
             }
 
-            return cand_num;
+            // 分别将左右半边进行递归
+            int mid = (hi - lo) / 2 + lo;
+            int left = majorityElementRec(nums, lo, mid);
+            int right = majorityElementRec(nums, mid + 1, hi);
 
+            // 如果两边众数一样，直接返回
+            if (left == right) {
+                return left;
+            }
 
+            // 否则计算每个元素返回其出现次数，然后比较出较大值
+            int leftCount = countInRange(nums, left, lo, hi);
+            int rightCount = countInRange(nums, right, lo, hi);
 
+            return leftCount > rightCount ? left : right;
 
+        }
+
+        private int countInRange(int[] nums, int num, int lo, int hi) {
+            int count = 0;
+            for (int i = lo; i <= hi; i++) {
+                if (nums[i] == num) {
+                    count++;
+                }
+            }
+            return count;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)

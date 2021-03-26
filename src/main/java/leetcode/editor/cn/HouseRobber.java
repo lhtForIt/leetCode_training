@@ -44,26 +44,96 @@ class Solution {
     public int rob(int[] nums) {
 
         /**
+         * 子问题：S(i)=Math.max(S(i-1),S(i-2)+nums[i])
+         * 状态转移结构：dp[]
+         * 状态转移方程：dp[i]=Math.max(dp[i-1],dp[i-2]+nums[i])
+         *
+         * 思路：首先要判定dp[n]是否能表示全局最大值，有的题不能表示全局最大值，
+         * 这个时候就需要引入额外变量，来记录最大值，这里dp[n]可以表示全局最大值，
+         * 因为每次都是得到的前两步最大值，因此最后一定是最大的，但是有的进步性，比如
+         * 最大公共子序列那个，存在舍弃元素的问题，就需要全局变量去记录最大值。
+         *
+         *
+         */
+//        if (nums == null || nums.length == 0) {
+//            return 0;
+//        } else if (nums.length == 1) {
+//            return nums[0];
+//        }
+//
+//        int[] dp = new int[nums.length];
+//
+//        dp[0] = nums[0];
+//        dp[1] = Math.max(nums[0], nums[1]);
+//
+//        for (int i = 2; i < nums.length; i++) {
+//            dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
+//        }
+//
+//        return dp[nums.length - 1];
+
+
+        /**
+         * 这个空间复杂度可以优化
+         * 考虑到其实每次只会用到两个值，因此可以只用两个变量递推即可,
+         * 参考爬楼梯问题
+         */
+
+//        int pre = 0, cur = 0, temp;
+//        for (int i = 0; i < nums.length; i++) {
+//            temp = cur;
+//            cur = Math.max(pre + nums[i], cur);
+//            pre = temp;
+//        }
+//
+//        return cur;
+        int pre = 0, cur = 0, max = 0;
+        for (int i = 0; i < nums.length; i++) {
+            max = Math.max(pre + nums[i], cur);
+            pre = cur;
+            cur = max;
+        }
+
+        return max;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /**
          * 动态规划转移方程：dp[i]=Math.max(dp[i-1],dp[i-2]+nums[i])
          */
 
-        if (nums.length == 0) {
-            return 0;
-        }
-
-        if (nums.length == 1) {
-            return nums[0];
-        }
-
-        int[] dp = new int[nums.length];
-        dp[0] = nums[0];
-        dp[1] = Math.max(nums[0], nums[1]);
-
-        for (int i = 2; i < nums.length; i++) {
-            dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
-        }
-
-        return dp[nums.length - 1];
+//        if (nums.length == 0) {
+//            return 0;
+//        }
+//
+//        if (nums.length == 1) {
+//            return nums[0];
+//        }
+//
+//        int[] dp = new int[nums.length];
+//        dp[0] = nums[0];
+//        dp[1] = Math.max(nums[0], nums[1]);
+//
+//        for (int i = 2; i < nums.length; i++) {
+//            dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
+//        }
+//
+//        return dp[nums.length - 1];
 
 
     }

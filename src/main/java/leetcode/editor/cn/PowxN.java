@@ -73,6 +73,7 @@ public class PowxN {
 
         //当为负数时，其实求得1/x的n次
         if (n < 0) {
+            //这里要考虑溢出的问题
             if(n == Integer.MIN_VALUE) {
                 n += 2;
             }

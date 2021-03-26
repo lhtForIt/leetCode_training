@@ -63,6 +63,19 @@ public class SwapNodesInPairs{
     class Solution {
         public ListNode swapPairs(ListNode head) {
 
+
+            if (head == null || head.next == null) {
+                return head;
+            }
+
+            ListNode next = head.next;
+            head.next = swapPairs(next.next);
+            next.next = head;
+
+            return next;
+
+
+
             /**
              * 法一，递归法，时间复杂度O(n),空间复杂度O(n)
              * 空间复杂度偏高
@@ -72,19 +85,19 @@ public class SwapNodesInPairs{
              * 直接当成当前接点指向改变即可，这样思路会清晰很多
              */
             //没有可以交换的节点，直接返回参数
-            if (head == null || head.next == null) {
-                return head;
-            }
-
-            //定义该单元返回的头结点
-            ListNode next = head.next;
-            //将该单元第二个节点原先指向下一节点的指针断掉，指向下一单元的头结点
-            head.next = swapPairs(next.next);
-            //反转该单元节点指向
-            next.next = head;
-
-
-            return next;
+//            if (head == null || head.next == null) {
+//                return head;
+//            }
+//
+//            //定义该单元返回的头结点
+//            ListNode next = head.next;
+//            //将该单元第二个节点原先指向下一节点的指针断掉，指向下一单元的头结点
+//            head.next = swapPairs(next.next);
+//            //反转该单元节点指向
+//            next.next = head;
+//
+//
+//            return next;
 
 
             /**

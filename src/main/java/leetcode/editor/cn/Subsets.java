@@ -42,6 +42,7 @@ import java.util.List;
 public class Subsets{
       public static void main(String[] args) {
            Solution solution = new Subsets().new Solution();
+          solution.subsets(new int[]{1, 2, 3});
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
@@ -50,6 +51,8 @@ class Solution {
         /** 递归
          * 回溯法：
          * 特征：会有加入和不加入两种递归
+         * 这种回溯实现你可以理解成两种递归，放进去和不放进去
+         *
          */
 //        List<List<Integer>> res = new ArrayList<>();
 //        if (nums == null || nums.length == 0) {
@@ -63,9 +66,13 @@ class Solution {
         /**
          * 递归 法二
          * 实质是根据状态树进行dfs
+         *
+         * 里面用循环代替递归出口判定用的特别妙
+         *
          */
 
         List<List<Integer>> list = new ArrayList<>();
+//        排序主要看是否有重复元素
 //        Arrays.sort(nums);
         backtrack(list, new ArrayList<>(), nums, 0);
         return list;
@@ -91,9 +98,71 @@ class Solution {
 
     }
 
+
+          private void dfs(int level, List<List<Integer>> res, ArrayList<Integer> subRes, int[] nums) {
+
+              res.add(new ArrayList<>(subRes));
+
+              for (int i = level; i < nums.length; i++) {
+                  subRes.add(nums[i]);
+                  dfs(i + 1, res, subRes, nums);
+                  subRes.remove(subRes.size() - 1);
+              }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          }
+
+          private void rec(int level, List<List<Integer>> res, ArrayList<Integer> subRes, int[] nums) {
+
+              if (level == nums.length) {
+                  res.add(new ArrayList<>(subRes));
+                  return;
+              }
+
+              //不加入
+              rec(level + 1, res, subRes, nums);
+
+              subRes.add(nums[level]);
+
+              //加入当前元素
+              rec(level + 1, res, subRes, nums);
+
+              subRes.remove(subRes.size() - 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          }
+
           private void backtrack(List<List<Integer>> list, ArrayList<Integer> tempList, int[] nums, int start) {
+              System.out.println("当前第" + start + "层梦境，加入List为：" + Arrays.toString(tempList.toArray()));
               list.add(new ArrayList<>(tempList));
-              //这儿的递归出口在for循环里，其实就是start>=nums.length
+              //这个循环真的用的妙，他能很好的避免重复遍历，这儿的递归出口在for循环里，其实就是start>=nums.length
               for(int i = start; i < nums.length; i++){
                   tempList.add(nums[i]);
                   backtrack(list, tempList, nums, i + 1);
