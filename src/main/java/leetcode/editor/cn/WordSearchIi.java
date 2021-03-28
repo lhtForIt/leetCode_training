@@ -55,41 +55,98 @@ class Solution {
           public List<String> findWords(char[][] board, String[] words) {
 
 
-              int m = board.length;
-              int n = board[0].length;
+              /**
+               * 直接DFS，超时
+               */
+//              int m = board.length;
+//              int n = board[0].length;
+//
+//              Set<String> res = new HashSet<>();
+//              if (board.length==0 || board[0].length==0 || words.length==0) {
+//                  return new ArrayList<>(res);
+//              }
+//
+//              for (String word : words) {
+//                  // 在循环内定义visited，重启上一个word对visited改变
+//                  boolean[][] visited = new boolean[m][n];
+//                  for (int i = 0; i < m; i++) {
+//                      for (int j = 0; j < n; j++) {
+//                          // word已经被存到结果中，continue
+//                          if (res.contains(word)) continue;
+//                          // word长度为1，直接和board中字符匹配
+//                          if (word.length()==1) {
+//                              String s = String.valueOf(board[i][j]);
+//                              if (word.equals(s)) {
+//                                  res.add(word);
+//                                  continue;
+//                              }
+//                          }
+//                          // word首字母与board中字符相同时，进入dfs
+//                          if (board[i][j]==word.charAt(0)) {
+//                              visited[i][j] = true;
+//                              dfs(board, res, visited, i, j, word, 0);
+//                              visited[i][j] = false;
+//                          }
+//                      }
+//                  }
+//              }
+//              return new ArrayList<>(res);
 
-              Set<String> res = new HashSet<>();
-              if (board.length==0 || board[0].length==0 || words.length==0) {
-                  return new ArrayList<>(res);
-              }
+              /**
+               * 用Trie对dfs进行剪枝
+               */
 
-              for (String word : words) {
-                  // 在循环内定义visited，重启上一个word对visited改变
-                  boolean[][] visited = new boolean[m][n];
-                  for (int i = 0; i < m; i++) {
-                      for (int j = 0; j < n; j++) {
-                          // word已经被存到结果中，continue
-                          if (res.contains(word)) continue;
-                          // word长度为1，直接和board中字符匹配
-                          if (word.length()==1) {
-                              String s = String.valueOf(board[i][j]);
-                              if (word.equals(s)) {
-                                  res.add(word);
-                                  continue;
-                              }
-                          }
-                          // word首字母与board中字符相同时，进入dfs
-                          if (board[i][j]==word.charAt(0)) {
-                              visited[i][j] = true;
-                              dfs(board, res, visited, i, j, word, 0);
-                              visited[i][j] = false;
-                          }
-                      }
+              List<String> res = new ArrayList<>();
+              TrieNode root = buildTrie(words);
+              for (int i = 0; i < board.length; i++) {
+                  for (int j = 0; j < board[0].length; j++) {
+                      dfsWithTrie(board, i, j, root, res);
                   }
               }
-              return new ArrayList<>(res);
+              return res;
+
+
 
           }
+
+          private void dfsWithTrie(char[][] board, int i, int j, TrieNode p, List<String> res) {
+              char c = board[i][j];
+              if (c == '#' || p.next[c - 'a'] == null) return;
+              p = p.next[c - 'a'];
+              if (p.word != null) {   // found one
+                  res.add(p.word);
+                  p.word = null;     // de-duplicate
+              }
+
+              board[i][j] = '#';
+              //这儿可以用二维数组表示方向
+              if (i > 0) dfsWithTrie(board, i - 1, j ,p, res);
+              if (j > 0) dfsWithTrie(board, i, j - 1, p, res);
+              if (i < board.length - 1) dfsWithTrie(board, i + 1, j, p, res);
+              if (j < board[0].length - 1) dfsWithTrie(board, i, j + 1, p, res);
+              board[i][j] = c;
+          }
+
+          private TrieNode buildTrie(String[] words) {
+              TrieNode root = new TrieNode();
+              for (String w : words) {
+                  TrieNode p = root;
+                  for (char c : w.toCharArray()) {
+                      int i = c - 'a';
+                      if (p.next[i] == null) p.next[i] = new TrieNode();
+                      p = p.next[i];
+                  }
+                  p.word = w;
+              }
+              return root;
+          }
+
+          class TrieNode {
+              TrieNode[] next = new TrieNode[26];
+              String word;
+          }
+
+
 
           private void dfs(char[][] board, Set<String> res, boolean[][] visited, int i, int j, String word, int pos) {
               if (board[i][j] != word.charAt(pos)) return;
