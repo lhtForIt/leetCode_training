@@ -64,6 +64,44 @@ public class UniquePaths{
 class Solution {
     public int uniquePaths(int m, int n) {
 
+
+//        int[][] dp = new int[m][n];
+//
+//        for (int i = 0; i < m; i++) {
+//            for (int j = 0; j < n; j++) {
+//                if (i == 0 || j == 0) {
+//                    dp[i][j] = 1;
+//                } else {
+//                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+//                }
+//            }
+//        }
+//
+//        return dp[m - 1][n - 1];
+
+
+        int[] dp = new int[n];
+        dp[0] = 1;
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                dp[j] = dp[j - 1] + dp[j];
+            }
+        }
+
+        return dp[n - 1];
+
+
+
+
+
+
+
+
+
+
+
+
         /**
          * 动态规划：
          * dp转移方程: dp[i][j]=dp[i-1][j]+dp[i][j-1]
@@ -112,15 +150,15 @@ class Solution {
          * 因此可以直接用以为数组保存每行的数据，将状态数组
          * 从二位降到了一维，从而节省了内存
          */
-        int dp[] = new int[n];
-        dp[0] = 1;
-        for (int i = 0; i < m; i++) {
-            for (int j = 1; j < n; j++) {
-                dp[j] = dp[j - 1] + dp[j];//dp[i,j-1]+dp[i-1,j]
-            }
-        }
-
-        return dp[n - 1];
+//        int dp[] = new int[n];
+//        dp[0] = 1;
+//        for (int i = 0; i < m; i++) {
+//            for (int j = 1; j < n; j++) {
+//                dp[j] = dp[j - 1] + dp[j];//dp[i,j-1]+dp[i-1,j]
+//            }
+//        }
+//
+//        return dp[n - 1];
 
     }
 }

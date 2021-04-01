@@ -59,6 +59,17 @@ public class BinaryTreeLevelOrderTraversal{
 class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
 
+
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+
+        recursion(0, root, res);
+
+        return res;
+
+
         /**
          * 法一：直接BFS,得到每层的数量在遍历
          * 时间复杂度O(n)，空间复杂度O(n)
@@ -94,30 +105,30 @@ class Solution {
          * 法二：BFS，不要size，新建一个队列装每层数据，遍历完之后再把队列赋值回去
          * 时间复杂度O(n)，空间复杂度O(n)
          */
-        List<List<Integer>> res = new ArrayList<>();
-        if (root == null) {
-            return res;
-        }
-        //BFS是queue，DFS是stack
-        Deque<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
-        while (!queue.isEmpty()) {
-            List<Integer> subRes = new ArrayList<>();
-            Deque<TreeNode> tempQueue = new LinkedList<>();
-            while(!queue.isEmpty()) {
-                TreeNode node = queue.poll();
-                subRes.add(node.val);
-                if (node.left != null) {
-                    tempQueue.offer(node.left);
-                }
-                if (node.right != null) {
-                    tempQueue.offer(node.right);
-                }
-            }
-            res.add(subRes);
-            queue = tempQueue;
-        }
-        return res;
+//        List<List<Integer>> res = new ArrayList<>();
+//        if (root == null) {
+//            return res;
+//        }
+//        //BFS是queue，DFS是stack
+//        Deque<TreeNode> queue = new LinkedList<>();
+//        queue.offer(root);
+//        while (!queue.isEmpty()) {
+//            List<Integer> subRes = new ArrayList<>();
+//            Deque<TreeNode> tempQueue = new LinkedList<>();
+//            while(!queue.isEmpty()) {
+//                TreeNode node = queue.poll();
+//                subRes.add(node.val);
+//                if (node.left != null) {
+//                    tempQueue.offer(node.left);
+//                }
+//                if (node.right != null) {
+//                    tempQueue.offer(node.right);
+//                }
+//            }
+//            res.add(subRes);
+//            queue = tempQueue;
+//        }
+//        return res;
 
 
         /**
@@ -131,6 +142,29 @@ class Solution {
 //        }
 //        dfs(root, 0, res);
 //        return res;
+    }
+
+    private void recursion(int level, TreeNode root, List<List<Integer>> res) {
+
+        if (level == res.size()) {
+            res.add(new ArrayList<>());
+        }
+
+        res.get(level).add(root.val);
+        if (root.left != null) {
+            recursion(level + 1, root.left, res);
+        }
+
+        if (root.right != null) {
+            recursion(level + 1, root.right, res);
+        }
+
+
+
+
+
+
+
     }
 
     private void dfs(TreeNode node, int level, List<List<Integer>> res) {

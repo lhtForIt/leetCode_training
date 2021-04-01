@@ -37,6 +37,25 @@ class Solution {
     public List<List<Integer>> combine(int n, int k) {
 
 
+        List<List<Integer>> res = new ArrayList<>();
+
+        if (k <= 0 || n < k) {
+            return res;
+        }
+
+        recursion(1, res, new ArrayList<Integer>(), n, k);
+
+        return res;
+
+
+
+
+
+
+
+
+
+
 
 
         /**
@@ -59,10 +78,10 @@ class Solution {
          * 递归法二：
          */
 
-        List<List<Integer>> res = new ArrayList<>();
-        recur2(res, new ArrayList<>(), 1, n, k);
-
-        return res;
+//        List<List<Integer>> res = new ArrayList<>();
+//        recur2(res, new ArrayList<>(), 1, n, k);
+//
+//        return res;
 
         /**
          * 法三
@@ -94,6 +113,22 @@ class Solution {
 
     }
 
+          private void recursion(int level, List<List<Integer>> res, ArrayList<Integer> subRes, int n, int k) {
+
+              if (k == 0) {
+                  res.add(new ArrayList<>(subRes));
+                  return;
+              }
+
+              for (int i = level; i <= n - k + 1; i++) {
+                  subRes.add(i);
+                  recursion(i + 1, res, subRes, n, k - 1);
+                  subRes.remove(subRes.size() - 1);
+              }
+
+          }
+
+
           private void recur2(List<List<Integer>> res, ArrayList<Integer> subRes,int deep, int n, int k) {
 
               //终止条件
@@ -103,14 +138,28 @@ class Solution {
                   return;
               }
 
-              //当前逻辑
-              //每次递归我们需要调整开始位置，不然会导致数据重复,而且需要记录还有几个数需要添加，这里用k表示
-              //因为从1开始，所以有判定条件能取到=，类比i=1;i<=n
-              //i<=n-(k-1)
+
+              /**
+               * 当前逻辑每次递归我们需要调整开始位置，不然会导致数据重复,而且需要记录还有几个数需要添加，这里用k表示
+               * 这儿数字是从1到n的，所以层数是从1开始，和一般从0开始的可能稍微有点不一样，多想下就明白了
+               * 因为从1开始，所以有判定条件能取到=，类比i=1;i<=n
+               * i<=n-(k-1)
+               *
+               * 这儿的循环可以这么理解，如果是n=4,k=2的话
+               * 当第一层下探，如果没有循环就需要
+               * recur2(res, subRes, 2, n, k-1);
+               * recur2(res, subRes, 3, n, k-1);
+               * recur2(res, subRes, 4, n, k-1);
+               * 这样写多行去试，因此直接写一个循环会方便很多
+               * 你看这个其实也能想清楚为什么下探是i+1而不是level+1，因此level+1可能会和加入的i重复，
+               * 而i+1比i大一定不会重复
+               *
+               */
               for (int i = deep; i <= n - k + 1; i++) {
                   subRes.add(i);
                   //deep代表从几开始，k代表还剩几个数
                   //这里参数i+1代表是否放入第i个数
+                  //这个下探的参数代表下一层能添加的数字，不能是deep+1下探，不然可以加到自身，导致重复，需要是i+1下探
                   recur2(res, subRes, i + 1, n, k-1);
                   System.out.println("当前第" + deep + "层，k的值：" + k + "subRes: " + subRes);
                   /**

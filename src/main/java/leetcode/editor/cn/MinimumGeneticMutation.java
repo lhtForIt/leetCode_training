@@ -55,13 +55,12 @@
   
 package leetcode.editor.cn;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class MinimumGeneticMutation{
     public static void main(String[] args) {
            Solution solution = new MinimumGeneticMutation().new Solution();
-        solution.minMutation(new String("AACCGGTT"), new String("AACCGGTA"), new String[]{"AACCGGTA"});
+        solution.minMutation(new String("AACCGGTT"), new String("AAACGGTA"), new String[]{"AACCGGTA","AACCGCTA","AAACGGTA"});
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
@@ -72,41 +71,160 @@ class Solution {
     public int minMutation(String start, String end, String[] bank) {
 
         /**
+         * 最小基因变化这个题其实有点取巧，因为只有四个字母变化，其实不需要遍历整个char数组，
+         * 且不需要记录当前的位置，只需要看是否相差字符为1即可，但是怎么说不具常规性，代表性，
+         * 还是单词接龙那两道题有意思
+         *
+         *
+         * 简单解释下为什么要用一个map或者数组记录访问过的点，因为这个是个图，它可能往回走，记录之后
+         * 就不会往回走，树就不用记录位置
+         *
+         *
+         * Tips:一般Set可以优化成数组从而进一步提高速度，这里可以用一个boolean型的数组直接记录bank对应位置
+         * 访问记录，但是其实没必要，我们可以直接用bank去记录是否访问，默认是原值，已经被访问就将其置为null或者
+         * 任意你觉得有标示性的字符串，
+         *
+         *
+         */
+
+        Set<String> bankSet = new HashSet<>();
+        for (String s : bank) bankSet.add(s);
+        if (start.length() != end.length() || !bankSet.contains(end)) {
+            return -1;
+        }
+
+        Deque<String> queue = new LinkedList<>();
+        Set<String> visitedSet = new HashSet<>();
+
+        queue.offer(start);
+        visitedSet.add(start);
+
+        int level = 0;
+        while (!queue.isEmpty()) {
+
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+
+                String s = queue.poll();
+                if (s.equals(end)) {
+                    return level;
+                }
+
+                for (String str : bankSet) {
+
+                    int diff = 0;
+                    for (int j = 0; j < s.length(); j++) {
+
+                        if (str.charAt(j) != s.charAt(j)) {
+                            if(++diff>1) break;
+                        }
+
+                    }
+
+                    if (diff == 1 && !visitedSet.contains(str) && bankSet.contains(str)) {
+                        visitedSet.add(str);
+                        queue.add(str);
+                    }
+
+
+
+
+                }
+
+
+
+            }
+
+            level++;
+
+
+
+
+        }
+        return -1;
+
+
+
+        /**
+         * 比较简单的BFS方法，实用性不强
+         */
+//        Set<String> bankSet = new HashSet<>();
+//        for(String s:bank) bankSet.add(s);
+//        if (end.length() != start.length() || !bankSet.contains(end)) return -1;
+//        Deque<String> queue = new LinkedList<>();
+//        Set<String> visitedSet = new HashSet<>();
+//        queue.offer(start);
+//        visitedSet.add(start);
+//        int level = 0;
+//        while (!queue.isEmpty()) {
+//            int size = queue.size();
+//            for (int i = 0; i < size; i++) {
+//                String s = queue.poll();
+//                if (s.equals(end)) {
+//                    return level;
+//                }
+//                for (String str : bankSet) {
+//                    int diff = 0;
+//                    for (int j = 0; j < s.length(); j++) {
+//                        if (s.charAt(j) != str.charAt(j)) {
+//                            if (++diff>1) break;
+//                        }
+//                    }
+//                    if (diff == 1 && !visitedSet.contains(str) && bankSet.contains(str)) {
+//                        visitedSet.add(str);
+//                        queue.offer(str);
+//                    }
+//                }
+//            }
+//            level++;
+//        }
+//        return -1;
+
+
+
+
+
+
+
+
+
+
+        /**
          * BFS
          * m start长度，n bank长度
          * 时间复杂度O(n*m*4)=O(m*n)，空间复杂度O(3n+4)=O(n)
          */
-        if (start.equals(end)) return 0;
-        Set<String> bankSet = new HashSet<>();
-        for(String b: bank) bankSet.add(b);
-        char[] charSet = new char[]{'A', 'C', 'G', 'T'};
-        int level=0;
-        Set<String> visited = new HashSet<>();
-        Queue<String> queue = new LinkedList<>();
-        queue.offer(start);
-        visited.add(start);
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-            for(int i=0;i<size;i++){//由于是数组，每层只有一个，所以当前层循环完，直接步数加1
-                String curr = queue.poll();
-                if (curr.equals(end)) return level;//这里不是递归，又是顺序遍历，直接找到第一个就是最小的
-                char[] currArray = curr.toCharArray();
-                for (int j = 0; j < currArray.length; j++) {
-                    char old = currArray[j];
-                    for (char c : charSet) {//分别在当前位改变'A','C','G','T'去基因库试
-                        currArray[j] = c;
-                        String next = new String(currArray);
-                        if (!visited.contains(next)&&bankSet.contains(next)) {
-                            visited.add(next);
-                            queue.offer(next);
-                        }
-                    }
-                    currArray[j] = old;//必须要恢复状态，不然下一次匹配可能符合条件的抓不到
-                }
-            }
-            level++;
-        }
-        return -1;
+//        if (start.equals(end)) return 0;
+//        Set<String> bankSet = new HashSet<>();
+//        for(String b: bank) bankSet.add(b);
+//        char[] charSet = new char[]{'A', 'C', 'G', 'T'};
+//        int level=0;
+//        Set<String> visited = new HashSet<>();
+//        Queue<String> queue = new LinkedList<>();
+//        queue.offer(start);
+//        visited.add(start);
+//        while (!queue.isEmpty()) {
+//            int size = queue.size();
+//            for(int i=0;i<size;i++){//一定记住BFS一定是每次层遍历完之后再+1
+//                String curr = queue.poll();
+//                if (curr.equals(end)) return level;//这里不是递归，又是顺序遍历，直接找到第一个就是最小的
+//                char[] currArray = curr.toCharArray();
+//                for (int j = 0; j < currArray.length; j++) {
+//                    char old = currArray[j];
+//                    for (char c : charSet) {//分别在当前位改变'A','C','G','T'去基因库试
+//                        currArray[j] = c;
+//                        String next = new String(currArray);
+//                        if (!visited.contains(next)&&bankSet.contains(next)) {
+//                            visited.add(next);
+//                            queue.offer(next);
+//                        }
+//                    }
+//                    currArray[j] = old;//必须要恢复状态，不然下一次匹配可能符合条件的抓不到
+//                }
+//            }
+//            level++;
+//        }
+//        return -1;
 
 
         /**
@@ -155,6 +273,45 @@ class Solution {
 //        return minChange == Integer.MAX_VALUE ? -1 : minChange;
 
     }
+
+          private void recursion(int level, String start, String end, String[] bank) {
+
+              if (start.equals(end)) {
+                  minChange = minChange > level ? level : minChange;
+                  return;
+              }
+
+              for (int i = 0; i < bank.length; i++) {
+
+                  String temp = bank[i];
+                  if (temp==null) continue;
+
+                  int diff = 0;
+                  for (int j = 0; j < start.length(); j++) {
+                      if (temp.charAt(j) != start.charAt(j)) {
+                          if(++diff>1) break;
+                      }
+                  }
+
+                  if (diff == 1) {
+                      bank[i] = null;
+                      recursion(level + 1, temp, end, bank);
+                      bank[i] = temp;
+                  }
+
+              }
+
+
+
+
+
+
+
+
+
+
+          }
+
 
           private void dfsArray(int level, String start, String end, String[] bank) {
 
@@ -254,31 +411,31 @@ class Solution {
 
           private void dfs(char[] start, char[] end, char[][] bank, int change) {
 
-              if (Arrays.equals(start, end)) {
-                  minChange = Math.min(minChange, change);
-                  return;
-              }
+                  if (Arrays.equals(start, end)) {
+                      minChange = Math.min(minChange, change);
+                      return;
+                  }
 
-              for (int j = 0; j < bank.length; j++) {
-                  char[] piece = bank[j];
-                  // 已用过的片段
-                  if (piece == null) {
-                      continue;
+                  for (int j = 0; j < bank.length; j++) {
+                      char[] piece = bank[j];
+                      // 已用过的片段
+                      if (piece == null) {
+                          continue;
+                      }
+                      // 获取基因库中不同为1的片段,作为改变一次后的新start
+                      int diff = 0;
+                      for (int i = 0; i < start.length; i++) {
+                          if (start[i] != piece[i])
+                              if(++diff>1) break;
+                      }
+                      if (diff == 1) {
+                          // 置空,防止循环使用
+                          bank[j] = null;
+                          dfs(piece, end, bank, change + 1);
+                          //重置状态
+                          bank[j] = piece;
+                      }
                   }
-                  // 获取基因库中不同为1的片段,作为改变一次后的新start
-                  int diff = 0;
-                  for (int i = 0; i < start.length; i++) {
-                      if (start[i] != piece[i])
-                          if(++diff>1) break;
-                  }
-                  if (diff == 1) {
-                      // 置空,防止循环使用
-                      bank[j] = null;
-                      dfs(piece, end, bank, change + 1);
-                      //重置状态
-                      bank[j] = piece;
-                  }
-              }
 
 
 

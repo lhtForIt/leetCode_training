@@ -23,9 +23,8 @@
   
 package leetcode.editor.cn;
 
-import jdk.nashorn.internal.runtime.PrototypeObject;
+import sun.reflect.generics.tree.Tree;
 
-import java.io.FileReader;
 import java.util.*;
 
 public class ConstructBinaryTreeFromPreorderAndInorderTraversal{
@@ -57,20 +56,14 @@ class Solution {
 
     public TreeNode buildTree(int[] preorder, int[] inorder) {
 
+
         if (preorder == null || inorder == null) {
             return null;
         }
 
-        for (int i = 0; i < inorder.length; i++) {
-            indexMap.put(inorder[i], i);
-        }
+        for (int i = 0; i < inorder.length; i++) indexMap.put(inorder[i], i);
 
-        return recure(preorder, inorder, 0, preorder.length - 1, 0, preorder.length - 1);
-
-
-
-
-
+        return recursion(preorder, 0, preorder.length - 1, 0, inorder.length - 1);
 
 
 
@@ -137,21 +130,41 @@ class Solution {
 
     }
 
-    private TreeNode recure(int[] preOrder, int[] inOrder, int preOrder_left, int preOrder_right, int inOrder_left, int inOrder_right) {
+    private TreeNode recursion(int[] preOrder, int preOrderLeft, int preOrderRight, int inOrderLeft, int inOrderRight) {
+
+        if (preOrderLeft > preOrderRight) {
+            return null;
+        }
+
+        TreeNode root = new TreeNode(preOrder[preOrderLeft]);
+
+        int index = indexMap.get(preOrder[preOrderLeft]);
+
+        int leftSize = index - inOrderLeft;
+
+        root.left = recursion(preOrder, preOrderLeft + 1, preOrderLeft + leftSize, inOrderLeft, index - 1);
+        root.right = recursion(preOrder, preOrderLeft + leftSize + 1, preOrderRight, index + 1, inOrderRight);
+
+        return root;
+    }
+
+
+    private TreeNode recure(int[] preOrder, int preOrder_left, int preOrder_right, int inOrder_left, int inOrder_right) {
 
         if (preOrder_left > preOrder_right) {
             return null;
         }
-
+        //构建根
         TreeNode root = new TreeNode(preOrder[preOrder_left]);
+        //找打中序中对应下标
         int inOrderRoot = indexMap.get(preOrder[preOrder_left]);
 
         //左子树节点数
         int sub_left = inOrderRoot - inOrder_left;
 
-
-        root.left = recure(preOrder, inOrder, preOrder_left + 1, preOrder_left + sub_left, inOrder_left, inOrderRoot - 1);
-        root.right = recure(preOrder, inOrder, preOrder_left + sub_left + 1, preOrder_right, inOrderRoot + 1, inOrder_right);
+        //这儿左边界要+1，不然会把根节点带进去
+        root.left = recure(preOrder, preOrder_left + 1, preOrder_left + sub_left, inOrder_left, inOrderRoot - 1);
+        root.right = recure(preOrder, preOrder_left + sub_left + 1, preOrder_right, inOrderRoot + 1, inOrder_right);
 
         return root;
     }
