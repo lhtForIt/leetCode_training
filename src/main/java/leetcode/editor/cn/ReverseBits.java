@@ -52,6 +52,7 @@ public class Solution {
          */
         int ans = 0;
         for (int i = 0; i < 32; i++) {
+            //java里面位运算都需要用括号括起来不然编译器会不认识
             ans = (ans << 1) + (n & 1);
             n >>= 1;
         }
