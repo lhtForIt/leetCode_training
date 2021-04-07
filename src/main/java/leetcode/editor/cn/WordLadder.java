@@ -49,6 +49,8 @@
   
 package leetcode.editor.cn;
 
+import org.springframework.beans.factory.BeanFactory;
+
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -64,61 +66,40 @@ class Solution {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
 
         Set<String> wordSet = new HashSet<>(wordList);
-        if (beginWord.length() != endWord.length() || !wordSet.contains(endWord)) {
-            return 0;
-        }
-
+        if (!wordSet.contains(endWord)) return 0;
         Set<String> beginSet = new HashSet<>();
         Set<String> endSet = new HashSet<>();
-
         beginSet.add(beginWord);
         endSet.add(endWord);
-
-        int len = 1;
+        int step = 1;
         while (!beginSet.isEmpty()) {
-
-            if (beginSet.size() > endSet.size()) {
-                Set<String> temp = beginSet;
-                beginSet = endSet;
-                endSet = temp;
+            if (endSet.size() < beginSet.size()) {
+                Set<String> set = endSet;
+                endSet = beginSet;
+                beginSet = set;
             }
-
-            Set<String> set = new HashSet<>();
-
-            for (String word : beginSet) {
-
-                char[] chars = word.toCharArray();
-
+            Set<String> temp = new HashSet<>();
+            for (String str : beginSet) {
+                char[] chars = str.toCharArray();
                 for (int i = 0; i < chars.length; i++) {
                     char old = chars[i];
                     for (char c = 'a'; c <= 'z'; c++) {
-                        if (c == chars[i]) continue;
-
+                        if (chars[i] == c) continue;
                         chars[i] = c;
                         String target = new String(chars);
-
-                        if (endSet.contains(target)) {
-                            return len + 1;
-                        }
-
+                        if (endSet.contains(target)) return step + 1;
                         if (wordSet.contains(target)) {
                             wordSet.remove(target);
-                            set.add(target);
+                            temp.add(target);
                         }
                     }
                     chars[i] = old;
                 }
-
             }
-
-            beginSet = set;
-            len++;
+            beginSet = temp;
+            step++;
         }
-
-
         return 0;
-
-
 
 
 
@@ -204,6 +185,8 @@ class Solution {
 //            }
 //            //这个set替换代替了queue.poll()的过程
 //            Set<String> temp = new HashSet<>();
+//            //这儿比最小基因序列的修改是最小基因因为数据量较小，所以直接可以wordList循环套BeginSet循环，但是这里(数据量大)会不适用，因此优化方案是
+//            //去掉wordList遍历，而直接用beginSet去和26个字符转换，然后找打符合条件的，当wordList大于26个元素时，这种方法会比上面快
 //            for (String word : beginSet) {
 //                char[] chs = word.toCharArray();
 //                for (int i = 0; i < chs.length; i++) {
@@ -241,6 +224,7 @@ class Solution {
 //        Set<String> wordSet = new HashSet<>(wordList);
 //        Set<String> beginSet = new HashSet<>();
 //        Set<String> endSet = new HashSet<>();
+//        //这里以1为初始值的原因，因为hit->hio这种结果是2而不是1，因此初始值需要是1
 //        int len = 1;
 //        HashSet<String> visited = new HashSet<>();
 //        beginSet.add(beginWord);

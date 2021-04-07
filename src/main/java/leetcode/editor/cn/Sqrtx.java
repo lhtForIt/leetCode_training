@@ -35,6 +35,32 @@ public class Sqrtx {
     class Solution {
         public int mySqrt(int x) {
 
+
+            long t = x;
+            while (t * t > x) {
+                t = ((t + x / t) >> 1);
+            }
+
+            return (int) t;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             /**
              * 二分查找
              *
@@ -44,27 +70,27 @@ public class Sqrtx {
              * 这时候left>right，所以是right
              *
              */
-            if (x < 2) {
-                return x;
-            }
-
-            //当数值大到一定值时，mid * mid超过int上限，会一直得到负数，从而得不到正确值
-            //所以这里应该用long
-            long left = 0, right = x, mid = 1;
-
-
-            while (left <= right) {
-                mid = left + (right - left) / 2;
-                if (mid * mid == x) {
-                    return (int) mid;
-                } else if (mid * mid < x) {
-                    left = mid + 1;
-                } else {
-                    right = mid - 1;
-                }
-            }
-
-            return (int)right;
+//            if (x < 2) {
+//                return x;
+//            }
+//
+//            //当数值大到一定值时，mid * mid超过int上限，会一直得到负数，从而得不到正确值
+//            //所以这里应该用long
+//            long left = 0, right = x, mid = 1;
+//
+//
+//            while (left <= right) {
+//                mid = left + ((right - left) >> 1);
+//                if (mid * mid == x) {
+//                    return (int) mid;
+//                } else if (mid * mid < x) {
+//                    left = mid + 1;
+//                } else {
+//                    right = mid - 1;
+//                }
+//            }
+//
+//            return (int)right;
 
             /**
              * 牛顿迭代法，

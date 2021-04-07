@@ -52,27 +52,36 @@ public class BestTimeToBuyAndSellStockIi{
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
           public int maxProfit(int[] prices) {
+
+              /**
+               * 贪心思路：因为你知道每天价格，这基本已经开了天眼了，
+               * 因为极限情况就是每天都买，然后第二天卖掉，然后看是否符合条件，不符合就不买
+               * 然后你只要用每天的价格比较就行，如果
+               * 前一天加个比后一天低，就卖掉，否则就不卖。
+               */
+
+
               int profit = 0;
-              //因为i-1，所以i从1开始
               for (int i = 1; i < prices.length; i++) {
                   int temp = prices[i] - prices[i - 1];
                   if (temp > 0) {
                       profit += temp;
                   }
               }
+
               return profit;
 
 
-//              int profit = 0, i = 0;
-//              while (i < prices.length) {
-//                  // find next local minimum
-//                  while (i < prices.length-1 && prices[i+1] <= prices[i]) i++;
-//                  int min = prices[i++]; // need increment to avoid infinite loop for "[1]"
-//                  // find next local maximum
-//                  while (i < prices.length-1 && prices[i+1] >= prices[i]) i++;
-//                  profit += i < prices.length ? prices[i++] - min : 0;
+//              int profit = 0;
+//              //因为i-1，所以i从1开始
+//              for (int i = 1; i < prices.length; i++) {
+//                  int temp = prices[i] - prices[i - 1];
+//                  if (temp > 0) {
+//                      profit += temp;
+//                  }
 //              }
 //              return profit;
+
           }
 
       }

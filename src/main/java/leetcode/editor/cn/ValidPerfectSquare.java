@@ -18,8 +18,8 @@
 // 👍 194 👎 0
 
   
-  package leetcode.editor.cn;
-  public class ValidPerfectSquare{
+package leetcode.editor.cn;
+public class ValidPerfectSquare{
       public static void main(String[] args) {
            Solution solution = new ValidPerfectSquare().new Solution();
       }
@@ -27,78 +27,46 @@
 class Solution {
     public boolean isPerfectSquare(int num) {
 
-        if (num < 2) {
-            return true;
-        }
-
-
-        long left = 2, right = num / 2, x, pingfang;
-        while (left <= right) {
-            x = left + (right - left) / 2;
-            pingfang = x * x;
-            if (pingfang == num) {
-                return true;
-            } else if (pingfang < num) {
-                left = x + 1;
-            } else {
-                right = x - 1;
-            }
-        }
-
-        return false;
-
-
-
-
-
-
-
-
-
-
-
         /**
          * 二分：时间复杂度O(logN),空间复杂度O(1)
          */
-//        if (num < 2) {
-//            return true;
-//        }
-//        //考虑溢出要用long型，且左边界可以从2开始，右边界从num/2开始
-//        long left = 2, right = num / 2, x, pinfang;
-//        while (left <= right) {
-//            //防止溢出
-//            x = left + (right - left) / 2;
-//            pinfang = x * x;
-//            if (pinfang == num) {
-//                return true;
-//            }else if (pinfang > num) {
-//                right = x - 1;
-//            } else {
-//                left = x + 1;
-//            }
+
+//        long left = 0, right = num, mid;
 //
+//        while (left <= right) {
+//            mid = left + ((right - left) >> 1);
+//            if (mid * mid == num) {
+//                return true;
+//            } else if (mid * mid < num) {
+//                left = mid + 1;
+//            } else {
+//                right = mid - 1;
+//            }
 //        }
 //
 //        return false;
-    }
+
+
 
         /**
          * 牛顿迭代法
          * 时间复杂度O(logN)，空间复杂度O(1)
          */
 
+        //这个if判断可有可无，基本没啥必要
 //        if (num < 2) {
 //            return true;
 //        }
-//        long x = num / 2;
-//        while (x * x > num) {
-//            x = (x + num / x) / 2;
-//        }
-//
-//        return x * x == num;
 
+        long t = num;
+        while (t * t > num) {
+              t = ((t + num / t) >> 1);
+          }
+
+        return t * t == num;
 
     }
+      }
 
 //leetcode submit region end(Prohibit modification and deletion)
 

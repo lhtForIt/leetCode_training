@@ -42,6 +42,36 @@ public class GenerateParentheses{
 class Solution {
     public List<String> generateParenthesis(int n) {
 
+        List<String> res = new ArrayList<>();
+
+        char[] chars = new char[2 * n];
+        recursion(0, 0, n, res, chars,0);
+
+        return res;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         /**
          * 动态规划法一：
          *
@@ -67,29 +97,29 @@ class Solution {
          *
          */
 
-        HashMap<Integer, List<String>> map = new HashMap<>();
-        map.put(0, new ArrayList<>(Arrays.asList("")));
-        for (int i=1; i<=n; i++) {
-        //这儿每次右边对应的都是i-1-j,第一次j是0，因此右边就是i-1，后面因为j++,k--始终让k就是右边的值
-            for (int j=0, k=i-1; j<i; j++, k--) {
-                for (String left : map.get(j)) {
-                    StringBuilder sb1 = new StringBuilder();
-                    sb1 = sb1.append("(");
-                    sb1 = sb1.append(left);
-                    sb1 = sb1.append(")");
-                    for (String right : map.get(k)) {
-                        StringBuilder sb2 = new StringBuilder(sb1);
-                        String tmp = sb2.append(right).toString();
-                        if (!map.containsKey(i)) {
-                            map.put(i, new ArrayList<>(Arrays.asList(tmp)));
-                        } else {
-                            map.get(i).add(tmp);
-                        }
-                    }
-                }
-            }
-        }
-        return map.get(n);
+//        HashMap<Integer, List<String>> map = new HashMap<>();
+//        map.put(0, new ArrayList<>(Arrays.asList("")));
+//        for (int i=1; i<=n; i++) {
+//        //这儿每次右边对应的都是i-1-j,第一次j是0，因此右边就是i-1，后面因为j++,k--始终让k就是右边的值
+//            for (int j=0, k=i-1; j<i; j++, k--) {
+//                for (String left : map.get(j)) {
+//                    StringBuilder sb1 = new StringBuilder();
+//                    sb1 = sb1.append("(");
+//                    sb1 = sb1.append(left);
+//                    sb1 = sb1.append(")");
+//                    for (String right : map.get(k)) {
+//                        StringBuilder sb2 = new StringBuilder(sb1);
+//                        String tmp = sb2.append(right).toString();
+//                        if (!map.containsKey(i)) {
+//                            map.put(i, new ArrayList<>(Arrays.asList(tmp)));
+//                        } else {
+//                            map.get(i).add(tmp);
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        return map.get(n);
 
 
         /**
@@ -271,6 +301,26 @@ class Solution {
 //
 //        return result;
     }
+
+          private void recursion(int left, int right, int n, List<String> res, char[] chars,int level) {
+
+              if (level == 2 * n) {
+                  res.add(new String(chars));
+                  return;
+              }
+
+              if (left < n) {
+                  chars[level]='(';
+                  recursion(left + 1, right, n, res, chars, level + 1);
+              }
+              if (right < left) {
+                  chars[level] = ')';
+                  recursion(left, right + 1, n, res, chars, level + 1);
+              }
+
+
+
+          }
 
           private void dfsChars(int left, int right, int i, int n, List<String> res, char[] chars) {
 

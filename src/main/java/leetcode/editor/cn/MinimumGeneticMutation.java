@@ -87,61 +87,60 @@ class Solution {
          *
          */
 
+
         Set<String> bankSet = new HashSet<>();
-        for (String s : bank) bankSet.add(s);
+
+        for(String s:bank) bankSet.add(s);
         if (start.length() != end.length() || !bankSet.contains(end)) {
             return -1;
         }
 
         Deque<String> queue = new LinkedList<>();
-        Set<String> visitedSet = new HashSet<>();
-
+        Set<String> visited = new HashSet<>();
         queue.offer(start);
-        visitedSet.add(start);
+        visited.add(start);
 
-        int level = 0;
+        int step = 0;
         while (!queue.isEmpty()) {
 
             int size = queue.size();
+
             for (int i = 0; i < size; i++) {
 
-                String s = queue.poll();
-                if (s.equals(end)) {
-                    return level;
+                String temp = queue.poll();
+                if (temp.equals(end)) {
+                    return step;
                 }
 
-                for (String str : bankSet) {
 
+                for (String s : bankSet) {
                     int diff = 0;
-                    for (int j = 0; j < s.length(); j++) {
-
-                        if (str.charAt(j) != s.charAt(j)) {
+                    for (int j = 0; j < temp.length(); j++) {
+                        if (s.charAt(j) != temp.charAt(j)) {
                             if(++diff>1) break;
                         }
-
                     }
 
-                    if (diff == 1 && !visitedSet.contains(str) && bankSet.contains(str)) {
-                        visitedSet.add(str);
-                        queue.add(str);
+                    if (diff == 1 && !visited.contains(s)) {
+                        queue.offer(s);
+                        visited.add(s);
                     }
-
-
-
-
                 }
-
-
 
             }
 
-            level++;
-
-
-
+            step++;
 
         }
+
         return -1;
+
+
+
+
+
+
+
 
 
 
@@ -170,6 +169,7 @@ class Solution {
 //                            if (++diff>1) break;
 //                        }
 //                    }
+//                    //这里bankSet一定是包含的，因此有没有这个条件都一样
 //                    if (diff == 1 && !visitedSet.contains(str) && bankSet.contains(str)) {
 //                        visitedSet.add(str);
 //                        queue.offer(str);
@@ -273,6 +273,7 @@ class Solution {
 //        return minChange == Integer.MAX_VALUE ? -1 : minChange;
 
     }
+
 
           private void recursion(int level, String start, String end, String[] bank) {
 

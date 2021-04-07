@@ -61,13 +61,17 @@ class Solution {
 
 
         List<List<Integer>> res = new ArrayList<>();
+
         if (root == null) {
             return res;
         }
 
-        recursion(0, root, res);
+        recurs(0, res, root);
 
         return res;
+
+
+
 
 
         /**
@@ -142,6 +146,28 @@ class Solution {
 //        }
 //        dfs(root, 0, res);
 //        return res;
+    }
+
+    private void recurs(int level, List<List<Integer>> res, TreeNode root) {
+
+        if (res.size() == level) {
+            res.add(new ArrayList<>());
+        }
+
+
+        res.get(level).add(root.val);
+
+        if (root.left != null) {
+            recurs(level + 1, res, root.left);
+        }
+
+        if (root.right != null) {
+            recurs(level + 1, res, root.right);
+        }
+
+
+
+
     }
 
     private void recursion(int level, TreeNode root, List<List<Integer>> res) {

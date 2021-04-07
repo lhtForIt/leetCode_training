@@ -64,16 +64,53 @@
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public boolean lemonadeChange(int[] bills) {
+
+        /**
+         * 贪心思路：
+         * 这里只需要记录要找给客户的钞票数量即可，即5元和10元的个数
+         * 20不用记，因为没有什么金额需要你补20.
+         * 当某个数字计算完之后钞票值变为负数即返回false
+         */
+
         int five = 0, ten = 0;
-        for (int i : bills) {
-            if (i == 5) five++;
-            else if (i == 10) {five--; ten++;}
-            //这儿有个默认条件是i==20
-            else if (ten > 0) {ten--; five--;}
-            else five -= 3;
-            if (five < 0) return false;
+
+        for (int bill : bills) {
+            if (bill == 5) {
+                five++;
+            } else if (bill == 10) {
+                ten++;
+                five--;
+            } else {
+                if (ten > 0) {
+                    ten--;
+                    five--;
+                } else {
+                    five -= 3;
+                }
+            }
+            if (ten < 0 || five < 0) {
+                return false;
+            }
         }
+
         return true;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         /**

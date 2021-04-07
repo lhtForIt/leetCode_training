@@ -51,31 +51,68 @@
   
 package leetcode.editor.cn;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Triangle{
       public static void main(String[] args) {
            Solution solution = new Triangle().new Solution();
-//          solution.minimumTotal(Arrays.asList(new Integer[]{{2}, {3, 4}, {6, 5, 7}, {4, 1, 8, 3}}));
+          List<List<Integer>> list = new ArrayList<>();
+          list.add(Arrays.asList(new Integer[]{2}));
+          list.add(Arrays.asList(new Integer[]{3, 4}));
+          list.add(Arrays.asList(new Integer[]{6, 5, 7}));
+          list.add(Arrays.asList(new Integer[]{4, 1, 8, 3}));
+          solution.minimumTotal(list);
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
           public int minimumTotal(List<List<Integer>> triangle) {
 
+
+              int n = triangle.size();
+
+              int[] dp = new int[n + 1];
+
+              for (int i = n - 1; i >= 0; i--) {
+                  for (int j = 0; j <= i; j++) {
+                      dp[j] = Math.min(dp[j + 1], dp[j]) + triangle.get(i).get(j);
+                  }
+              }
+
+              return dp[0];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
               /**
                * 动态规划：这儿只能从下往上推，而不能从上往下，因为从下往上都会走到f[0][0]那个点，
-               * 就是最小值，但是从上往下到最后一行，会是多个，推不出来
+               * 就是最小值，但是从上往下到最后一行，会是多个，推不出来,纠正下，也可以从上往下推，
+               * 只是需要额外的变量记录最大值
                *
                * 状态转移数组:f[i][j]=Math.min(f[i+1][j],f[i+1][j+1])+f[i][j];
                *
                * 时间复杂度O(n^2)，空间复杂度O(n^2)
                *
+               * 条件里面已经说明triangle不会为空，所以不用去判断triangle了
+               *
                */
 //              if (triangle.isEmpty()) {
 //                  return 0;
 //              }
-//
+//              //如果是三角形数组的话，一定要以大的那个边为主，不能是m,n那种，n会取get(0).size()，这样的话就是最小的那个，走到下一层就会下标越界
 //              int n = triangle.size();
 //              //数组+1，有效防止下标越界
 //              int[][] dp = new int[n + 1][n + 1];
@@ -84,7 +121,11 @@ class Solution {
 //              /**
 //               * 这里是三角形，因此j的最大值只能到i
 //               */
+////            //因为i是从下往上走的，所以dp方程也是用i大的推导出i小的值,i是n-1开头能很好的保证i+1最大只为n，防止下标越界，且当i等于n-1时，dp[i+1][j]和dp[i+1][j+1]
+////            //初始值为0，用公式得到的刚好是当前的值，所以这里不需要进行值的初始化
+////            //但是这里倒着推有个不好的点是dp[i][j]代表的不是从三角形顶到(i,j)的距离，而是三角形底到(i,j)的距离，所以除了dp[0][0]其实dp值都没啥实际意义。
 //              for (int i = n - 1; i >= 0; i--) {
+//                    //三角形第i层有i个元素，所以j最大值就是i
 ////                  for (int j = 0; j <= i; j++) {
 //                  for (int j = i; j >= 0; j--) {
 //                      dp[i][j] = Math.min(dp[i + 1][j], dp[i + 1][j + 1]) + triangle.get(i).get(j);
@@ -102,22 +143,22 @@ class Solution {
                * 时间复杂度O(n^2)，空间复杂度O(n)
                */
 
-              if (triangle.isEmpty()) {
-                  return 0;
-              }
-
-              int n = triangle.size();
-              int[] dp = new int[n + 1];
-
-
-              for (int i = n - 1; i >= 0; i--) {
-                  //这儿只能从0推到i，不能反着来
-                  for (int j = 0; j <= i; j++) {
-                      dp[j] = Math.min(dp[j], dp[j + 1]) + triangle.get(i).get(j);
-                  }
-              }
-
-              return dp[0];
+//              if (triangle.isEmpty()) {
+//                  return 0;
+//              }
+//
+//              int n = triangle.size();
+//              int[] dp = new int[n + 1];
+//
+//
+//              for (int i = n - 1; i >= 0; i--) {
+//                  //这儿只能从0推到i，不能反着来
+//                  for (int j = 0; j <= i; j++) {
+//                      dp[j] = Math.min(dp[j], dp[j + 1]) + triangle.get(i).get(j);
+//                  }
+//              }
+//
+//              return dp[0];
 
 
           }
