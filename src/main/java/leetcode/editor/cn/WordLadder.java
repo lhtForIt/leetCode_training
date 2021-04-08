@@ -65,8 +65,11 @@ class Solution {
     int minLength = Integer.MAX_VALUE;
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
 
+
         Set<String> wordSet = new HashSet<>(wordList);
-        if (!wordSet.contains(endWord)) return 0;
+        if (!wordSet.contains(endWord)) {
+            return 0;
+        }
         Set<String> beginSet = new HashSet<>();
         Set<String> endSet = new HashSet<>();
         beginSet.add(beginWord);
@@ -74,20 +77,22 @@ class Solution {
         int step = 1;
         while (!beginSet.isEmpty()) {
             if (endSet.size() < beginSet.size()) {
-                Set<String> set = endSet;
-                endSet = beginSet;
-                beginSet = set;
+                Set<String> set = beginSet;
+                beginSet = endSet;
+                endSet = set;
             }
             Set<String> temp = new HashSet<>();
-            for (String str : beginSet) {
-                char[] chars = str.toCharArray();
-                for (int i = 0; i < chars.length; i++) {
+            for (String s : beginSet) {
+                char[] chars = s.toCharArray();
+                for (int i = 0; i < s.length(); i++) {
                     char old = chars[i];
                     for (char c = 'a'; c <= 'z'; c++) {
                         if (chars[i] == c) continue;
                         chars[i] = c;
                         String target = new String(chars);
-                        if (endSet.contains(target)) return step + 1;
+                        if (endSet.contains(target)) {
+                            return step + 1;
+                        }
                         if (wordSet.contains(target)) {
                             wordSet.remove(target);
                             temp.add(target);
@@ -100,6 +105,29 @@ class Solution {
             step++;
         }
         return 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

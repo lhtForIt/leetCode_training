@@ -22,10 +22,7 @@ package leetcode.editor.cn;
 
 import org.springframework.cglib.beans.BeanGenerator;
 
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Combinations{
       public static void main(String[] args) {
@@ -42,8 +39,8 @@ class Solution {
         if (k <= 0 || n < k) {
             return res;
         }
-
-        recursion(1, res, new ArrayList<Integer>(), n, k);
+        boolean[] visited = new boolean[n + 1];
+        recursion(visited, res, new ArrayList<Integer>(), n, k);
 
         return res;
 
@@ -113,17 +110,23 @@ class Solution {
 
     }
 
-          private void recursion(int level, List<List<Integer>> res, ArrayList<Integer> subRes, int n, int k) {
+          //dfs解法，会慢很多，不推荐，如果是有序的情况下,直接i==level，会快特别多
+          private void recursion(boolean[] visited, List<List<Integer>> res, ArrayList<Integer> subRes, int n, int k) {
 
-              if (k == 0) {
+              if (subRes.size() == k) {
                   res.add(new ArrayList<>(subRes));
                   return;
               }
 
-              for (int i = level; i <= n - k + 1; i++) {
-                  subRes.add(i);
-                  recursion(i + 1, res, subRes, n, k - 1);
-                  subRes.remove(subRes.size() - 1);
+              for (int i = 1; i <= n; i++) {
+                  if (visited[i]) continue;
+                  if(subRes.isEmpty()||subRes.get(subRes.size() - 1) < i) {
+                      visited[i] = true;
+                      subRes.add(i);
+                      recursion(visited, res, subRes, n, k);
+                      subRes.remove(subRes.size() - 1);
+                      visited[i] = false;
+                  }
               }
 
           }
@@ -153,6 +156,11 @@ class Solution {
                * 这样写多行去试，因此直接写一个循环会方便很多
                * 你看这个其实也能想清楚为什么下探是i+1而不是level+1，因此level+1可能会和加入的i重复，
                * 而i+1比i大一定不会重复
+               *
+               * 这里其实也可以用visited数组保存访问元素，但是没必要，可以直接用i=level巧妙的代替visited数组，
+               * 而且这里能用i=level替代visited数组的最主要原因是因为n是有序的，如果是一个数组，也不行，
+               * 比如[1,2,3],当第一层取了1，第二层只能是2，第三层只能是3，你想要的1,3,2，对不起不行，因为当你取到3时
+               * 这时候i已经是2了，不可能在取小于2的数据了
                *
                */
               for (int i = deep; i <= n - k + 1; i++) {

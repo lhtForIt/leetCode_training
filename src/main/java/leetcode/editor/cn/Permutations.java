@@ -36,15 +36,30 @@ class Solution {
 
 
               List<List<Integer>> res = new ArrayList<>();
-
               if (nums == null || nums.length == 0) {
                   return res;
               }
-
               boolean[] visited = new boolean[nums.length];
-              resursion(nums, res, new ArrayList<>(), visited);
+              recursion(res, new ArrayList<>(), nums, visited);
 
               return res;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
               /**
@@ -66,6 +81,21 @@ class Solution {
 //              return res;
 
 
+          }
+
+          private void recursion(List<List<Integer>> res, ArrayList<Integer> subRes, int[] nums, boolean[] visited) {
+              if (subRes.size() == nums.length) {
+                  res.add(new ArrayList<>(subRes));
+                  return;
+              }
+              for (int i = 0; i < nums.length; i++) {
+                  if (visited[i]) continue;
+                  visited[i] = true;
+                  subRes.add(nums[i]);
+                  recursion(res, subRes, nums, visited);
+                  subRes.remove(subRes.size() - 1);
+                  visited[i] = false;
+              }
           }
 
           private void resursion(int[] nums, List<List<Integer>> res, ArrayList<Integer> subRes, boolean[] visited) {

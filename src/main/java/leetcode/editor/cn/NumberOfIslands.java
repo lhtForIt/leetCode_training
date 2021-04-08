@@ -59,42 +59,55 @@ public class NumberOfIslands{
 class Solution {
     public int numIslands(char[][] grid) {
 
+        int count = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (grid[i][j] == '1') {
+                    count++;
+                    recursion(i, j, grid);
+                }
+            }
+        }
+
+        return count;
+
+
 
         /**
          * 并查集
          */
 
-        int m = grid.length;
-        int n = grid[0].length;
-        int count = 0;
-        UnionFind uf = new UnionFind(m * n);
-        int[][] directions = {{1, 0}, {0, 1}};
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
-                if (grid[i][j] == '0') {
-                    count++;
-                } else {
-                    //只往右下判断即可
-//                    if(i>0&&grid[i-1][j]=='1')uf.union(i*n+j,(i-1)*n+j);
-//                    if(i<m-1&&grid[i+1][j]=='1') uf.union(i*n+j,(i+1)*n+j);
-//                    if(j>0&&grid[i][j-1]=='1') uf.union(i*n+j,i*n+j-1);
-//                    if(j<n-1&&grid[i][j+1]=='1') uf.union(i*n+j,i*n+j+1);
-
-                    // 这儿用一个数组变量代表方向
-                    for (int[] direction : directions) {
-                        int newX = i + direction[0];
-                        int newY = j + direction[1];
-                        // 先判断坐标合法，再检查右边一格和下边一格是否是陆地
-                        if (newX < m && newY < n && grid[newX][newY] == '1') {
-                            uf.union(i * n + j, newX * n + newY);
-                        }
-                    }
-                }
-
-            }
-        }
-
-        return uf.count - count;
+//        int m = grid.length;
+//        int n = grid[0].length;
+//        int count = 0;
+//        UnionFind uf = new UnionFind(m * n);
+//        int[][] directions = {{1, 0}, {0, 1}};
+//        for (int i = 0; i < grid.length; i++) {
+//            for (int j = 0; j < grid[i].length; j++) {
+//                if (grid[i][j] == '0') {
+//                    count++;
+//                } else {
+//                    //只往右下判断即可
+////                    if(i>0&&grid[i-1][j]=='1')uf.union(i*n+j,(i-1)*n+j);
+////                    if(i<m-1&&grid[i+1][j]=='1') uf.union(i*n+j,(i+1)*n+j);
+////                    if(j>0&&grid[i][j-1]=='1') uf.union(i*n+j,i*n+j-1);
+////                    if(j<n-1&&grid[i][j+1]=='1') uf.union(i*n+j,i*n+j+1);
+//
+//                    // 这儿用一个数组变量代表方向
+//                    for (int[] direction : directions) {
+//                        int newX = i + direction[0];
+//                        int newY = j + direction[1];
+//                        // 先判断坐标合法，再检查右边一格和下边一格是否是陆地
+//                        if (newX < m && newY < n && grid[newX][newY] == '1') {
+//                            uf.union(i * n + j, newX * n + newY);
+//                        }
+//                    }
+//                }
+//
+//            }
+//        }
+//
+//        return uf.count - count;
 
 
 
@@ -130,7 +143,35 @@ class Solution {
 
     }
 
+          private void recursion(int i, int j, char[][] grid) {
 
+              if (i < 0 || j < 0 || i >= grid.length || j >= grid[i].length || grid[i][j] == '0') return;
+              grid[i][j] = '0';
+              recursion(i - 1, j, grid);
+              recursion(i, j - 1, grid);
+              recursion(i + 1, j, grid);
+              recursion(i, j + 1, grid);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          }
 
 
           class UnionFind {
@@ -174,19 +215,19 @@ class Solution {
           private void bfs(char[][] grid, int i, int j) {
 
               Queue<int[]> queue = new LinkedList<>();
-              queue.add(new int[] { i, j });
+              queue.offer(new int[] { i, j });
 
               while(!queue.isEmpty()){
 //                  int size = queue.size();
 //                  for (int k = 0; k < size; k++) {
-                      int[] cur = queue.remove();
+                      int[] cur = queue.poll();
                       i = cur[0]; j = cur[1];
                       if(0 <= i && i < grid.length && 0 <= j && j < grid[0].length && grid[i][j] == '1') {
                           grid[i][j] = '0';
-                          queue.add(new int[] { i + 1, j });
-                          queue.add(new int[] { i - 1, j });
-                          queue.add(new int[] { i, j + 1 });
-                          queue.add(new int[] { i, j - 1 });
+                          queue.offer(new int[] { i + 1, j });
+                          queue.offer(new int[] { i - 1, j });
+                          queue.offer(new int[] { i, j + 1 });
+                          queue.offer(new int[] { i, j - 1 });
                       }
 //                  }
               }

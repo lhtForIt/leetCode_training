@@ -71,6 +71,7 @@ class Solution {
 
 
 //              List<List<Integer>> res = new ArrayList<>();
+//              //这里排序的唯一目的是为了让相同的元素相邻，便于后面i>0&&nums[i]==nums[i-1]&&!visited[i-1]这个判断生效
 //              Arrays.sort(nums);
 //              boolean[] visited = new boolean[nums.length];
 //              recur(res, new ArrayList<>(), visited, nums);

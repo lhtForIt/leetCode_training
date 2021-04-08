@@ -85,73 +85,138 @@ import java.util.Set;
 public class WalkingRobotSimulation {
     public static void main(String[] args) {
         Solution solution = new WalkingRobotSimulation().new Solution();
+        solution.robotSim(new int[]{-2, -1, 8, 9, 6}, new int[][]{{-1, 3}, {0, 1}, {-1, 5}, {-2, -4}, {5, 4}, {-2, -3}, {5, -1}, {1, -1}, {5, 5}, {5, 2}});
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int robotSim(int[] commands, int[][] obstacles) {
-            //这里的dx,dy代表的方向, 0123 表 北东南西
-            //dx[i],dy[i]分别代表北东南西方向走
+
+
             int[] dx = new int[]{0, 1, 0, -1};
             int[] dy = new int[]{1, 0, -1, 0};
-            int x = 0, y = 0, di = 0;
 
-            Set<String> obstacleSet = new HashSet<>();
-            for (int i=0;i<obstacles.length;i++) {
-                obstacleSet.add(obstacles[i][0] + "," + obstacles[i][1]);
+            int x = 0, y = 0, di = 0, res = 0;
+
+            Set<Long> obstaclesSet = new HashSet<>(obstacles.length);
+            for (int i = 0; i < obstacles.length; i++) {
+                long tp = ((obstacles[i][0] + 30000) << 16) + obstacles[i][1] + 30000;
+                obstaclesSet.add(tp);
             }
 
-            int ans = 0;
-            for (int cmd : commands) {
-                if (cmd == -2) {//左转
-                    //4代表四个方向
+
+            for (int com : commands) {
+                if (com == -2) {
                     di = (di + 3) % 4;
-                } else if (cmd == -1) {//右转
+                } else if (com == -1) {
                     di = (di + 1) % 4;
                 } else {
-                    for (int k = 0; k < cmd; k++) {
-                        int nx = x + dx[di];
-                        int ny = y + dy[di];
-                        if (obstacleSet.contains(nx + "," + ny)) {
+                    for (int i = 0; i < com; i++) {
+                        int tempX = x + dx[di];
+                        int tempY = y + dy[di];
+                        if (obstaclesSet.contains((((long) tempX + 30000) << 16) + ((long) tempY + 30000))) {
                             break;
                         }
-
-                        x = nx;
-                        y = ny;
-                        ans = Math.max(ans, x * x + y * y);
+                        x = tempX;
+                        y = tempY;
+                        res = Math.max(res, x * x + y * y);
                     }
                 }
             }
 
-            return ans;
+            return res;
 
 
-//            Set<String> set = new HashSet<>();
-//            for (int[] obs : obstacles) {
-//                set.add(obs[0] + " " + obs[1]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//            int[] dx = new int[]{0, 1, 0, -1};
+//            int[] dy = new int[]{1, 0, -1, 0};
+//            int x = 0, y = 0, di = 0;
+//
+//            // Encode obstacles (x, y) as (x+30000) * (2^16) + (y+30000)
+//            Set<Long> obstacleSet = new HashSet();
+//            for (int[] obstacle: obstacles) {
+//                long ox = (long) obstacle[0] + 30000;
+//                long oy = (long) obstacle[1] + 30000;
+//                obstacleSet.add((ox << 16) + oy);
 //            }
-//            int[][] dirs = new int[][]{{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-//            int d = 0, x = 0, y = 0, result = 0;
-//            for (int c : commands) {
-//                if (c == -1) {
-//                    d++;
-//                    if (d == 4) {
-//                        d = 0;
-//                    }
-//                } else if (c == -2) {
-//                    d--;
-//                    if (d == -1) {
-//                        d = 3;
-//                    }
-//                } else {
-//                    while (c-- > 0 && !set.contains((x + dirs[d][0]) + " " + (y + dirs[d][1]))) {
-//                        x += dirs[d][0];
-//                        y += dirs[d][1];
+//
+//            int ans = 0;
+//            for (int cmd: commands) {
+//                if (cmd == -2)  //left
+//                    di = (di + 3) % 4;
+//                else if (cmd == -1)  //right
+//                    di = (di + 1) % 4;
+//                else {
+//                    for (int k = 0; k < cmd; ++k) {
+//                        int nx = x + dx[di];
+//                        int ny = y + dy[di];
+//                        long code = (((long) nx + 30000) << 16) + ((long) ny + 30000);
+//                        if (!obstacleSet.contains(code)) {
+//                            x = nx;
+//                            y = ny;
+//                            ans = Math.max(ans, x*x + y*y);
+//                        }
 //                    }
 //                }
-//                result = Math.max(result, x * x + y * y);
 //            }
-//            return result;
+//
+//            return ans;
+
+
+            //这里的dx,dy代表的方向, 0123 表 北东南西
+            //dx[i],dy[i]分别代表北东南西方向走
+//            int[] dx = new int[]{0, 1, 0, -1};
+//            int[] dy = new int[]{1, 0, -1, 0};
+//            int x = 0, y = 0, di = 0;
+//
+//            Set<String> obstacleSet = new HashSet<>();
+//            for (int i=0;i<obstacles.length;i++) {
+//                obstacleSet.add(obstacles[i][0] + "," + obstacles[i][1]);
+//            }
+//            //这里ans不能初始位Integer.MIN_VALUE,因为如果一步都不能走，比如向北障碍为为(0,1),那返回就是Integer.MIN_VALUE，但实际应该是0，所以初始值应该为0
+//            int ans = 0;
+//            for (int cmd : commands) {
+//                if (cmd == -2) {//左转
+//                    //4代表四个方向
+//                    //di=(di-1+4)%4由这个转过来的
+//                    di = (di + 3) % 4;
+//                } else if (cmd == -1) {//右转
+//                    di = (di + 1) % 4;
+//                } else {
+//                    //这里的dx[i],dy[j]分别能表示在坐标轴y,x,-y,-x方向移动一步，这个就代表的方向，然后指令能让其移动n步，怎么实现这个移动n步呢
+//                    //在我不知道方向的前提下？就是用dx[di],dy[di]这两个变量表示某个方向偏移量1的变量，如向东，di=1,dx[di]=1,dy[di]=0,然后向东移动一步就是
+//                    //x+dx[di],y+dy[di]，那多步怎么弄呢，重复上述步骤n次即可,所以机器人移动顺序是每次走一步重复n次
+//                    for (int k = 0; k < cmd; k++) {
+//                        int nx = x + dx[di];
+//                        int ny = y + dy[di];
+//                        if (obstacleSet.contains(nx + "," + ny)) {
+//                            break;
+//                        }
+//
+//                        x = nx;
+//                        y = ny;
+//                        ans = Math.max(ans, x * x + y * y);
+//                    }
+//                }
+//            }
+//
+//            return ans;
+
+
 
         }
     }
