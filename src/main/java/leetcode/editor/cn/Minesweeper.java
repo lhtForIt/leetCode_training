@@ -74,7 +74,7 @@
 // 👍 216 👎 0
 
   
-  package leetcode.editor.cn;
+package leetcode.editor.cn;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -89,6 +89,26 @@ class Solution {
           int[] dirY = {1, 0, -1, 0, 1, -1, 1, -1};
 
     public char[][] updateBoard(char[][] board, int[] click) {
+
+        int x = click[0], y = click[1];
+        //挖到地雷直接结束
+        if (board[x][y] == 'M') {
+            board[x][y] = 'X';
+        } else {
+            doDfs(x, y, board);
+        }
+
+        return board;
+
+
+
+
+
+
+
+
+
+
 
         /**
          * dfs
@@ -112,19 +132,56 @@ class Solution {
          * 空间复杂度：O(nm)
          */
 
-        int x = click[0], y = click[1];
-        if (board[x][y] == 'M') {
-            // 规则 1
-            board[x][y] = 'X';
-        } else{
-            bfs(board, x, y);
-        }
-        return board;
+//        int x = click[0], y = click[1];
+//        if (board[x][y] == 'M') {
+//            // 规则 1
+//            board[x][y] = 'X';
+//        } else{
+//            bfs(board, x, y);
+//        }
+//        return board;
 
 
 
     }
 
+
+          private void doDfs(int x, int y, char[][] board) {
+
+              int count = 0;
+              for (int i = 0; i < 8; i++) {
+                  int tx = x + dirX[i];
+                  int ty = y + dirY[i];
+                  //判断是否越界
+                  if(tx<0||tx>=board.length||ty<0||ty>=board[0].length) continue;
+
+                  if (board[tx][ty] == 'M') {
+                      count++;
+                  }
+              }
+
+              //如果周围有雷，进入场景3
+              if (count > 0) {
+                  board[x][y] = (char) (count + '0');
+              } else {
+                  board[x][y] = 'B';
+                  for (int i = 0; i < 8; i++) {
+                      int tx = x + dirX[i];
+                      int ty = y + dirY[i];
+                      //判断是否越界
+                      if(tx<0||tx>=board.length||ty<0||ty>=board[0].length||board[tx][ty]!='E') continue;
+                      doDfs(tx, ty, board);
+                  }
+              }
+          }
+
+          /**
+           * 有三种场景，
+           * 1、如果点到'M'，踩到地雷，直接将'M'改成'X',结束游戏。
+           * 2、E，周围没有地雷，将E变成B，然后递归扩散周围
+           * 3、E周围有地雷，将其修改为1-8，其中数字代表地雷数量
+           * 4、整个棋盘都扩散完，返回棋盘。
+           */
           private void dfs(char[][] board, int x, int y) {
               int cnt = 0;
               for (int i = 0; i < 8; ++i) {
@@ -147,7 +204,7 @@ class Solution {
                   for (int i = 0; i < 8; ++i) {
                       int tx = x + dirX[i];
                       int ty = y + dirY[i];
-                      // 这里不需要在存在 B 的时候继续扩展，因为 B 之前被点击的时候已经被扩展过了
+                      // 已经被拓展过的不需要再管了，拓展过指得是不为初始状态'E'的值,有多重状态，数字，'M'，'B'等
                       if (tx < 0 || tx >= board.length || ty < 0 || ty >= board[0].length || board[tx][ty] != 'E') {
                           continue;
                       }
@@ -185,7 +242,7 @@ class Solution {
                       for (int i = 0; i < 8; ++i) {
                           int tx = x + dirX[i];
                           int ty = y + dirY[i];
-                          // 这里不需要在存在 B 的时候继续扩展，因为 B 之前被点击的时候已经被扩展过了
+                          // 已经被拓展过的不需要再管了，拓展过指得是不为初始状态'E'的值
                           if (tx < 0 || tx >= board.length || ty < 0 || ty >= board[0].length || board[tx][ty] != 'E' || visited[tx][ty]) {
                               continue;
                           }
