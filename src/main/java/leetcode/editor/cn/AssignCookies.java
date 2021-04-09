@@ -55,13 +55,6 @@ public class AssignCookies {
         public int findContentChildren(int[] g, int[] s) {
 
 
-            /**
-             * 贪心思路：既然要让尽可能多的孩子满足，那我就优先满足胃口小的孩子，因为大小胃口在这里含义一样，
-             * 然后在满足胃口大的，这里贪的就是胃口
-             * 因为两个数组都拍过序减少了很多额外判断，就只需要根据步骤判断，一次遍历s,g里面数值，当g[i]<=s[j]时，
-             * i++,j++,否则j++,最后返回i的值即可
-             */
-
             Arrays.sort(g);
             Arrays.sort(s);
 
@@ -84,6 +77,38 @@ public class AssignCookies {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+            /**
+             * 贪心思路：既然要让尽可能多的孩子满足，那我就优先满足胃口小的孩子，因为大小胃口在这里含义一样，
+             * 然后在满足胃口大的，这里贪的就是胃口
+             * 因为两个数组都拍过序减少了很多额外判断，就只需要根据步骤判断，一次遍历s,g里面数值，当g[i]<=s[j]时，
+             * i++,j++,否则j++,最后返回i的值即可
+             */
+
+//            Arrays.sort(g);
+//            Arrays.sort(s);
+//
+//            int p = 0, q = 0;
+//            while (p < g.length && q < s.length) {
+//                if (g[p] <= s[q]) {
+//                    p++;
+//                }
+//                q++;
+//            }
+//
+//            return p;
 
             //g是孩子胃口，s是饼干,排序时间复杂度是nlogn
 //            Arrays.sort(g);

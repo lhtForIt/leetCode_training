@@ -80,6 +80,7 @@
 package leetcode.editor.cn;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class WalkingRobotSimulation {
@@ -93,17 +94,15 @@ public class WalkingRobotSimulation {
         public int robotSim(int[] commands, int[][] obstacles) {
 
 
-            int[] dx = new int[]{0, 1, 0, -1};
-            int[] dy = new int[]{1, 0, -1, 0};
+            int[] dx = {0, 1, 0, -1};
+            int[] dy = {1, 0, -1, 0};
 
-            int x = 0, y = 0, di = 0, res = 0;
+            int di = 0, x = 0, y = 0, max = 0;
 
-            Set<Long> obstaclesSet = new HashSet<>(obstacles.length);
-            for (int i = 0; i < obstacles.length; i++) {
-                long tp = ((obstacles[i][0] + 30000) << 16) + obstacles[i][1] + 30000;
-                obstaclesSet.add(tp);
+            Set<Long> obstacleSet = new HashSet<>();
+            for (int[] obstacle : obstacles) {
+                obstacleSet.add((long) ((obstacle[0] + 30000) << 16) + (long)(obstacle[1] + 30000));
             }
-
 
             for (int com : commands) {
                 if (com == -2) {
@@ -114,33 +113,16 @@ public class WalkingRobotSimulation {
                     for (int i = 0; i < com; i++) {
                         int tempX = x + dx[di];
                         int tempY = y + dy[di];
-                        if (obstaclesSet.contains((((long) tempX + 30000) << 16) + ((long) tempY + 30000))) {
-                            break;
-                        }
+                        if (obstacleSet.contains((long) ((tempX + 30000) << 16) + (long)(tempY + 30000))) continue;
                         x = tempX;
                         y = tempY;
-                        res = Math.max(res, x * x + y * y);
+                        max = Math.max(max, x * x + y * y);
                     }
                 }
             }
 
-            return res;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            return max;
 
 //            int[] dx = new int[]{0, 1, 0, -1};
 //            int[] dy = new int[]{1, 0, -1, 0};

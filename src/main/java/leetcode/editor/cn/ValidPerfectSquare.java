@@ -27,6 +27,27 @@ public class ValidPerfectSquare{
 class Solution {
     public boolean isPerfectSquare(int num) {
 
+        long left = 0, right = num, mid;
+        while (left <= right) {
+            mid = left + ((right - left) >> 1);
+            if (mid * mid == num) {
+                return true;
+            } else if (mid * mid < num) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        return false;
+
+
+
+
+
+
+
+
         /**
          * 二分：时间复杂度O(logN),空间复杂度O(1)
          */
@@ -57,13 +78,13 @@ class Solution {
 //        if (num < 2) {
 //            return true;
 //        }
-
-        long t = num;
-        while (t * t > num) {
-              t = ((t + num / t) >> 1);
-          }
-
-        return t * t == num;
+//
+//        long t = num;
+//        while (t * t > num) {
+//              t = ((t + num / t) >> 1);
+//          }
+//
+//        return t * t == num;
 
     }
       }

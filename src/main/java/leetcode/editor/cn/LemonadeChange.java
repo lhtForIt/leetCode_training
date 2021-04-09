@@ -75,42 +75,28 @@ class Solution {
         int five = 0, ten = 0;
 
         for (int bill : bills) {
+
             if (bill == 5) {
                 five++;
             } else if (bill == 10) {
-                ten++;
                 five--;
+                ten++;
             } else {
-                if (ten > 0) {
+                if (ten > 0 && five > 0) {
                     ten--;
                     five--;
                 } else {
                     five -= 3;
                 }
             }
-            if (ten < 0 || five < 0) {
+
+            if (five < 0) {
                 return false;
             }
         }
 
+
         return true;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         /**

@@ -36,16 +36,20 @@ public class Sqrtx {
         public int mySqrt(int x) {
 
 
-            long t = x;
-            while (t * t > x) {
-                t = ((t + x / t) >> 1);
+            long left = 0, right = x, mid = 0;
+
+            while (left <= right) {
+                mid = left + ((right - left) >> 1);
+                if (mid * mid == x) {
+                    return (int) mid;
+                } else if (mid * mid < x) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
             }
 
-            return (int) t;
-
-
-
-
+            return (int) right;
 
 
 

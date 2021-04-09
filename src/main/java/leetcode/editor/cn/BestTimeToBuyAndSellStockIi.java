@@ -53,6 +53,37 @@ public class BestTimeToBuyAndSellStockIi{
 class Solution {
           public int maxProfit(int[] prices) {
 
+
+              int profit = 0;
+              for (int i = 1; i < prices.length; i++) {
+                  if (prices[i] > prices[i - 1]) {
+                      profit += prices[i] - prices[i - 1];
+                  }
+              }
+
+              return profit;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
               /**
                * 贪心思路：因为你知道每天价格，这基本已经开了天眼了，
                * 因为极限情况就是每天都买，然后第二天卖掉，然后看是否符合条件，不符合就不买
@@ -61,15 +92,15 @@ class Solution {
                */
 
 
-              int profit = 0;
-              for (int i = 1; i < prices.length; i++) {
-                  int temp = prices[i] - prices[i - 1];
-                  if (temp > 0) {
-                      profit += temp;
-                  }
-              }
-
-              return profit;
+//              int profit = 0;
+//              for (int i = 1; i < prices.length; i++) {
+//                  int temp = prices[i] - prices[i - 1];
+//                  if (temp > 0) {
+//                      profit += temp;
+//                  }
+//              }
+//
+//              return profit;
 
 
 //              int profit = 0;
