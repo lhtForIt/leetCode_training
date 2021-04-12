@@ -63,20 +63,104 @@ public class SearchInRotatedSortedArray {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int search(int[] nums, int target) {
-            int left = 0, right = nums.length - 1;
-            while (left < right) {
-                int mid = left + (right - left) / 2;
-                //0到mid有序,且target大于有序部分最大值或者小于最小值，target在另一半里，left=mid+1
-                if (nums[0] <= nums[mid] && (nums[mid] < target || target < nums[0])) {
-                    left = mid + 1;
-                } else if (target > nums[mid] && target < nums[0]) {//这儿0到mid有旋转，判断升序部分，target > nums[mid] && target < nums[0]满足这个条件target在另一部分
-                    left = mid + 1;
-                } else {
-                    right = mid;//否则在前半部分
+//            int left = 0, right = nums.length - 1;
+//            while (left < right) {
+//                int mid = left + (right - left) / 2;
+//                //0到mid有序,且target大于有序部分最大值或者小于最小值，target在另一半里，left=mid+1
+//                if (nums[0] <= nums[mid] && (nums[mid] < target || target < nums[0])) {
+//                    left = mid + 1;
+//                } else if (target > nums[mid] && target < nums[0]) {//这儿0到mid有旋转，判断升序部分，target > nums[mid] && target < nums[0]满足这个条件target在另一部分
+//                    left = mid + 1;
+//                } else {
+//                    right = mid;//否则在前半部分
+//                }
+//            }
+//            //这儿left==right是一定的吧，有不是的情况么
+//            return left == right && nums[left] == target ? left : -1;
+
+
+            /**
+             * 双指针往中间找
+             * 时间复杂度O(n)
+             */
+//            if(nums.length == 0) return -1;
+//            for(int i = 0, j = nums.length-1; i < nums.length/2 + 1 || j > nums.length/2; i++, j--){
+//
+//                if(nums[i] == target) return i;
+//                else if (nums[j] == target) return j;
+//            }
+//            return -1;
+
+
+            /**
+             * 这道题的测试用例规模太小，因此直接遍历都能打败100%
+             */
+//            if (nums.length == 0) {
+//                return -1;
+//            }
+//            for (int i = 0; i < nums.length; i++) {
+//                if (target == nums[i]) {
+//                    return i;
+//                }
+//            }
+//            return -1;
+
+
+            /**
+             * 常规二分
+             */
+            int start = 0, end = nums.length - 1;
+            while (start < end) {
+                int mid = (start + end) / 2;
+                if (nums[start] <= nums[mid]) {  // eg. 3,4,5,6,1,2
+                    if (target > nums[mid] && target <= nums[end]) {
+                        start = mid + 1;
+                    } else {
+                        end = mid;
+                    }
+                } else {  // eg. 5,6,1,2,3,4
+                    if (target > nums[mid] || target <= nums[end]) {
+                        start = mid + 1;
+                    } else {
+                        end = mid;
+                    }
                 }
             }
-            //这儿left==right是一定的吧，有不是的情况么
-            return left == right && nums[left] == target ? left : -1;
+            return start == end && target != nums[start] ? -1 : start;
+
+
+            /**
+             * 全球站高赞答案
+             */
+//            int lo=0,hi=nums.length-1;
+//            // find the index of the smallest value using binary search.
+//            // Loop will terminate since mid < hi, and lo or hi will shrink by at least 1.
+//            // Proof by contradiction that mid < hi: if mid==hi, then lo==hi and loop would have been terminated.
+//            while(lo<hi){
+//                int mid=(lo+hi)/2;
+//                if(nums[mid]>nums[hi]) lo=mid+1;
+//                else hi=mid;
+//            }
+//            // lo==hi is the index of the smallest value and also the number of places rotated.
+//            int rot=lo;
+//            lo=0;hi=nums.length-1;
+//            // The usual binary search and accounting for rotation.
+//            while(lo<=hi){
+//                int mid=(lo+hi)/2;
+//                int realmid=(mid+rot)%nums.length;
+//                if(nums[realmid]==target)return realmid;
+//                if(nums[realmid]<target)lo=mid+1;
+//                else hi=mid-1;
+//            }
+//            return -1;
+
+
+
+
+
+
+
+
         }
 
         public int search1(int[] nums) {

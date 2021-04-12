@@ -47,20 +47,12 @@ public class JumpGame {
     class Solution {
         public boolean canJump(int[] nums) {
 
-            /**
-             * 贪心思路：
-             * 这里从前面往后贪不太好我们从后往前贪
-             * 用一个变量记录每次能到的位置，初始位最后一个位置。
-             * 如果i+nums[i]>=endReach，说明能到当前位置，就将endReach换成i的值，
-             * 最后判断i是不是等于0即可
-             */
             if (nums == null || nums.length == 0) {
-                return false;
+                return true;
             }
 
             int canReach = nums.length - 1;
 
-            //这里不用从nums.length-1开始，初始值就是这个，直接从nums.length-2开始
             for (int i = nums.length - 2; i >= 0; i--) {
                 if (i + nums[i] >= canReach) {
                     canReach = i;
@@ -68,6 +60,42 @@ public class JumpGame {
             }
 
             return canReach == 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            /**
+             * 贪心思路：
+             * 这里从前面往后贪不太好我们从后往前贪
+             * 用一个变量记录每次能到的位置，初始位最后一个位置。
+             * 如果i+nums[i]>=endReach，说明能到当前位置，就将endReach换成i的值，
+             * 最后判断i是不是等于0即可
+             */
+//            if (nums == null || nums.length == 0) {
+//                return false;
+//            }
+//
+//            int canReach = nums.length - 1;
+//
+//            //这里不用从nums.length-1开始，初始值就是这个，直接从nums.length-2开始
+//            for (int i = nums.length - 2; i >= 0; i--) {
+//                if (i + nums[i] >= canReach) {
+//                    canReach = i;
+//                }
+//            }
+//
+//            return canReach == 0;
 
 
 
