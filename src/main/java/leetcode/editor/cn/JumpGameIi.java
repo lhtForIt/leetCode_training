@@ -24,13 +24,36 @@
   public class JumpGameIi{
       public static void main(String[] args) {
            Solution solution = new JumpGameIi().new Solution();
+          solution.jump(new int[]{2, 3, 1, 1, 4});
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int jump(int[] nums) {
 
+        int step = 0;
+        int curEnd = 0;
+        int curFurtest = 0;
+
+        for (int i = 0; i < nums.length - 1; i++) {
+            curFurtest = Math.max(nums[i] + i, curFurtest);
+            if (i == curEnd) {
+                step++;
+                curEnd = curFurtest;
+            }
+        }
+
+        return step;
+
+
+
+
+
         /**
          * 贪心算法
+         *
+         * 有的也说这是个BFS方案：i==curEnd代表访问完当前层所有节点，
+         * step++代表进入下一级，curEnd = curFarthest代表获得下一级你访问的queue的大小
+         *
          */
 //        int step = 0;
 //        int curEnd = 0;
@@ -49,18 +72,18 @@ class Solution {
         /**
          * BFS，为啥会比贪心快很多？
          */
-        if(nums.length<2)return 0;
-        int level=0,currentMax=0,i=0,nextMax=0;
-
-        while(currentMax-i+1>0){		//nodes count of current level>0
-            level++;
-            for(;i<=currentMax;i++){	//traverse current level , and update the max reach of next level
-                nextMax=Math.max(nextMax,nums[i]+i);
-                if(nextMax>=nums.length-1)return level;   // if last element is in level+1,  then the min jump=level
-            }
-            currentMax=nextMax;
-        }
-        return 0;
+//        if(nums.length<2)return 0;
+//        int level=0,currentMax=0,i=0,nextMax=0;
+//
+//        while(currentMax-i+1>0){		//nodes count of current level>0
+//            level++;
+//            for(;i<=currentMax;i++){	//traverse current level , and update the max reach of next level
+//                nextMax=Math.max(nextMax,nums[i]+i);
+//                if(nextMax>=nums.length-1)return level;   // if last element is in level+1,  then the min jump=level
+//            }
+//            currentMax=nextMax;
+//        }
+//        return 0;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

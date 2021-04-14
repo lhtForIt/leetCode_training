@@ -52,25 +52,20 @@ public class SearchA2dMatrix {
             int m = matrix.length;
             int n = matrix[0].length;
 
-            int left = 0, right = m * n - 1;
-            while (left < right) {
-
-                int mid = left + (right - left) / 2;
-
-                if (matrix[mid / n][mid % n] == target) {
+            int left = 0, right = m * n - 1, mid;
+            while (left <= right) {
+                mid = left + ((right - left) >> 1);
+                int temp = matrix[mid / n][mid % n];
+                if (target == temp) {
                     return true;
-                } else if (matrix[mid / n][mid % n] < target) {
-                    left = mid + 1;
+                } else if (target < temp) {
+                    right = mid - 1;
                 } else {
-                    right = mid;
+                    left = mid + 1;
                 }
-
             }
 
-            return matrix[right / n][right % n] == target;
-
-
-
+            return false;
 
 
 //            int m = matrix.length;

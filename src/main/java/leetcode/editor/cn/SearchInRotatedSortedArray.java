@@ -63,6 +63,40 @@ public class SearchInRotatedSortedArray {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int search(int[] nums, int target) {
+
+
+            int left = 0, right = nums.length - 1, mid;
+            while (left <= right) {
+                mid = left + ((right - left) >> 1);
+                if (nums[mid] == target) {
+                    return mid;
+                } else if (target < nums[mid]) {
+                    if (nums[left] <= nums[mid] && target < nums[left]) {
+                        left = mid + 1;
+                    } else {
+                        right = mid - 1;
+                    }
+                } else {
+                    if (nums[right] >= nums[mid] && target > nums[right]) {
+                        right = mid - 1;
+                    } else {
+                        left = mid + 1;
+                    }
+                }
+            }
+
+            return -1;
+
+
+
+
+
+
+
+
+
+
+
 //            int left = 0, right = nums.length - 1;
 //            while (left < right) {
 //                int mid = left + (right - left) / 2;
@@ -109,24 +143,24 @@ public class SearchInRotatedSortedArray {
             /**
              * 常规二分
              */
-            int start = 0, end = nums.length - 1;
-            while (start < end) {
-                int mid = (start + end) / 2;
-                if (nums[start] <= nums[mid]) {  // eg. 3,4,5,6,1,2
-                    if (target > nums[mid] && target <= nums[end]) {
-                        start = mid + 1;
-                    } else {
-                        end = mid;
-                    }
-                } else {  // eg. 5,6,1,2,3,4
-                    if (target > nums[mid] || target <= nums[end]) {
-                        start = mid + 1;
-                    } else {
-                        end = mid;
-                    }
-                }
-            }
-            return start == end && target != nums[start] ? -1 : start;
+//            int start = 0, end = nums.length - 1;
+//            while (start < end) {
+//                int mid = (start + end) / 2;
+//                if (nums[start] <= nums[mid]) {  // eg. 3,4,5,6,1,2
+//                    if (target > nums[mid] && target <= nums[end]) {
+//                        start = mid + 1;
+//                    } else {
+//                        end = mid;
+//                    }
+//                } else {  // eg. 5,6,1,2,3,4
+//                    if (target > nums[mid] || target <= nums[end]) {
+//                        start = mid + 1;
+//                    } else {
+//                        end = mid;
+//                    }
+//                }
+//            }
+//            return start == end && target != nums[start] ? -1 : start;
 
 
             /**

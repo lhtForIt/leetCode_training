@@ -54,32 +54,46 @@ import java.util.*;
 public class WordLadderIi{
       public static void main(String[] args) {
            Solution solution = new WordLadderIi().new Solution();
+//          "hit"
+//          "cog"
+//                  ["hot","dot","dog","lot","log","cog"]
+
+          solution.findLadders("hit", "cog", Arrays.asList("hot", "dot", "dog", "lot", "log", "cog"));
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
 
         /**
+         * 这个题比上一个题只求路径最大值又复杂了点，因此不能单单用BFS，还需要结合DFS一起使用，因为DFS在知道
+         * 起点和终点的情况下寻路是最快的。
+         *
+         * 在进行BFS时我们将当前节点和它下一层节点关系存储起来，
+         *
+         *
+         */
+
+        /**
          * BFS+DFS
          *
          *
          */
-        List<List<String>> res = new ArrayList<>();
-        if (!wordList.contains(endWord)) {
-            return res;
-        }
-        HashSet<String> dict = new HashSet<>(wordList);
-
-        HashMap<String, ArrayList<String>> nodeNeighbors = new HashMap<>();// Neighbors for every node
-        HashMap<String, Integer> distance = new HashMap<>();// Distance of every node from the start node
-
-        ArrayList<String> solution = new ArrayList<>();
-
-        dict.add(beginWord);
-        bfd(beginWord,endWord,dict,nodeNeighbors,distance);
-        dfs(beginWord,endWord,dict,nodeNeighbors,distance,solution,res);
-
-        return res;
+//        List<List<String>> res = new ArrayList<>();
+//        if (!wordList.contains(endWord)) {
+//            return res;
+//        }
+//        HashSet<String> dict = new HashSet<>(wordList);
+//
+//        HashMap<String, ArrayList<String>> nodeNeighbors = new HashMap<>();// Neighbors for every node
+//        HashMap<String, Integer> distance = new HashMap<>();// Distance of every node from the start node
+//
+//        ArrayList<String> solution = new ArrayList<>();
+//
+//        dict.add(beginWord);
+//        bfd(beginWord,endWord,dict,nodeNeighbors,distance);
+//        dfs(beginWord,endWord,dict,nodeNeighbors,distance,solution,res);
+//
+//        return res;
 
         /**
          * 双向BFS+dfs
@@ -101,11 +115,195 @@ class Solution {
 //        path.add(beginWord);
 //        dfs1(res, path, map, beginWord, endWord);
 //        return res;
-        
-        
-        
-        
+
+        /**
+         * 全球站另一种双向BFS+DFS
+         */
+
+//        Set<String> dict = new HashSet<>(wordList);
+//        List<List<String>> res = new ArrayList<>();
+//        if (!dict.contains(endWord)) {
+//            return res;
+//        }
+//        Map<String, List<String>> map = bfs2(beginWord, endWord, dict);
+//        List<String> path = new ArrayList<>();
+//        path.add(beginWord);
+//        dfs2(beginWord, endWord, map, res, path);
+//        return res;
+
+        Set<String> wordSet = new HashSet<>(wordList);
+        List<List<String>> res = new ArrayList<>();
+        if (!wordSet.contains(endWord)) {
+            return res;
+        }
+
+        Map<String, List<String>> nodeMap = myBfs(beginWord, endWord, wordSet);
+        List<String> path = new ArrayList<>();
+        path.add(beginWord);
+        myDfs(beginWord, endWord, nodeMap, path, res);
+
+
+        return res;
     }
+
+          private void myDfs(String beginWord, String endWord, Map<String, List<String>> nodeMap, List<String> path, List<List<String>> res) {
+
+              if (beginWord.equals(endWord)) {
+                  res.add(new ArrayList<>(path));
+                  return;
+              }
+
+              //map可能不包含beginWord
+              if (!nodeMap.containsKey(beginWord)) {
+                  return;
+              }
+
+              for (String str : nodeMap.get(beginWord)) {
+                  path.add(str);
+                  myDfs(str, endWord, nodeMap, path, res);
+                  path.remove(path.size() - 1);
+              }
+
+          }
+
+          private Map<String, List<String>> myBfs(String beginWord, String endWord, Set<String> wordSet) {
+
+              Set<String> beginSet = new HashSet<>();
+              Set<String> endSet = new HashSet<>();
+              beginSet.add(beginWord);
+              endSet.add(endWord);
+
+              boolean done = false;
+              boolean revert = false;
+              Map<String, List<String>> nodeMap = new HashMap<>();
+              Set<String> visitSet = new HashSet<>();
+              while (!beginSet.isEmpty() && !done) {
+                  if (beginSet.size() > endSet.size()) {
+                      Set<String> temp = beginSet;
+                      beginSet = endSet;
+                      endSet = temp;
+                      revert = !revert;
+                  }
+                  Set<String> set = new HashSet<>();
+                  for (String str : beginSet) {
+                      visitSet.add(str);
+                      char[] chars = str.toCharArray();
+                      for (int i=0;i<str.length();i++) {
+                          char old = chars[i];
+                          for (char c = 'a'; c <= 'z'; c++) {
+                              if (chars[i] == c) {
+                                  continue;
+                              }
+                              chars[i] = c;
+                              String target = new String(chars);
+                              if (endSet.contains(target)) {
+                                  done = true;
+                              }
+                              //这里不能remove，因为字典里面每个词可能会用到多次
+                              //beginSet代表不能往回走
+                              if (!visitSet.contains(target) && !beginSet.contains(target) && wordSet.contains(target)) {
+                                  String node = revert ? target : str;
+                                  String next = revert ? str : target;
+                                  if (!nodeMap.containsKey(node)) {
+                                      nodeMap.put(node, new ArrayList<>());
+                                  }
+                                  nodeMap.get(node).add(next);
+                                  set.add(target);
+                              }
+
+                          }
+                          chars[i] = old;
+                      }
+                  }
+                  beginSet = set;
+              }
+
+              return nodeMap;
+
+          }
+
+          public void dfs2(String beginWord, String endWord, Map<String, List<String>> map, List<List<String>> res, List<String> path) {
+              if (beginWord.equals(endWord)) {
+                  res.add(new ArrayList<>(path));
+              }
+              if (!map.containsKey(beginWord)) {
+                  return;
+              }
+              for (String next : map.get(beginWord)) {
+                  path.add(next);
+                  dfs2(next, endWord, map, res, path);
+                  path.remove(path.size() - 1);
+              }
+          }
+
+
+          public Map<String, List<String>> bfs2(String beginWord, String endWord, Set<String> dict) {
+              Map<String, List<String>> map = new HashMap<>();
+              Set<String> start = new HashSet<>();
+              start.add(beginWord);
+              Set<String> end = new HashSet<>();
+              Set<String> visited = new HashSet<>();
+              end.add(endWord);
+              boolean found = false;
+              //代表两端是否进行了互换,如果进行了交换，
+              //如果一开始是begin方向，从A->B,进行转换之后就是从B->A，
+              //方向会变，因此在转向之后key和value值顺序也要变,map的key和value需要进行互换
+              boolean isBackward = false;
+              while (!start.isEmpty() && !found) {
+                  if (start.size() > end.size()) {
+                      Set<String> temp = start;
+                      start = end;
+                      end = temp;
+                      isBackward = !isBackward;
+                  }
+                  Set<String> set = new HashSet<>();
+                  for (String cur : start) {
+                      visited.add(cur);
+                      for (String next : getNext(cur, dict)) {
+                          if (visited.contains(next) || start.contains(next)) {
+                              continue;
+                          }
+                          if (end.contains(next)) {
+                              found = true;
+                          }
+                          set.add(next);
+                          String parent = isBackward ? next : cur;
+                          String child = isBackward ? cur : next;
+                          if (!map.containsKey(parent)) {
+                              map.put(parent, new ArrayList<>());
+                          }
+                          map.get(parent).add(child);
+
+                      }
+                  }
+                  start = set;
+              }
+              return map;
+
+          }
+
+
+          private List<String> getNext(String cur, Set<String> dict) {
+              List<String> res = new ArrayList<>();
+              char[] chars = cur.toCharArray();
+              for (int i = 0; i < chars.length; i++) {
+                  char old = chars[i];
+                  for (char c = 'a'; c <= 'z'; c++) {
+                      if (c == old) {
+                          continue;
+                      }
+                      chars[i] = c;
+                      String next = new String(chars);
+                      if (dict.contains(next)) {
+                          res.add(next);
+                      }
+                  }
+                  chars[i] = old;
+              }
+              return res;
+          }
+
+
 
           private void dfs1(List<List<String>> res, List<String> path, HashMap<String, List<String>> map, String start, String end){
               if(start.equals(end)){
