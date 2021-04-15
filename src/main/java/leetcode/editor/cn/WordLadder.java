@@ -72,11 +72,11 @@ class Solution {
         }
         Set<String> beginSet = new HashSet<>();
         Set<String> endSet = new HashSet<>();
+        int step = 1;
         beginSet.add(beginWord);
         endSet.add(endWord);
-        int step = 1;
         while (!beginSet.isEmpty()) {
-            if (endSet.size() < beginSet.size()) {
+            if (beginSet.size() > endSet.size()) {
                 Set<String> set = beginSet;
                 beginSet = endSet;
                 endSet = set;
@@ -84,7 +84,7 @@ class Solution {
             Set<String> temp = new HashSet<>();
             for (String s : beginSet) {
                 char[] chars = s.toCharArray();
-                for (int i = 0; i < s.length(); i++) {
+                for (int i = 0; i < chars.length; i++) {
                     char old = chars[i];
                     for (char c = 'a'; c <= 'z'; c++) {
                         if (chars[i] == c) continue;
@@ -94,25 +94,19 @@ class Solution {
                             return step + 1;
                         }
                         if (wordSet.contains(target)) {
-                            wordSet.remove(target);
                             temp.add(target);
+                            wordSet.remove(target);
                         }
                     }
                     chars[i] = old;
                 }
             }
-            beginSet = temp;
             step++;
+            beginSet = temp;
         }
+
+
         return 0;
-
-
-
-
-
-
-
-
 
 
 

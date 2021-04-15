@@ -51,39 +51,44 @@ public class SearchA2dMatrix {
 
             int m = matrix.length;
             int n = matrix[0].length;
-
-            int left = 0, right = m * n - 1, mid;
-            while (left <= right) {
-                mid = left + ((right - left) >> 1);
-                int temp = matrix[mid / n][mid % n];
-                if (target == temp) {
+            int left = 0, right = m * n - 1;
+            while (left < right) {
+                int mid = left + (right - left) / 2;
+                int matrix1 = matrix[mid / n][mid % n];
+                if (matrix1 == target) {
                     return true;
-                } else if (target < temp) {
-                    right = mid - 1;
+                } else if (matrix1 > target) {
+                    right = mid;
                 } else {
                     left = mid + 1;
                 }
             }
+            //这儿除和模的都是列，即n
+            return matrix[right / n][right % n] == target;
 
-            return false;
 
 
+
+            /**
+             * 循环条件为left<=right的二分，比下面那种更符合我自身的思维
+             */
 //            int m = matrix.length;
 //            int n = matrix[0].length;
-//            int left = 0, right = m * n - 1;
-//            while (left < right) {
-//                int mid = left + (right - left) / 2;
-//                int matrix1 = matrix[mid / n][mid % n];
-//                if (matrix1 == target) {
+//            int left = 0, right = m * n - 1,mid;
+//            while (left <= right) {
+//                mid = left + ((right - left) >> 1);
+//                if (target == matrix[mid / n][mid % n]) {
 //                    return true;
-//                } else if (matrix1 > target) {
-//                    right = mid;
+//                } else if (target < matrix[mid / n][mid % n]) {
+//                    right = mid - 1;
 //                } else {
 //                    left = mid + 1;
 //                }
 //            }
-//            //这儿除和模的都是列，即n
-//            return matrix[right / n][right % n] == target;
+//
+//            return false;
+
+
 
 
 

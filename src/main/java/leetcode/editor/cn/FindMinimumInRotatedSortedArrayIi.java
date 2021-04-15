@@ -27,8 +27,8 @@
 // 👍 244 👎 0
 
   
-  package leetcode.editor.cn;
-  public class FindMinimumInRotatedSortedArrayIi{
+package leetcode.editor.cn;
+public class FindMinimumInRotatedSortedArrayIi{
       public static void main(String[] args) {
            Solution solution = new FindMinimumInRotatedSortedArrayIi().new Solution();
       }

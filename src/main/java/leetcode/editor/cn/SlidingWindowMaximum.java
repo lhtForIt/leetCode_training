@@ -81,13 +81,11 @@ class Solution {
 
 
         if (nums == null || nums.length == 0) {
-            return new int[]{};
+            return new int[1];
         }
 
         Deque<Integer> deque = new LinkedList<>();
-
         int[] res = new int[nums.length - k + 1];
-
         for (int i = 0; i < nums.length; i++) {
 
             if (!deque.isEmpty() && deque.peekFirst() == i - k) {
@@ -106,11 +104,7 @@ class Solution {
 
         }
 
-
         return res;
-
-
-
 
 
 

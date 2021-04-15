@@ -64,20 +64,19 @@ public class SearchInRotatedSortedArray {
     class Solution {
         public int search(int[] nums, int target) {
 
-
             int left = 0, right = nums.length - 1, mid;
             while (left <= right) {
                 mid = left + ((right - left) >> 1);
-                if (nums[mid] == target) {
+                if (target == nums[mid]) {
                     return mid;
                 } else if (target < nums[mid]) {
-                    if (nums[left] <= nums[mid] && target < nums[left]) {
+                    if (nums[left] <= nums[mid] && nums[left] > target) {
                         left = mid + 1;
                     } else {
                         right = mid - 1;
                     }
                 } else {
-                    if (nums[right] >= nums[mid] && target > nums[right]) {
+                    if (nums[mid] <= nums[right] && nums[right] < target) {
                         right = mid - 1;
                     } else {
                         left = mid + 1;
@@ -93,10 +92,42 @@ public class SearchInRotatedSortedArray {
 
 
 
+            /**
+             * 正常的二分
+             * 有很多解法会先去判断左边还是右边有序，这样其实会比较难理解，因为
+             * 和正常的二分模板匹配不上，其实还是可以直接套用二分的模板，然后在里面
+             * 进行判断，如下所示
+             */
+
+//            int left = 0, right = nums.length - 1;
+//            while (left <= right) {
+//                int mid = left + (right - left) / 2;
+//                if (nums[mid] == target) {
+//                    return mid;
+//                } else if (nums[mid] > target) {
+//                    //进来判断特殊情况，target比nums[mid]小，但是当发生旋转后，target比nums[left]都小，
+//                    //这时target就跑到右边去了，否则直接按正常逻辑走
+//                    if (nums[left] <= nums[mid] && nums[left] > target) {
+//                        left = mid + 1;
+//                    } else {
+//                        right = mid - 1;
+//                    }
+//                } else {
+//                    //进来判断特殊情况，target比nums[mid]大，但是当发生旋转后，target比nums[right]都大，
+//                    //这时target就跑到左边去了，否则直接按正常逻辑走
+//                    if (nums[right] >= nums[mid] && nums[right] < target) {
+//                        right = mid - 1;
+//                    } else {
+//                        left = mid + 1;
+//                    }
+//                }
+//            }
+//            return -1;
 
 
-
-
+            /**
+             * 中国站解法
+             */
 //            int left = 0, right = nums.length - 1;
 //            while (left < right) {
 //                int mid = left + (right - left) / 2;
@@ -143,25 +174,25 @@ public class SearchInRotatedSortedArray {
             /**
              * 常规二分
              */
-//            int start = 0, end = nums.length - 1;
-//            while (start < end) {
-//                int mid = (start + end) / 2;
-//                if (nums[start] <= nums[mid]) {  // eg. 3,4,5,6,1,2
-//                    if (target > nums[mid] && target <= nums[end]) {
-//                        start = mid + 1;
-//                    } else {
-//                        end = mid;
-//                    }
-//                } else {  // eg. 5,6,1,2,3,4
-//                    if (target > nums[mid] || target <= nums[end]) {
-//                        start = mid + 1;
-//                    } else {
-//                        end = mid;
-//                    }
+//            int left = 0;
+//            int right = nums.length - 1;
+//            while (left <= right){
+//                int mid = left + ((right - left) >> 1);
+//                if (nums[mid] == target) {
+//                    return mid;
+//                }else if (nums[left] <= nums[mid]){
+//                    if (target < nums[mid] && target >= nums[left])
+//                        right = mid - 1;
+//                    else
+//                        left = mid + 1;
+//                } else if (nums[mid] <= nums[right]) {
+//                    if (target > nums[mid] && target <= nums[right])
+//                        left = mid + 1;
+//                    else
+//                        right = mid - 1;
 //                }
 //            }
-//            return start == end && target != nums[start] ? -1 : start;
-
+//            return -1;
 
             /**
              * 全球站高赞答案

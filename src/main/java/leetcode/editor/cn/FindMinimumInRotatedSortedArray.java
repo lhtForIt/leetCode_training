@@ -50,54 +50,55 @@ public class FindMinimumInRotatedSortedArray{
 class Solution {
     public int findMin(int[] nums) {
 
-        if (nums[nums.length - 1] > nums[0] || nums.length == 1) {
+
+        /**
+         * 这里其实找最大或者最小的数思路都是一样的，就是找到旋转的位置，如果数组升序,
+         * 旋转位置本身就是最大的数，右边就是最小的数
+         * left<=right这个条件会将所有可能全部列举玩，但是会忽略一种情况，就是在while里面分支的mid+1<nums.length
+         * 这个限制，导致进不去，因此单个元素的情况需要特殊考虑
+         */
+//        if (nums[nums.length - 1] > nums[0] || nums.length == 1) {
+//            return nums[0];
+//        }
+//
+//        int left = 0, right = nums.length - 1, mid;
+//        while (left <= right) {
+//            mid = left + ((right - left) >> 1);
+//            if (mid + 1 < nums.length && nums[mid] > nums[mid + 1]) {
+//                return nums[mid + 1];
+//            } else if (nums[mid] >= nums[left]) {
+//                left = mid + 1;
+//            } else {
+//                right = mid - 1;
+//            }
+//        }
+//
+//        return -1;
+
+
+
+
+
+
+
+        /**
+         * 这个方法写的不好，不推荐
+         */
+        if (nums[nums.length - 1] > nums[0]) {
             return nums[0];
         }
-
-        int left = 0, right = nums.length - 1, mid;
-        while (left <= right) {
-            mid = left + ((right - left) >> 1);
+        int left = 0, right = nums.length - 1;
+        while (left < right) {
+            int mid = left + ((right - left) >> 1);
             if (mid + 1 < nums.length && nums[mid] > nums[mid + 1]) {
                 return nums[mid + 1];
             } else if (nums[mid] >= nums[left]) {
                 left = mid + 1;
             } else {
-                right = mid - 1;
+                right = mid;
             }
         }
-
-        return -1;
-
-
-
-
-
-
-
-
-
-//        if (nums[nums.length - 1] > nums[0]) {
-//            return nums[0];
-//        }
-//
-//        int left = 0, right = nums.length - 1;
-//
-//        while (left < right) {
-//
-//            int mid = left + (right - left) / 2;
-//
-//            if (mid + 1 < nums.length && nums[mid] > nums[mid + 1]) {
-//                return nums[mid + 1];
-//            } else if (nums[mid] >= nums[0]) {
-//                left = mid + 1;
-//            } else {
-//                right = mid;
-//            }
-//        }
-//
-//
-//
-//        return nums[right];
+        return nums[right];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

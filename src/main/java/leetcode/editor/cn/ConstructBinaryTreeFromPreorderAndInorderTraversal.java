@@ -56,7 +56,9 @@ class Solution {
 
     public TreeNode buildTree(int[] preorder, int[] inorder) {
 
-
+        /**
+         * 这里记住要持续递归，而不能靠常规思维去判断，有时候容易把左右子节点判断出错，要不断用前序和中序去判断
+         */
         if (preorder == null || inorder == null) {
             return null;
         }
