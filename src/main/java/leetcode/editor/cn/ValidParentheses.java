@@ -71,6 +71,40 @@ public class ValidParentheses{
 class Solution {
     public boolean isValid(String s) {
 
+
+        if (s.length() % 2 == 1) {
+            return false;
+        }
+
+        Deque<Character> stack = new LinkedList<>();
+
+        for (char c : s.toCharArray()) {
+            if (c == '(') {
+                stack.push(')');
+            } else if (c == '[') {
+                stack.push(']');
+            } else if (c == '{') {
+                stack.push('}');
+            } else {
+                if (stack.isEmpty() || stack.pop() != c) {
+                    return false;
+                }
+            }
+        }
+
+        return stack.isEmpty();
+
+
+
+
+
+
+
+
+
+
+
+
         /**
          * 暴力法：不断replace括号，直到字符串为"",
          * 时间复杂度O(n^2)，空间复杂度O(1)
@@ -96,26 +130,26 @@ class Solution {
          * 如果匹配就栈顶元素弹出
          */
 
-        if (s.isEmpty() || s.length() % 2 == 1) {
-            return false;
-        }
-        Deque<Character> stack = new LinkedList<>();
-        for (char c : s.toCharArray()) {
-
-            if (c == '(') {
-                //加入这种省去了一个map装数据
-                stack.push(')');
-            }else if (c == '[') {
-                stack.push(']');
-            }else if (c == '{') {
-                stack.push('}');
-            }else if (stack.isEmpty() || stack.pop() != c) {
-                return false;
-            }
-
-        }
-        //"(("这种情况要判断栈是否为空
-        return stack.isEmpty();
+//        if (s.isEmpty() || s.length() % 2 == 1) {
+//            return false;
+//        }
+//        Deque<Character> stack = new LinkedList<>();
+//        for (char c : s.toCharArray()) {
+//
+//            if (c == '(') {
+//                //加入这种省去了一个map装数据
+//                stack.push(')');
+//            }else if (c == '[') {
+//                stack.push(']');
+//            }else if (c == '{') {
+//                stack.push('}');
+//            }else if (stack.isEmpty() || stack.pop() != c) {
+//                return false;
+//            }
+//
+//        }
+//        //"(("这种情况要判断栈是否为空
+//        return stack.isEmpty();
 
     }
       }

@@ -55,17 +55,20 @@ class Solution{
       */
 class MinStack {
 
-        private Node head;
+        /**
+         * 这个有两种解法，一个是用系统自带的数据结构-栈，然后用一个变量
+         * 记录最小值，这样每次geiMin()直接拿min就可以
+         * <p>
+         * 第二个方法就是自己实现一个栈,用链表
+         */
         //我们可以在节点中保存数值的信息并同时保存最小值
+        private Node head;
         public void push(int x) {
-
             if (head == null) {
                 head = new Node(x, x);
             } else {
-                head = new Node(x, Math.min(head.min, x), head);
+                head = new Node(x, Math.min(x, head.min), head);
             }
-
-
         }
 
         public void pop() {
@@ -81,6 +84,7 @@ class MinStack {
         }
 
        private class Node{
+
            int val;
            int min;
            Node next;
@@ -94,8 +98,8 @@ class MinStack {
            public Node(int val, int min) {
                this(val, min, null);
            }
-       }
 
+       }
 
     }
 

@@ -32,20 +32,17 @@ class Solution {
 
         int step = 0;
         int curEnd = 0;
-        int curFurtest = 0;
+        int curFature = 0;
 
         for (int i = 0; i < nums.length - 1; i++) {
-            curFurtest = Math.max(nums[i] + i, curFurtest);
+            curFature = Math.max(i + nums[i], curFature);
             if (i == curEnd) {
                 step++;
-                curEnd = curFurtest;
+                curEnd = curFature;
             }
         }
 
         return step;
-
-
-
 
 
         /**

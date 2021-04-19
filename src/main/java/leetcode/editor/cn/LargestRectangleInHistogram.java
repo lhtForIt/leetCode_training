@@ -42,37 +42,30 @@ public class LargestRectangleInHistogram{
 class Solution {
     public int largestRectangleArea(int[] heights) {
 
-
+        /**
+         * 用数组代替栈，下面这种写法比较符合我的思维，会比while这种写法好很多
+         */
+        int n = heights.length;
         int max = 0;
-        if (heights == null || heights.length == 0) {
-            return max;
-        }
-
-        Deque<Integer> stack = new LinkedList<>();
-
-        for (int i = 0; i <= heights.length; ) {
-
-            int h = i == heights.length ? 0 : heights[i];
-
-            if (stack.isEmpty() || h >= heights[stack.peek()]) {
-                stack.push(i++);
+        int[] stack = new int[n + 1];
+        //记录栈顶元素的下标,因为系统的stack是封装好的，stack.pop()和stack.peek()会自动拿栈顶元素
+        //而我们自己实现的时候需要去用一个变量记录栈顶元素下标，初始值为-1，代表栈为null
+        int top = -1;
+        for (int i = 0; i <= n; ) {
+            int h = i == n ? 0 : heights[i];
+            if (top == -1 || h >= heights[stack[top]]) {
+                stack[++top] = i;
+                i++;
             } else {
-                int currHeight = heights[stack.pop()];
+                int high = heights[stack[top--]];
                 int right = i - 1;
-                int left = stack.isEmpty() ? 0 : stack.peek() + 1;
-                int v = (right - left + 1) * currHeight;
-                max = max > v ? max : v;
+                int left = top == -1 ? 0 : stack[top] + 1;
+                int v = high * (right - left + 1);
+                max = max < v ? v : max;
             }
-
         }
 
         return max;
-
-
-
-
-
-
 
 
 

@@ -48,16 +48,11 @@
   
 package leetcode.editor.cn;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class WordLadderIi{
       public static void main(String[] args) {
            Solution solution = new WordLadderIi().new Solution();
-//          "hit"
-//          "cog"
-//                  ["hot","dot","dog","lot","log","cog"]
-
           solution.findLadders("hit", "cog", Arrays.asList("hot", "dot", "dog", "lot", "log", "cog"));
       }
       //leetcode submit region begin(Prohibit modification and deletion)
@@ -70,6 +65,7 @@ class Solution {
          *
          * 在进行BFS时我们将当前节点和它下一层节点关系存储起来，
          *
+         * 这道题DFS+剪枝能做么？
          *
          */
 
@@ -118,6 +114,7 @@ class Solution {
 
         /**
          * 全球站另一种双向BFS+DFS
+         * 效率十分快
          */
 
 //        Set<String> dict = new HashSet<>(wordList);
@@ -131,20 +128,111 @@ class Solution {
 //        dfs2(beginWord, endWord, map, res, path);
 //        return res;
 
+//        Set<String> wordSet = new HashSet<>(wordList);
+//        List<List<String>> res = new ArrayList<>();
+//        if (!wordSet.contains(endWord)) {
+//            return res;
+//        }
+//
+//        Map<String, List<String>> nodeMap = myBfs(beginWord, endWord, wordSet);
+//        //一开始起始点是不包含的，因此要将起始字符串放进去
+//        List<String> path = new ArrayList<>();
+//        path.add(beginWord);
+//        myDfs(beginWord, endWord, nodeMap, path, res);
+//
+//
+//        return res;
+
+
         Set<String> wordSet = new HashSet<>(wordList);
         List<List<String>> res = new ArrayList<>();
         if (!wordSet.contains(endWord)) {
             return res;
         }
 
-        Map<String, List<String>> nodeMap = myBfs(beginWord, endWord, wordSet);
-        List<String> path = new ArrayList<>();
-        path.add(beginWord);
-        myDfs(beginWord, endWord, nodeMap, path, res);
+        Map<String, List<String>> nodeMap = bfsTemp(beginWord, endWord, wordSet);
 
+
+        List<String> subRes = new ArrayList<>();
+        subRes.add(beginWord);
+        dfsTemp(beginWord, endWord, nodeMap, res, subRes);
 
         return res;
+
     }
+
+          private void dfsTemp(String beginWord, String endWord, Map<String, List<String>> nodeMap, List<List<String>> res, List<String> subRes) {
+              if (beginWord.equals(endWord)) {
+                  res.add(new ArrayList<>(subRes));
+                  return;
+              }
+
+              if (!nodeMap.containsKey(beginWord)) {
+                  return;
+              }
+
+              for (String str : nodeMap.get(beginWord)) {
+                  subRes.add(str);
+                  dfsTemp(str, endWord, nodeMap, res, subRes);
+                  subRes.remove(subRes.size() - 1);
+              }
+          }
+
+          private Map<String, List<String>> bfsTemp(String beginWord, String endWord, Set<String> wordSet) {
+              Set<String> beginSet = new HashSet<>();
+              Set<String> endSet = new HashSet<>();
+              Set<String> visitedSet = new HashSet<>();
+              Map<String, List<String>> nodeMap = new HashMap<>();
+              beginSet.add(beginWord);
+              endSet.add(endWord);
+              boolean done = false;
+              boolean reverse = false;
+              while (!beginSet.isEmpty() && !done) {
+                  if (beginSet.size() > endSet.size()) {
+                      Set<String> set = beginSet;
+                      beginSet = endSet;
+                      endSet = set;
+                      reverse = !reverse;
+                  }
+                  Set<String> tempSet = new HashSet<>();
+                  for (String str : beginSet) {
+                      visitedSet.add(str);
+                      char[] chars = str.toCharArray();
+                      for (int i = 0; i < chars.length; i++) {
+                          char old = chars[i];
+                          for (char c = 'a'; c <= 'z'; c++) {
+                              if (chars[i] == c) {
+                                  continue;
+                              }
+                              chars[i] = c;
+                              String target = new String(chars);
+                              if (endSet.contains(target)) {
+                                  done = true;
+                              }
+                              if (!visitedSet.contains(target) && !beginSet.contains(target) && wordSet.contains(target)) {
+                                  tempSet.add(target);
+                                  String node = reverse ? target : str;
+                                  String next = reverse ? str : target;
+                                  if (!nodeMap.containsKey(node)) {
+                                      nodeMap.put(node, new ArrayList<>());
+                                  }
+                                  nodeMap.get(node).add(next);
+                              }
+                          }
+                          chars[i] = old;
+                      }
+                  }
+                  beginSet = tempSet;
+              }
+
+              return nodeMap;
+
+
+
+
+
+          }
+
 
           private void myDfs(String beginWord, String endWord, Map<String, List<String>> nodeMap, List<String> path, List<List<String>> res) {
 
@@ -273,7 +361,6 @@ class Solution {
                               map.put(parent, new ArrayList<>());
                           }
                           map.get(parent).add(child);
-
                       }
                   }
                   start = set;

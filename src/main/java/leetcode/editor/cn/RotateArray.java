@@ -59,13 +59,11 @@ class Solution {
     public void rotate(int[] nums, int k) {
 
         int n = nums.length;
-        k %= n;
+        k = k % n;
 
-        revers(nums, 0, n - 1);
-        revers(nums, 0, k - 1);
-        revers(nums, k, n - 1);
-
-
+        reversTemp(0, nums.length - 1, nums);
+        reversTemp(0, k - 1, nums);
+        reversTemp(k, nums.length - 1, nums);
 
 
 
@@ -124,6 +122,20 @@ class Solution {
 
 
     }
+
+          private void reversTemp(int start, int end, int[] nums) {
+
+              while (start < end) {
+                  int temp = nums[start];
+                  nums[start] = nums[end];
+                  nums[end] = temp;
+                  start++;
+                  end--;
+              }
+
+
+
+          }
 
           private void revers(int[] nums, int start, int end) {
               while (start < end) {

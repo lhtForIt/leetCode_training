@@ -23,7 +23,7 @@
 //
 // 
 //输入：head = [1,2,3,4,5], k = 3
-//输出：[3,2,1,4,5]
+//输出：[3,2,1,4,5] `
 // 
 //
 // 示例 3： 
@@ -57,6 +57,8 @@
   
 package leetcode.editor.cn;
 
+import com.sun.xml.internal.ws.api.pipe.NextAction;
+
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -78,6 +80,25 @@ public class ReverseNodesInKGroup{
 class Solution {
     public ListNode reverseKGroup(ListNode head, int k) {
 
+        int count = 0;
+        ListNode curr = head;
+        while (curr != null && count < k) {
+            curr = curr.next;
+            count++;
+        }
+
+        if (count == k) {
+            curr = reverseKGroup(curr, k);
+            while (count-- > 0) {
+                ListNode temp = head.next;
+                head.next = curr;
+                curr = head;
+                head = temp;
+            }
+            head = curr;
+        }
+
+        return head;
         /**
          * 法一：用栈先进后出的特性，
          * 需要额外判断最后一个是否够k个元素
@@ -117,7 +138,7 @@ class Solution {
 //                p.next = stack.pop();
 //                p = p.next;
 //            }
-//
+//            //将head替换为k个位置之后，方便下次循环
 //            head = temp;
 //        }
 //
@@ -152,24 +173,24 @@ class Solution {
          * 法三：递归
          */
 
-        ListNode curr = head;
-        int count = 0;
-        while (curr != null && count != k) {
-            curr = curr.next;
-            count++;
-        }
-        if (count == k) {
-            curr = reverseKGroup(curr, k);
-            while (count-- > 0) {
-//        只有第一步是head指向curr会跨多个节点，后面只要一次把head和curr后移，每次反转就行
-                ListNode temp = head.next;
-                head.next = curr;
-                curr = head;
-                head = temp;
-            }
-            head = curr;
-        }
-        return head;
+//        ListNode curr = head;
+//        int count = 0;
+//        while (curr != null && count != k) {
+//            curr = curr.next;
+//            count++;
+//        }
+//        if (count == k) {
+//            curr = reverseKGroup(curr, k);
+//            while (count-- > 0) {
+////        只有第一步是head指向curr会跨多个节点，后面只要一次把head和curr后移，每次反转就行
+//                ListNode temp = head.next;
+//                head.next = curr;
+//                curr = head;
+//                head = temp;
+//            }
+//            head = curr;
+//        }
+//        return head;
 
     }
 
