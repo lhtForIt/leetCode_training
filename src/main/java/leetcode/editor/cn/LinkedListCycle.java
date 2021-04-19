@@ -75,6 +75,36 @@
 public class Solution {
     public boolean hasCycle(ListNode head) {
 
+        if (head == null || head.next == null) {
+            return false;
+        }
+
+
+        ListNode slow = head, fast = head.next;
+        while (slow != fast) {
+
+            if (fast == null || fast.next == null) {
+                return false;
+            }
+
+            slow = slow.next;
+            fast = fast.next.next;
+
+        }
+
+        return true;
+
+
+
+
+
+
+
+
+
+
+
+
         /**
          * map+遍历
          */
@@ -83,20 +113,20 @@ public class Solution {
          * 双指针
          */
 
-        if (head == null || head.next == null) {
-            return false;
-        }
-        //一开始快慢指针之间要有差距
-        ListNode slow = head, fast = head.next;
-        while (slow != fast) {
-            //到尾部都没相遇，说明没环
-            if (fast == null || fast.next == null) {
-                return false;
-            }
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-        return true;
+//        if (head == null || head.next == null) {
+//            return false;
+//        }
+//        //一开始快慢指针之间要有差距
+//        ListNode slow = head, fast = head.next;
+//        while (slow != fast) {
+//            //到尾部都没相遇，说明没环
+//            if (fast == null || fast.next == null) {
+//                return false;
+//            }
+//            slow = slow.next;
+//            fast = fast.next.next;
+//        }
+//        return true;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

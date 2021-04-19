@@ -60,6 +60,8 @@
   
   package leetcode.editor.cn;
 
+import javafx.beans.binding.ListBinding;
+
 import javax.swing.text.html.HTMLWriter;
 
 public class LinkedListCycleIi{
@@ -81,6 +83,35 @@ public class LinkedListCycleIi{
 public class Solution {
     public ListNode detectCycle(ListNode head) {
 
+        if (head == null || head.next == null) {
+            return null;
+        }
+
+        ListNode slow = head, fast = head;
+        while (true) {
+            if (fast == null || fast.next == null) {
+                return null;
+            }
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) {
+                break;
+            }
+        }
+        slow = head;
+        while (slow != fast) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+
+        return fast;
+
+
+
+
+
+
+
         /**
          * 设链表共有 a+b 个节点，其中 链表头部到链表入口 有 a 个节点（不计链表入口节点），
          * 链表环 有 b 个节点（这里需要注意，a 和 b 是未知数，例如图解上链表 a=4, b=5）
@@ -91,26 +122,26 @@ public class Solution {
          */
 
 
-        ListNode slow = head, fast = head;
-        while (true) {
-            if (fast == null || fast.next == null) {
-                return null;
-            }
-
-            slow = slow.next;
-            fast = fast.next.next;
-            if (fast == slow) {
-                break;
-            }
-        }
-
-        fast = head;
-        while (slow != fast) {
-            slow = slow.next;
-            fast = fast.next;
-        }
-
-        return fast;
+//        ListNode slow = head, fast = head;
+//        while (true) {
+//            if (fast == null || fast.next == null) {
+//                return null;
+//            }
+//
+//            slow = slow.next;
+//            fast = fast.next.next;
+//            if (fast == slow) {
+//                break;
+//            }
+//        }
+//
+//        fast = head;
+//        while (slow != fast) {
+//            slow = slow.next;
+//            fast = fast.next;
+//        }
+//
+//        return fast;
 
     }
 }

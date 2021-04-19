@@ -51,28 +51,58 @@ public class LongestCommonSubsequence{
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    public int longestCommonSubsequence(String text1, String text2) {
-        int m = text1.length(), n = text2.length();
-        if (m == 0 || n == 0) {
-            return 0;
-        }
+          public int longestCommonSubsequence(String text1, String text2) {
 
-        int[][] dp = new int[m+1][n+1];
-        for (int i = 1; i <= m; i++) {
-            for (int j = 1; j <= n; j++) {
-                //这儿起点是1，所以需要-1
-                //当最后一个字符相等时，就是两个字符去掉最后一个字符的最大值，
-                //否则为A减掉一个字符或者B减掉一个字符的最大值
-                if (text1.charAt(i-1) == text2.charAt(j-1)) {
-                    dp[i][j] = dp[i - 1][j - 1] + 1;
-                } else {
-                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
-                }
-            }
-        }
-        return dp[m][n];
 
-    }
+              int m = text1.length(), n = text2.length();
+              char[] c1 = text1.toCharArray(), c2 = text2.toCharArray();
+              if (m == 0 || n == 0) {
+                  return 0;
+              }
+
+              int[][] dp = new int[m + 1][n + 1];
+              for (int i = 1; i <= m; i++) {
+                  for (int j = 1; j <= n; j++) {
+                      /**
+                       * 这里charAt会比直接数组访问慢10ms左右
+                       */
+                      if (c1[i - 1] == c2[j - 1]) {
+//                      if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
+                          dp[i][j] = dp[i - 1][j - 1] + 1;
+                      } else {
+                          dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                      }
+                  }
+              }
+
+              return dp[m][n];
+
+
+              /**
+               *    这里二维数组等于0的时候两个字符串是没有交界的，只有都>=1才会有交互，这
+               *    也是为什么从dp[1][1]开始的原因
+                */
+//        int m = text1.length(), n = text2.length();
+//        if (m == 0 || n == 0) {
+//            return 0;
+//        }
+//
+//        int[][] dp = new int[m+1][n+1];
+//        for (int i = 1; i <= m; i++) {
+//            for (int j = 1; j <= n; j++) {
+//                //这儿起点是1，所以需要-1
+//                //当最后一个字符相等时，就是两个字符去掉最后一个字符的最大值，
+//                //否则为A减掉一个字符或者B减掉一个字符的最大值,dp[1][1]其实代表dp[0][0]
+//                if (text1.charAt(i-1) == text2.charAt(j-1)) {
+//                    dp[i][j] = dp[i - 1][j - 1] + 1;
+//                } else {
+//                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+//                }
+//            }
+//        }
+//        return dp[m][n];
+
+          }
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

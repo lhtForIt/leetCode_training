@@ -36,19 +36,50 @@ public class ReverseLinkedList{
 class Solution {
     public ListNode reverseList(ListNode head) {
 
-        /**
-         * 递归 时间复杂度O(n)，空间复杂度O(n)
-         */
         if (head == null || head.next == null) {
             return head;
         }
-        //这儿是反转之后的结果，之前的head.next是链表最后一个节点
-        ListNode p = reverseList(head.next);
-        //将head.next指向head
-        head.next.next = head;
-        //将head置空，作为最后一个节点
-        head.next = null;
-        return p;
+
+        ListNode pre = null;
+
+        while (head != null) {
+            ListNode next = head.next;
+            head.next = pre;
+            pre = head;
+            head = next;
+        }
+
+        return pre;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /**
+         * 递归 时间复杂度O(n)，空间复杂度O(n)
+         */
+//        if (head == null || head.next == null) {
+//            return head;
+//        }
+//        //这儿是反转之后的结果，之前的head.next是链表最后一个节点
+          //这儿的p是指5,而不是2
+//        ListNode p = reverseList(head.next);
+//        //将head.next指向head
+//        head.next.next = head;
+//        //将head置空，作为最后一个节点
+//        head.next = null;
+//        return p;
 
 
         /**

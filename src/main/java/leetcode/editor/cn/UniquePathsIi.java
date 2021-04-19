@@ -54,39 +54,91 @@ public class UniquePathsIi{
 class Solution {
           public int uniquePathsWithObstacles(int[][] obstacleGrid) {
 
+
               /**
-               * 1<=m,n<=100，所以不需要判断数组是否为null
-               *
-               * I以为没有障碍物，所以可以直接把i==0||j==0初始化为1，
-               * 但是障碍物需要将转移方程加上为dp[i][j]=dp[i-1][j]
-               *
+               * 一维动态规划
+               * 都需要将dp[0]进行初始化，
+               * 二维动态规划还可以在数组中进行赋值，一维的完全不行，只能在外面初始化
                */
               int m = obstacleGrid.length;
               int n = obstacleGrid[0].length;
 
-              int[][] dp = new int[m][n];
-
-              //为00赋值
-              dp[0][0] = obstacleGrid[0][0] == 1 ? 0 : 1;
-
+              int[] dp = new int[n];
+              dp[0] = obstacleGrid[0][0] == 1 ? 0 : 1;
               for (int i = 0; i < m; i++) {
                   for (int j = 0; j < n; j++) {
-                      if (obstacleGrid[i][j] != 1) {
-                          if (i > 0 && j > 0) {
-                              dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
-                          }else if (i > 0) {
-                              //i==0或者j==0因为要考虑障碍物所以要这么写
-                              dp[i][j] = dp[i - 1][j];
-                          } else if (j > 0) {
-                              dp[i][j] = dp[i][j - 1];
+                      if (obstacleGrid[i][j] == 1) {
+                          dp[j] = 0;
+                      } else {
+                          if (j > 0) {
+                              dp[j] = dp[j] + dp[j - 1];
                           }
-
-
                       }
                   }
               }
 
-              return dp[m - 1][n - 1];
+
+              return dp[n - 1];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              /**
+               * 1<=m,n<=100，所以不需要判断数组是否为null
+               *
+               * 当有障碍物时即obstacleGrid[i][j]==0时，这时候步数是0，
+               * 且如果是i=0||j=0时，后面的格子也会是0，
+               * 因此要分开讨论i=0||j=0和i>0&&j>0的情况
+               *
+               * 当然，如果是一维的话直接讨论j>0和j=0即可
+               *
+               */
+//              int m = obstacleGrid.length;
+//              int n = obstacleGrid[0].length;
+//
+//              int[][] dp = new int[m][n];
+//
+//              //为00赋值
+//              dp[0][0] = obstacleGrid[0][0] == 1 ? 0 : 1;
+//
+//              for (int i = 0; i < m; i++) {
+//                  for (int j = 0; j < n; j++) {
+//                      if (obstacleGrid[i][j] != 1) {
+//                          if (i > 0 && j > 0) {
+//                              dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+//                          }else if (i > 0) {
+//                              //i==0或者j==0因为要考虑障碍物所以要这么写
+//                              dp[i][j] = dp[i - 1][j];
+//                          } else if (j > 0) {
+//                              dp[i][j] = dp[i][j - 1];
+//                          }
+//
+//
+//                      }
+//                  }
+//              }
+//
+//              return dp[m - 1][n - 1];
 
 
 

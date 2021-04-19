@@ -60,6 +60,32 @@ public class ContainerWithMostWater{
 class Solution {
     public int maxArea(int[] a) {
 
+        int max = 0;
+        for (int left = 0, right = a.length - 1; left < right; ) {
+            int area = (right - left) * (a[left] > a[right] ? a[right--] : a[left++]);
+            max = max > area ? max : area;
+        }
+        return max;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         /**
          * 暴力法
@@ -97,19 +123,19 @@ class Solution {
 //        }
 
 
-        int max = 0;
-
-        /**
-         * 边界条件，i==j时宽度为0，因此边界是i<j
-         *
-         * Math.max(a,b)速度慢于三目运算
-         */
-        for (int left = 0, right = a.length - 1; left < right; ) {
-            int v = (right - left) * (a[left] < a[right] ? a[left++] : a[right--]);
-            max = max > v ? max : v;
-        }
-
-        return max;
+//        int max = 0;
+//
+//        /**
+//         * 边界条件，i==j时宽度为0，因此边界是i<j
+//         *
+//         * Math.max(a,b)速度慢于三目运算
+//         */
+//        for (int left = 0, right = a.length - 1; left < right; ) {
+//            int v = (right - left) * (a[left] < a[right] ? a[left++] : a[right--]);
+//            max = max > v ? max : v;
+//        }
+//
+//        return max;
 
     }
 }

@@ -41,6 +41,20 @@ class Solution {
         Map<Integer, Integer> dpMap = new HashMap<>();
         public int climbStairs(int n) {
 
+            if (n <= 2) {
+                return n;
+            }
+
+            int[] dp = new int[n + 1];
+
+            dp[1] = 1;
+            dp[2] = 2;
+            for (int i = 3; i <= n; i++) {
+                dp[i] = dp[i - 1] + dp[i - 2];
+            }
+
+            return dp[n];
+
             /**
              * 法一：动态规划
              */
@@ -108,21 +122,21 @@ class Solution {
              *
              */
 
-            if (n <= 2) {
-                return n;
-            }
-
-            int one_step = 2;
-            int two_step = 1;
-            int all_way = 0;
-
-            for (int i = 3; i <= n; i++) {
-                all_way = one_step + two_step;
-                two_step = one_step;
-                one_step = all_way;
-            }
-
-            return all_way;
+//            if (n <= 2) {
+//                return n;
+//            }
+//
+//            int one_step = 2;
+//            int two_step = 1;
+//            int all_way = 0;
+//
+//            for (int i = 3; i <= n; i++) {
+//                all_way = one_step + two_step;
+//                two_step = one_step;
+//                one_step = all_way;
+//            }
+//
+//            return all_way;
 
 
             /**

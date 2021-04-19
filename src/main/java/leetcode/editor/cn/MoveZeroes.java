@@ -31,6 +31,42 @@ class Solution {
           public void moveZeroes(int[] nums) {
 
 
+              if (nums == null) {
+                  return;
+              }
+
+              int j = 0;
+              for (int i = 0; i < nums.length; i++) {
+                  if (nums[i] != 0) {
+                      if (i != j) {
+                          nums[j] = nums[i];
+                          nums[i] = 0;
+                      }
+                      j++;
+                  }
+              }
+
+              return;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
               /**
                * 法一：两次循环
                * 时间复杂度O(n+m)m是0的数量，空间复杂度O(1)
@@ -64,23 +100,23 @@ class Solution {
                */
 
 
-              if (nums == null) {
-                  return;
-              }
-
-              //用j记录0的位置，默认第一个为0，当不为0时，用nums[j]=nums[i]
-              int j = 0;
-              for (int i = 0; i < nums.length; i++) {
-                  //因为i,j起点一样，i会一直往前走，当nums[i]不等于0，j才会加1，因此j一定是在0的位置
-                  if (nums[i] != 0) {
-                      //只有不同位置才需要交换
-                      if (i != j) {
-                          nums[j] = nums[i];
-                          nums[i] = 0;
-                      }
-                      j++;
-                  }
-              }
+//              if (nums == null) {
+//                  return;
+//              }
+//
+//              //用j记录0的位置，默认第一个为0，当不为0时，用nums[j]=nums[i]
+//              int j = 0;
+//              for (int i = 0; i < nums.length; i++) {
+//                  //因为i,j起点一样，i会一直往前走，当nums[i]不等于0，j才会加1，因此j一定是在0的位置
+//                  if (nums[i] != 0) {
+//                      //只有不同位置才需要交换
+//                      if (i != j) {
+//                          nums[j] = nums[i];
+//                          nums[i] = 0;
+//                      }
+//                      j++;
+//                  }
+//              }
 
           }
 }
