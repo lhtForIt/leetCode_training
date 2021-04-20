@@ -80,25 +80,46 @@ public class ReverseNodesInKGroup{
 class Solution {
     public ListNode reverseKGroup(ListNode head, int k) {
 
-        int count = 0;
-        ListNode curr = head;
-        while (curr != null && count < k) {
-            curr = curr.next;
-            count++;
-        }
+        int n = 0;
+        for (ListNode i = head; i != null; i = i.next, n++) ;
 
-        if (count == k) {
-            curr = reverseKGroup(curr, k);
-            while (count-- > 0) {
-                ListNode temp = head.next;
-                head.next = curr;
-                curr = head;
-                head = temp;
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        for (ListNode prev = dummy, tail = head; n >= k; n -= k) {
+            for (int i = 1; i < k; i++) {
+                ListNode next = tail.next.next;
+                tail.next.next = prev.next;
+                prev.next = tail.next;
+                tail.next = next;
             }
-            head = curr;
+            prev = tail;
+            tail = tail.next;
         }
 
-        return head;
+        return dummy.next;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         /**
          * 法一：用栈先进后出的特性，
          * 需要额外判断最后一个是否够k个元素

@@ -47,45 +47,25 @@ public class MergeSortedArray{
 class Solution {
     public void merge(int[] nums1, int m, int[] nums2, int n) {
 
-        int p = m - 1, q = n - 1, curr = m + n - 1;
-
-        while (p >= 0 && q >= 0) {
-            if (nums1[p] <= nums2[q]) {
-                nums1[curr--] = nums2[q--];
-            } else {
-                nums1[curr--] = nums1[p--];
-            }
-        }
-
-        while (q >= 0) {
-            nums1[curr--] = nums2[q--];
-        }
-
-
-
-
-
-
-
-
 
         /**
          * 正着赋值会覆盖nums1的值，所以我们反着赋值
+         * 一个思路，我们遍历的思路有两种，从前到后和从后到前，如果新开数组的话其实都可以，
+         * 但是如果是原地操作(在原数组上进行交换，就不能从前到后，这样可能会涉及到数据丢失)，因此要从后往前遍历，
+         * 因为后面一开始是没数据的。
          */
 //        int p = m - 1, q = n - 1, curr = m + n - 1;
 //
-//        while (p >=0 && q >= 0) {
-//            if (nums1[p] >= nums2[q]) {
-//                nums1[curr] = nums1[p];
-//                p--;
+//        while (p >= 0 && q >= 0) {
+//            if (nums1[p] <= nums2[q]) {
+//                nums1[curr--] = nums2[q--];
 //            } else {
-//                nums1[curr] = nums2[q];
-//                q--;
+//                nums1[curr--] = nums1[p--];
 //            }
-//            curr--;
 //        }
 //
-//        //如果nums2有元素未挪过去，直接依次加到nums1前面
+//        //如果nums2有元素未挪过去，直接依次加到nums1前面,这里只需要考虑nums2不为null的情况，因为nums1是不需要动的，
+//        //但是后面遇到的快排是两个数组都需要考虑的
 //        while (q >= 0) {
 //            nums1[curr--] = nums2[q--];
 //        }

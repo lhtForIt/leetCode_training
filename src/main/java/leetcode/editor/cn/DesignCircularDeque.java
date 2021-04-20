@@ -55,13 +55,14 @@ public class DesignCircularDeque{
           private int tail;
 
 
-
-          /** Initialize your data structure here. Set the size of the deque to be k. */
+          /**
+           * Initialize your data structure here. Set the size of the deque to be k.
+           */
           public MyCircularDeque(int k) {
-              count = k + 1;
-              items = new int[count];
-              head = 0;
-              tail = 0;
+              this.count = k+1;
+              this.items = new int[count];
+              this.head = 0;
+              this.tail = 0;
           }
 
           /** Adds an item at the front of Deque. Return true if the operation is successful. */
@@ -72,22 +73,20 @@ public class DesignCircularDeque{
 
               head = (head - 1 + count) % count;
               items[head] = value;
-
-
               return true;
           }
 
           /** Adds an item at the rear of Deque. Return true if the operation is successful. */
           public boolean insertLast(int value) {
+
               if (isFull()) {
                   return false;
               }
 
               items[tail] = value;
               tail = (tail + 1) % count;
-
-
               return true;
+
           }
 
           /** Deletes an item from the front of Deque. Return true if the operation is successful. */
@@ -97,25 +96,18 @@ public class DesignCircularDeque{
                   return false;
               }
 
-              //其实一般直接将下标移动就行，这个元素不会是否重置没有影响
-//              items[head] = 0;
               head = (head + 1) % count;
-
               return true;
-
 
           }
 
           /** Deletes an item from the rear of Deque. Return true if the operation is successful. */
           public boolean deleteLast() {
-
               if (isEmpty()) {
                   return false;
               }
 
-              items[tail] = 0;
               tail = (tail - 1 + count) % count;
-
 
               return true;
 
@@ -125,32 +117,32 @@ public class DesignCircularDeque{
            * Get the front item from the deque.
            */
           public int getFront() {
-
               if (isEmpty()) {
                   return -1;
               }
-
-              return items[head % count];
+              return items[head];
           }
 
-          /** Get the last item from the deque. */
+          /**
+           * Get the last item from the deque.
+           */
           public int getRear() {
-
               if (isEmpty()) {
                   return -1;
               }
-
               return items[(tail - 1 + count) % count];
-
-
           }
 
-          /** Checks whether the circular deque is empty or not. */
+          /**
+           * Checks whether the circular deque is empty or not.
+           */
           public boolean isEmpty() {
               return head == tail;
           }
 
-          /** Checks whether the circular deque is full or not. */
+          /**
+           * Checks whether the circular deque is full or not.
+           */
           public boolean isFull() {
               return (tail + 1) % count == head;
           }
@@ -194,7 +186,7 @@ public class DesignCircularDeque{
 //        if (isFull()) {
 //            return false;
 //        }
-//        //tail是在最后一个元素后面，因此不需要+1就可以赋值，然后将下边后移
+//        //tail是用于站位的，是在最后一个元素后面，因此不需要+1就可以赋值，然后将下边后移
 //        items[tail] = value;
 //        tail = (tail + 1) % count;
 //
