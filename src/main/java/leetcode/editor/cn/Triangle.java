@@ -70,18 +70,20 @@ class Solution {
           public int minimumTotal(List<List<Integer>> triangle) {
 
 
+              /**
+               * 动态规划方程: dp[i][j]=Math.max(dp[i+1][j],dp[i+1][j+1])+triangle.get(i).get(j);
+               */
               int n = triangle.size();
 
               int[] dp = new int[n + 1];
 
               for (int i = n - 1; i >= 0; i--) {
                   for (int j = 0; j <= i; j++) {
-                      dp[j] = Math.min(dp[j + 1], dp[j]) + triangle.get(i).get(j);
+                      dp[j] = Math.min(dp[j], dp[j + 1]) + triangle.get(i).get(j);
                   }
               }
 
               return dp[0];
-
 
 
 
