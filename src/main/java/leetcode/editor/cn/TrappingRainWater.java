@@ -43,6 +43,7 @@ import java.util.Stack;
 public class TrappingRainWater{
       public static void main(String[] args) {
            Solution solution = new TrappingRainWater().new Solution();
+
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
@@ -50,23 +51,35 @@ class Solution {
         /**
          * 栈
          * 时间复杂度O(n),空间复杂度O(n)
+         *
+         *
+         * 这里和柱状图最大面积有点区别，首先这里维护的单调递减栈而不是单调递增栈，
+         * 再来就是计算的高度不是Math(height[left],height[right])，而是
+         * Math(height[i],height[left])-height[top],i指的当前大于栈顶元素的右边位置，
+         * left指的是栈顶元素下一个元素,top指的是栈顶元素。
+         *
+         * 然后宽度是i-1-left.和柱状图不一样的是不需要+1了。
+         *
+         * 由于递增，因此也不需要用一个元素去把最后的元素拿出来，所以也就没有i==height.length的情况
+         *
+         *
          */
 
-//        int sum = 0;
-//        Deque<Integer> stack = new LinkedList<>();
-//
-//        for (int i = 0; i < height.length; i++) {
-//            while (!stack.isEmpty() && height[stack.peek()] <= height[i]) {
-//                int cur = stack.pop();
-//                if (stack.isEmpty()) {
-//                    break;
-//                }
-//                sum += (Math.min(height[i], height[stack.peek()]) - height[cur]) * (i - stack.peek() - 1);
-//            }
-//            stack.push(i);
-//        }
-//
-//        return sum;
+        int sum = 0;
+        Deque<Integer> stack = new LinkedList<>();
+
+        for (int i = 0; i < height.length;) {
+            if (stack.isEmpty() || height[i] > height[stack.peek()]) {
+                stack.push(i);
+                i++;
+            } else {
+                int cur = stack.pop();
+                int water = stack.isEmpty() ? 0 : (Math.min(height[i], height[stack.peek()]) - height[cur]) * (i - stack.peek() - 1);
+                sum += water;
+            }
+        }
+
+        return sum;
 
 
         /**
@@ -74,20 +87,20 @@ class Solution {
          * 时间复杂度O(n),空间复杂度O(1)
          */
 
-        int total = 0, lMax = 0, rMax = 0, l = 0, r = height.length - 1;
-        while (l < r) {
-            lMax = Math.max(lMax, height[l]);
-            rMax = Math.max(rMax, height[r]);
-            if (height[l] < height[r]) {
-                if (height[l] < lMax) total += lMax - height[l];
-                l++;
-            } else {
-                if (height[r]<rMax) total += rMax - height[r];
-                r--;
-            }
-        }
-
-        return total;
+//        int total = 0, lMax = 0, rMax = 0, l = 0, r = height.length - 1;
+//        while (l < r) {
+//            lMax = Math.max(lMax, height[l]);
+//            rMax = Math.max(rMax, height[r]);
+//            if (height[l] < height[r]) {
+//                if (height[l] < lMax) total += lMax - height[l];
+//                l++;
+//            } else {
+//                if (height[r]<rMax) total += rMax - height[r];
+//                r--;
+//            }
+//        }
+//
+//        return total;
 
 
 
