@@ -48,6 +48,34 @@ public class TrappingRainWater{
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int trap(int[] height) {
+
+        int water = 0;
+        Deque<Integer> stack = new LinkedList<>();
+
+        for (int i = 0; i < height.length; ) {
+            if (stack.isEmpty() || height[i] < height[stack.peek()]) {
+                stack.push(i);
+                i++;
+            } else {
+                int top = stack.pop();
+                int v = stack.isEmpty() ? 0 : (i - 1 - stack.peek()) * (Math.min(height[i], height[stack.peek()]) - height[top]);
+                water += v;
+            }
+        }
+
+        return water;
+
+
+
+
+
+
+
+
+
+
+
+
         /**
          * 栈
          * 时间复杂度O(n),空间复杂度O(n)
@@ -65,21 +93,21 @@ class Solution {
          *
          */
 
-        int sum = 0;
-        Deque<Integer> stack = new LinkedList<>();
-
-        for (int i = 0; i < height.length;) {
-            if (stack.isEmpty() || height[i] > height[stack.peek()]) {
-                stack.push(i);
-                i++;
-            } else {
-                int cur = stack.pop();
-                int water = stack.isEmpty() ? 0 : (Math.min(height[i], height[stack.peek()]) - height[cur]) * (i - stack.peek() - 1);
-                sum += water;
-            }
-        }
-
-        return sum;
+//        int sum = 0;
+//        Deque<Integer> stack = new LinkedList<>();
+//
+//        for (int i = 0; i < height.length;) {
+//            if (stack.isEmpty() || height[i] <= height[stack.peek()]) {
+//                stack.push(i);
+//                i++;
+//            } else {
+//                int cur = stack.pop();
+//                int water = stack.isEmpty() ? 0 : (Math.min(height[i], height[stack.peek()]) - height[cur]) * (i - stack.peek() - 1);
+//                sum += water;
+//            }
+//        }
+//
+//        return sum;
 
 
         /**

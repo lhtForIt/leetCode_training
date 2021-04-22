@@ -36,25 +36,30 @@ public class ValidAnagram{
 class Solution {
     public boolean isAnagram(String s, String t) {
 
+        /**
+         * Map
+         */
+
+
         if (s.length() != t.length()) {
             return false;
         }
 
-        //只会有26个字母，且都是小写
         int[] chars = new int[26];
 
         for (char c : s.toCharArray()) {
             chars[c - 'a']++;
         }
 
+
         for (char c : t.toCharArray()) {
-            chars[c - 'a']--;
-            if (chars[c - 'a'] < 0) {
+            int count = --chars[c - 'a'];
+            if (count < 0) {
                 return false;
             }
         }
-        return true;
 
+        return true;
 
 
 

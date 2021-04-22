@@ -34,6 +34,30 @@ public class GroupAnagrams{
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
 
+        Map<String, List<String>> keyMap = new HashMap<>();
+        for (String str : strs) {
+            char[] chars = new char[26];
+            for (char c : str.toCharArray()) {
+                chars[c - 'a']++;
+            }
+            String key = new String(chars);
+            if (!keyMap.containsKey(key)) {
+                keyMap.put(key, new ArrayList<>());
+            }
+            keyMap.get(key).add(str);
+         }
+
+
+        return new ArrayList<>(keyMap.values());
+
+
+
+
+
+
+
+
+
         /**
          * HashMap题型总结；
          * 1、字母异位：统计字母出现频次，第一个单词得到一个字母对应count，第二个单词在减去，最后看count是否为0
@@ -75,27 +99,27 @@ class Solution {
          *
          */
 
-        if (strs == null || strs.length == 0) {
-            return new ArrayList<>();
-        }
-
-        Map<String, List<String>> map = new HashMap<>();
-        for (String s : strs) {
-
-            char[] ca = new char[26];
-            for (char c : s.toCharArray()) {
-                //这里统计的分别是'a'的次数一直到'z'的次数，因此即使位置不一样后面得到的字符串也是一样的
-                ca[c - 'a']++;
-            }
-
-            String keyStr = String.valueOf(ca);
-            if (!map.containsKey(keyStr)) {
-                map.put(keyStr, new ArrayList<>());
-            }
-            map.get(keyStr).add(s);
-        }
-
-        return new ArrayList<>(map.values());
+//        if (strs == null || strs.length == 0) {
+//            return new ArrayList<>();
+//        }
+//
+//        Map<String, List<String>> map = new HashMap<>();
+//        for (String s : strs) {
+//
+//            char[] ca = new char[26];
+//            for (char c : s.toCharArray()) {
+//                //这里统计的分别是'a'的次数一直到'z'的次数，因此即使位置不一样后面得到的字符串也是一样的
+//                ca[c - 'a']++;
+//            }
+//
+//            String keyStr = String.valueOf(ca);
+//            if (!map.containsKey(keyStr)) {
+//                map.put(keyStr, new ArrayList<>());
+//            }
+//            map.get(keyStr).add(s);
+//        }
+//
+//        return new ArrayList<>(map.values());
 
 
     }
