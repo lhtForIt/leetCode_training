@@ -77,15 +77,13 @@ class Solution {
 
               int[] dp = new int[n + 1];
 
-              for (int i = n - 1; i >= 0; i--) {
+              for (int i = n-1; i >= 0; i--) {
                   for (int j = 0; j <= i; j++) {
                       dp[j] = Math.min(dp[j], dp[j + 1]) + triangle.get(i).get(j);
                   }
               }
 
               return dp[0];
-
-
 
 
 
@@ -109,6 +107,9 @@ class Solution {
                * 时间复杂度O(n^2)，空间复杂度O(n^2)
                *
                * 条件里面已经说明triangle不会为空，所以不用去判断triangle了
+               *
+               * 这里dp数组为n+1能很好的避免去初始化数值，因为在第n行，会需要用到n+1行数据，
+               * 而数组初始化的n+1行数据都是0，所以第n行数据刚好就是triangle[i][j],省去了边界判断
                *
                */
 //              if (triangle.isEmpty()) {

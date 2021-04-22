@@ -58,7 +58,6 @@ class Solution {
 
 
             Map<Integer, Integer> targetMap = new HashMap<>();
-
             for (int i = 0; i < nums.length; i++) {
                 int temp = target - nums[i];
                 if (targetMap.containsKey(temp)) {
@@ -68,9 +67,6 @@ class Solution {
             }
 
             return null;
-
-
-
 
 
 

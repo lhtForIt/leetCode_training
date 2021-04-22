@@ -86,12 +86,6 @@ class Solution {
     public List<Integer> inorderTraversal(TreeNode root) {
 
 
-        /**
-         * 迭代思路：
-         * 依次将根节点及其左儿子压入栈中，直到找到其左边叶子节点，
-         * 然后弹出栈顶元素，将值放入result中，然后将根节点替换成右子树重复上述过程
-         */
-
         List<Integer> res = new ArrayList<>();
         Deque<TreeNode> stack = new LinkedList<>();
 
@@ -100,12 +94,43 @@ class Solution {
                 stack.push(root);
                 root = root.left;
             }
-            root = stack.pop();
-            res.add(root.val);
-            root = root.right;
+
+            TreeNode node = stack.pop();
+            res.add(node.val);
+            root = node.right;
+
         }
 
         return res;
+
+
+
+
+
+
+
+        /**
+         * 迭代思路：
+         * 依次将根节点及其左儿子压入栈中，直到找到其左边叶子节点，
+         * 然后弹出栈顶元素，将值放入result中，然后将根节点替换成右子树重复上述过程,
+         * 就是由于有root=root.right的原因，所以外层while的root!=null不能去掉，因为如果只有
+         * !stack.isEmpty()会存在当前stack为空，但是右节点没有压入栈中
+         */
+
+//        List<Integer> res = new ArrayList<>();
+//        Deque<TreeNode> stack = new LinkedList<>();
+//
+//        while (root != null || !stack.isEmpty()) {
+//            while (root != null) {
+//                stack.push(root);
+//                root = root.left;
+//            }
+//            root = stack.pop();
+//            res.add(root.val);
+//            root = root.right;
+//        }
+//
+//        return res;
 
 
 

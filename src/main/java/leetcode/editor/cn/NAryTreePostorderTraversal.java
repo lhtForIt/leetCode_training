@@ -49,6 +49,7 @@
   
 package leetcode.editor.cn;
 
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
@@ -82,29 +83,78 @@ class Solution {
     public List<Integer> postorder(Node root) {
 
 
-        /**
-         * 迭代
-         */
-
-        LinkedList ress = new LinkedList();
+        LinkedList<Integer> result = new LinkedList<>();
 
         if (root == null) {
-            return ress;
+            return result;
         }
 
         Deque<Node> stack = new LinkedList<>();
 
-        stack.add(root);
+        stack.push(root);
+
         while (!stack.isEmpty()) {
+
             Node node = stack.pop();
-            ress.addFirst(node.val);
+
+            result.offerFirst(node.val);
 
             for (Node child : node.children) {
                 stack.push(child);
             }
+
         }
 
-        return ress;
+        return result;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /**
+         * 迭代
+         */
+
+//        LinkedList ress = new LinkedList();
+//
+//        if (root == null) {
+//            return ress;
+//        }
+//
+//        Deque<Node> stack = new LinkedList<>();
+//
+//        stack.add(root);
+//        while (!stack.isEmpty()) {
+//            Node node = stack.pop();
+//            ress.addFirst(node.val);
+//
+//            for (Node child : node.children) {
+//                stack.push(child);
+//            }
+//        }
+//
+//        return ress;
 
 
         /**

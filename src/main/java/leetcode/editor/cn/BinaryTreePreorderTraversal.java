@@ -87,6 +87,34 @@ class Solution {
     LinkedList<Integer> res = new LinkedList<>();
 
     public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+
+        Deque<TreeNode> stack = new LinkedList<>();
+
+
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) {
+                result.add(root.val);
+                stack.push(root);
+                root = root.left;
+            }
+            TreeNode node = stack.pop();
+            root = node.right;
+        }
+
+        return result;
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -131,19 +159,19 @@ class Solution {
          * 逆向递推栈
          */
 
-        List<Integer> ress = new LinkedList<>();
-        if (root == null) {
-            return ress;
-        }
-        Deque<TreeNode> stack = new LinkedList<>();
-        stack.push(root);
-        while (!stack.isEmpty()) {
-            TreeNode node = stack.pop();
-            ress.add(node.val);
-            if (node.right != null) stack.push(node.right);
-            if (node.left != null) stack.push(node.left);
-        }
-        return ress;
+//        List<Integer> ress = new LinkedList<>();
+//        if (root == null) {
+//            return ress;
+//        }
+//        Deque<TreeNode> stack = new LinkedList<>();
+//        stack.push(root);
+//        while (!stack.isEmpty()) {
+//            TreeNode node = stack.pop();
+//            ress.add(node.val);
+//            if (node.right != null) stack.push(node.right);
+//            if (node.left != null) stack.push(node.left);
+//        }
+//        return ress;
 
     }
 }
