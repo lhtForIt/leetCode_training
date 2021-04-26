@@ -31,10 +31,7 @@
   
 package leetcode.editor.cn;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class TopKFrequentElements{
       public static void main(String[] args) {
@@ -43,6 +40,30 @@ public class TopKFrequentElements{
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int[] topKFrequent(int[] nums, int k) {
+
+
+        /**
+         * 整个题的思路分两部分：
+         * 1、先统计每个数字出现的频率，这个一般用map去实现。
+         * 2、对map中统计的元素进行排序，这个实现有很多，各种排序都可以，
+         * 但是题目进阶要求是小于nlogn，因此大部分排序都不可行，就只有堆排序O(nlogk)和线性排序O(n)了，
+         * 这里可以用桶排序。
+         */
+
+//        if (nums == null || nums.length == 0 || nums.length < k) {
+//            return new int[]{};
+//        }
+//
+//        Map<Integer, Integer> numsMap = new HashMap<>();
+//        for (int num : nums) {
+//            numsMap.put(num, numsMap.getOrDefault(num, 0) + 1);
+//        }
+//
+//        PriorityQueue<Integer> pri = new PriorityQueue<>();
+//        for (Map.Entry<Integer, Integer> num : numsMap.entrySet()) {
+//
+//        }
+
 
         /**
          * 最大堆，时间复杂度O(nlogn)，空间复杂度O(n)
@@ -71,34 +92,115 @@ class Solution {
         /**
          * 最小堆 时间复杂度O(nlogk),空间复杂度O(n)
          */
-        int[] topK = new int[k];
-        Map<Integer, Integer> countMap = new HashMap<>();
-        //第一个为数组值，第二个为出现次数
-        PriorityQueue<int[]> priQueue = new PriorityQueue<>(Comparator.comparingInt(o -> o[1]));
+//        int[] topK = new int[k];
+//        Map<Integer, Integer> countMap = new HashMap<>();
+//        //第一个为数组值，第二个为出现次数
+//        PriorityQueue<int[]> priQueue = new PriorityQueue<>(Comparator.comparingInt(o -> o[1]));
+//
+//        for (int num : nums) {
+//            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
+//        }
+//
+//        for (Map.Entry<Integer, Integer> entry : countMap.entrySet()) {
+//            int value = entry.getKey(), count = entry.getValue();
+//
+//            //始终保持堆里只有k个元素，这样logk速度会快点
+//            if (priQueue.size() < k) {
+//                priQueue.offer(new int[]{value, count});
+//            } else {
+//                if (priQueue.peek()[1] < count) {
+//                    priQueue.poll();
+//                    priQueue.offer(new int[]{value, count});
+//                }
+//            }
+//        }
+//
+//        for (int i = 0; i < k; i++) {
+//            topK[i] = priQueue.poll()[0];
+//        }
+//
+//        return topK;
 
-        for (int num : nums) {
-            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
+        Map<Integer, Integer> map = new HashMap();
+        for(int n : nums) {
+            int freq = map.getOrDefault(n, 0) + 1;
+            map.put(n, freq);
         }
-
-        for (Map.Entry<Integer, Integer> entry : countMap.entrySet()) {
-            int value = entry.getKey(), count = entry.getValue();
-
-            //始终保持堆里只有k个元素，这样logk速度会快点
-            if (priQueue.size() < k) {
-                priQueue.offer(new int[]{value, count});
-            } else {
-                if (priQueue.peek()[1] < count) {
-                    priQueue.poll();
-                    priQueue.offer(new int[]{value, count});
-                }
+        //这里是直接将map的entry做比较，这样就能有多个元素了，不用新建数组或者实体类
+        Queue<Map.Entry<Integer,Integer>> heap = new PriorityQueue<>((a, b) -> a.getValue() - b.getValue());
+        for(Map.Entry<Integer,Integer> entry: map.entrySet()) {
+            heap.offer(entry);
+            if(heap.size() > k) {
+                heap.poll();
             }
         }
-
-        for (int i = 0; i < k; i++) {
-            topK[i] = priQueue.poll()[0];
+        int[] res = new int[k];
+        for(int i = 0; i < k; i++) {
+            res[i] = heap.poll().getKey();
         }
+        return res;
 
-        return topK;
+
+        /**
+         * 桶排序
+         */
+
+//        if (nums == null || nums.length == 0 || k <= 0) return new int[0];
+//        Map<Integer, Integer> freqMap = new HashMap<>();
+//        for (int currNum : nums) freqMap.put(currNum, freqMap.getOrDefault(currNum, 0) + 1);
+//
+//        List<Integer>[] buckets = new ArrayList[nums.length + 1];   // Number of occurrences of all elements must be in [0, nums.length].
+//        for (int key : freqMap.keySet()) {
+//            if (buckets[freqMap.get(key)] == null) buckets[freqMap.get(key)] = new ArrayList<>();
+//            buckets[freqMap.get(key)].add(key);
+//        }
+//
+//        int[] result = new int[Math.min(freqMap.size(), k)];        // In case we want to return less than k elements, k could be greater than the number of distinct elements in nums.
+//        int resIdx = 0;
+//        for (int i = buckets.length - 1; i >= 0; --i) {
+//            if (buckets[i] == null) continue;                       // Because we only initialized buckets that we inserted elements into, empty buckets are null values.
+//            for (int currNum : buckets[i]) {
+//                result[resIdx++] = currNum;
+//                if (resIdx == result.length) return result;
+//            }
+//        }
+//        return result;
+
+//        // since the range of count is fixed (0, nums), we can use buckt sort
+//        // count frequency
+//        Map<Integer, Integer> counts = new HashMap<>();
+//        for (int n : nums) {
+//            counts.put(n, counts.getOrDefault(n, 0) + 1);
+//        }
+//
+//        // create one bucket for each frequency
+//        // each bucket is a list of n for that frequency
+//        // NOTE: no <> after new List[]
+//        List<Integer>[] bucket = new List[nums.length + 1];
+//        for (int n : counts.keySet()) {
+//            int count = counts.get(n);
+//            // default vaule for object is null
+//            if (bucket[count] == null) bucket[count] = new ArrayList<>();
+//            bucket[count].add(n);
+//        }
+//
+//        // scan each bucket and add to res
+//        int[] res = new int[k];
+//        int j = 0;
+//        for (int i = nums.length; i >= 0; i--) {
+//            if (bucket[i] == null) continue;
+//            for (int n : bucket[i]) {
+//                res[j++] = n;
+//                if (j == k) return res;
+//            }
+//        }
+//
+//        return res;
+
+
+
+
+
 
     }
 }

@@ -38,8 +38,35 @@ class Solution {
 
     public int nthUglyNumber(int n) {
 
+        int a = 0, b = 0, c = 0;
+        int[] dp = new int[n];
+        dp[0] = 1;
+        for (int i = 1; i < n; i++) {
+            int n2 = dp[a] * 2, n3 = dp[b] * 3, n5 = dp[c] * 5;
+            dp[i] = Math.min(Math.min(n2, n3), n5);
+            if(dp[i]==n2) a++;
+            if(dp[i]==n3) b++;
+            if(dp[i]==n5) c++;
+        }
+
+        return dp[n - 1];
+
+
+
+
+
+
+
+
+
         /**
          * 利用堆的特性
+         *
+         * 依次将curr*2,3,5加入堆中，这里需要注意的是会存在不同数相乘的积
+         * 相等的情况，因此需要用一个Set去判重，
+         * 当出堆的个数等于n时，
+         * 返回结果
+         *
          */
 //        Set<Long> set = new HashSet<>();
 //        PriorityQueue<Long> priQueue = new PriorityQueue<>();
@@ -49,7 +76,7 @@ class Solution {
 //        while (!priQueue.isEmpty()) {
 //
 //            long curr = priQueue.poll();
-//            if (++count >= n) {
+//            if (++count == n) {
 //                return (int)curr;
 //            }
 //
@@ -70,19 +97,19 @@ class Solution {
          * 动态规划
          */
 
-        int a = 0, b = 0, c = 0;
-        int[] dp = new int[n];
-        dp[0] = 1;
-
-        for (int i = 1; i < n; i++) {
-            int n2 = dp[a] * 2, n3 = dp[b] * 3, n5 = dp[c] * 5;
-            dp[i] = Math.min(Math.min(n2, n3), n5);
-            if (dp[i]==n2) a++;
-            if (dp[i]==n3) b++;
-            if (dp[i]==n5) c++;
-        }
-
-        return dp[n - 1];
+//        int a = 0, b = 0, c = 0;
+//        int[] dp = new int[n];
+//        dp[0] = 1;
+//
+//        for (int i = 1; i < n; i++) {
+//            int n2 = dp[a] * 2, n3 = dp[b] * 3, n5 = dp[c] * 5;
+//            dp[i] = Math.min(Math.min(n2, n3), n5);
+//            if (dp[i]==n2) a++;
+//            if (dp[i]==n3) b++;
+//            if (dp[i]==n5) c++;
+//        }
+//
+//        return dp[n - 1];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
