@@ -29,12 +29,12 @@
   
 package leetcode.editor.cn;
 
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 
 public class ZuiXiaoDeKgeShuLcof{
       public static void main(String[] args) {
            Solution solution = new ZuiXiaoDeKgeShuLcof().new Solution();
+          solution.getLeastNumbers(new int[]{3, 2, 1}, 2);
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
@@ -62,28 +62,28 @@ class Solution {
          *
          * 时间复杂度O(n * logk),空间复杂度O(n)
          */
-        if (arr == null || arr.length == 0 || k == 0) {
+        if (arr.length == 0 || k == 0 || arr == null) {
             return new int[]{};
         }
-        Queue<Integer> priQueue = new PriorityQueue<>((v1, v2) -> v2 - v1);
+
+        PriorityQueue<Integer> pri = new PriorityQueue<>((o1, o2) -> (o2 - o1));
         int[] res = new int[k];
 
         for (int i = 0; i < arr.length; i++) {
             if (i < k) {
-                priQueue.offer(arr[i]);
-            } else if (priQueue.peek() > arr[i]) {
-                //当前元素比堆顶元素小放入堆中
-                    priQueue.poll();
-                    priQueue.offer(arr[i]);
+                pri.offer(arr[i]);
+            } else if (arr[i] < pri.peek()) {
+                pri.poll();
+                pri.offer(arr[i]);
             }
         }
 
+
         for (int i = 0; i < k; i++) {
-            res[i] = priQueue.poll();
+            res[i] = pri.poll();
         }
 
         return res;
-
 
     }
 }

@@ -65,6 +65,8 @@
   
 package leetcode.editor.cn;
 
+import com.sun.java.swing.plaf.windows.WindowsGraphicsUtils;
+
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -73,43 +75,38 @@ import java.util.PriorityQueue;
 public class SlidingWindowMaximum{
       public static void main(String[] args) {
            Solution solution = new SlidingWindowMaximum().new Solution();
-          solution.maxSlidingWindow(new int[]{1, 3, -1, -3, 5, 3, 6, 7}, 3);
+          solution.maxSlidingWindow(new int[]{1,3,1,2,0,5}, 3);
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int[] maxSlidingWindow(int[] nums, int k) {
 
 
-        if (nums.length < k) {
-            return new int[1];
+
+        /**
+         * 思路:将数组按k个一组分成多段，最后一段可能不足k个，
+         * 1、分别从左边开始找到最大值和右边开始找到最大值。
+         * 2、比较左右最大值，大的那个就是该位置滑动窗口的最大值
+         */
+        final int[] max_left = new int[nums.length];
+        final int[] max_right = new int[nums.length];
+
+        max_left[0] = nums[0];
+        max_right[nums.length - 1] = nums[nums.length - 1];
+
+        for (int i = 1; i < nums.length; i++) {
+            max_left[i] = (i % k == 0) ? nums[i] : Math.max(max_left[i - 1], nums[i]);
+
+            final int j = nums.length - i - 1;
+            max_right[j] = (j % k == 0) ? nums[j] : Math.max(max_right[j + 1], nums[j]);
         }
 
-        Deque<Integer> deque = new LinkedList<>();
-        int[] res = new int[nums.length - k + 1];
-        for (int i = 0; i < nums.length; i++) {
-            if (!deque.isEmpty() && deque.peekFirst() == i - k) {
-                deque.pollFirst();
-            }
-
-            while (!deque.isEmpty() && nums[i] > nums[deque.peekLast()]) {
-                deque.pollLast();
-            }
-
-            deque.offerLast(i);
-
-            if (i - k + 1 >= 0) {
-                res[i - k + 1] = nums[deque.peekFirst()];
-            }
-
+        final int[] sliding_max = new int[nums.length - k + 1];
+        for (int i = 0, j = 0; i + k <= nums.length; i++) {
+            sliding_max[j++] = Math.max(max_right[i], max_left[i + k - 1]);
         }
 
-
-        return res;
-
-
-
-
-
+        return sliding_max;
 
         /**
          * 暴力
@@ -162,6 +159,34 @@ class Solution {
 //        return res;
 
         /**
+         * 数组实现双端队列
+         *
+         */
+//        if (nums.length == 0 || k == 0) {
+//            return new int[]{};
+//        }
+//        int count = k + 1;
+//        int[] deque = new int[count];
+//        int head = 0;
+//        int tail = 0;
+//        int[] res = new int[nums.length - k + 1];
+//        for (int i = 0; i < nums.length; i++) {
+//            if (tail != head && deque[head%count] == i - k) {
+//                head = (head + 1) % count;
+//            }
+//            while (tail != head && nums[deque[(tail - 1 + count) % count]] < nums[i]) {
+//                tail = (tail - 1 + count) % count;
+//            }
+//            deque[tail] = i;
+//            tail = (tail + 1) % count;
+//            if (i - k + 1 >= 0) {
+//                res[i - k + 1] = nums[deque[head % count]];
+//            }
+//        }
+//        return res;
+
+
+        /**
          * 堆
          * 时间复杂度O(nlogn),空间复杂度O(n)
          *
@@ -170,32 +195,47 @@ class Solution {
          * 所以用大顶堆将时间复杂度弄成O(nlogk),
          * 这儿是k里面最大的数，所以直接就是logk，直接用大顶堆即可
          *
-         *
-         *
          */
 
+        /**
+         * 法一
+         */
 //        int n = nums.length;
-//        PriorityQueue<int[]> pq = new PriorityQueue<>(new Comparator<int[]>() {
-//            public int compare(int[] pair1, int[] pair2) {
-//                return pair1[0] != pair2[0] ? pair2[0] - pair1[0] : pair2[1] - pair1[1];
-//            }
-//        });
+//        PriorityQueue<Integer> pq = new PriorityQueue<>((o1, o2) -> (nums[o2] - nums[o1]));
 //        for (int i = 0; i < k; ++i) {
-//            pq.offer(new int[]{nums[i], i});
+//            pq.offer(i);
 //        }
 //        int[] ans = new int[n - k + 1];
-//        ans[0] = pq.peek()[0];
+//        ans[0] = nums[pq.peek()];
 //        for (int i = k; i < n; ++i) {
-//            pq.offer(new int[]{nums[i], i});
-//            while (pq.peek()[1] <= i - k) {
+//            pq.offer(i);
+//            while (pq.peek() <= i - k) {
 //                pq.poll();
 //            }
-//            ans[i - k + 1] = pq.peek()[0];
+//            ans[i - k + 1] = nums[pq.peek()];
 //        }
 //        return ans;
 
 
-
+        /**
+         * 法二
+         */
+//        if (nums.length == 0 || k == 0) {
+//            return new int[]{};
+//        }
+//
+//        PriorityQueue<Integer> pq = new PriorityQueue<>((o1, o2) -> (nums[o2] - nums[o1]));
+//        int[] ans = new int[nums.length - k + 1];
+//        for (int i = 0; i < nums.length; ++i) {
+//            while (!pq.isEmpty() && pq.peek() <= i - k) {
+//                pq.poll();
+//            }
+//            pq.offer(i);
+//            if (i - k + 1 >= 0) {
+//                ans[i - k + 1] = nums[pq.peek()];
+//            }
+//        }
+//        return ans;
 
     }
       }
