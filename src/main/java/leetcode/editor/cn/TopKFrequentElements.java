@@ -149,7 +149,7 @@ class Solution {
 //        int[] topK = new int[k];
 //        Map<Integer, Integer> countMap = new HashMap<>();
 //        //第一个为数组值，第二个为出现次数
-//        PriorityQueue<int[]> priQueue = new PriorityQueue<>(Comparator.comparingInt(o -> o[1]));
+//        PriorityQueue<int[]> priQueue = new PriorityQueue<>((o1,o2)->(o1[1]-o2[1]));
 //
 //        for (int num : nums) {
 //            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
@@ -185,7 +185,6 @@ class Solution {
 //        /**
 //         * 这里也是维护一个小根堆，但是这里思路和正常有点区别，正常思路是会在k个元素满之后判断元素是否比堆顶大，然后出堆入堆，
 //         * 这里实现有点不一样，是先入堆，然后在出堆堆顶元素，这里时间复杂度是O(nlog(k+1))，理论上说应该比O(nlogk)慢，
-//         * 但是实际上比nlogk快(服务器原因，后面跑就nlogk快了)
 //         */
 //        for(Map.Entry<Integer,Integer> entry: map.entrySet()) {
 //            heap.offer(entry);
