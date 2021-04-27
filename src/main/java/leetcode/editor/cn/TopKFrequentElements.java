@@ -36,6 +36,7 @@ import java.util.*;
 public class TopKFrequentElements{
       public static void main(String[] args) {
            Solution solution = new TopKFrequentElements().new Solution();
+          solution.topKFrequent(new int[]{1, 1, 1, 2, 2, 3}, 2);
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
@@ -50,19 +51,40 @@ class Solution {
          * 这里可以用桶排序。
          */
 
-//        if (nums == null || nums.length == 0 || nums.length < k) {
-//            return new int[]{};
-//        }
-//
-//        Map<Integer, Integer> numsMap = new HashMap<>();
-//        for (int num : nums) {
-//            numsMap.put(num, numsMap.getOrDefault(num, 0) + 1);
-//        }
-//
-//        PriorityQueue<Integer> pri = new PriorityQueue<>();
-//        for (Map.Entry<Integer, Integer> num : numsMap.entrySet()) {
-//
-//        }
+        /**
+         * 对在nlogk的复杂度下实现有两种，找最小k个数，这种就没必要维护一个小根堆,因为小根堆的时间复杂度出来是O(nlogn),
+         * 而是维护一个大根堆，堆里只有k个元素，每次超过k个，然后用堆顶元素和入堆元素比较，如果比堆顶小，对顶元素出堆，该元素入堆，
+         * 这样时间复杂度是O(nlogk)。
+         *
+         *
+         */
+
+        if (nums.length == 0 || nums.length < k) {
+            return new int[]{};
+        }
+
+        Map<Integer, Integer> numsMap = new HashMap<>();
+        for (int num : nums) {
+            numsMap.put(num, numsMap.getOrDefault(num, 0) + 1);
+        }
+
+        PriorityQueue<Map.Entry<Integer, Integer>> pri = new PriorityQueue<>((o1, o2) -> o1.getValue() - o2.getValue());
+        for (Map.Entry<Integer, Integer> num : numsMap.entrySet()) {
+            if (pri.size() < k) {
+                pri.offer(num);
+            } else if (pri.peek().getValue() < num.getValue()) {
+                pri.poll();
+                pri.offer(num);
+            }
+        }
+
+        int[] res = new int[k];
+        for (int i = 0; i < k; i++) {
+            res[i] = pri.poll().getKey();
+        }
+
+
+        return res;
 
 
         /**
@@ -121,24 +143,29 @@ class Solution {
 //
 //        return topK;
 
-        Map<Integer, Integer> map = new HashMap();
-        for(int n : nums) {
-            int freq = map.getOrDefault(n, 0) + 1;
-            map.put(n, freq);
-        }
-        //这里是直接将map的entry做比较，这样就能有多个元素了，不用新建数组或者实体类
-        Queue<Map.Entry<Integer,Integer>> heap = new PriorityQueue<>((a, b) -> a.getValue() - b.getValue());
-        for(Map.Entry<Integer,Integer> entry: map.entrySet()) {
-            heap.offer(entry);
-            if(heap.size() > k) {
-                heap.poll();
-            }
-        }
-        int[] res = new int[k];
-        for(int i = 0; i < k; i++) {
-            res[i] = heap.poll().getKey();
-        }
-        return res;
+//        Map<Integer, Integer> map = new HashMap();
+//        for(int n : nums) {
+//            int freq = map.getOrDefault(n, 0) + 1;
+//            map.put(n, freq);
+//        }
+//        //这里是直接将map的entry做比较，这样就能有多个元素了，不用新建数组或者实体类
+//        Queue<Map.Entry<Integer,Integer>> heap = new PriorityQueue<>((a, b) -> a.getValue() - b.getValue());
+//        /**
+//         * 这里也是维护一个小根堆，但是这里思路和正常有点区别，正常思路是会在k个元素满之后判断元素是否比堆顶大，然后出堆入堆，
+//         * 这里实现有点不一样，是先入堆，然后在出堆堆顶元素，这里时间复杂度是O(nlog(k+1))，理论上说应该比O(nlogk)慢，
+//         * 但是实际上比nlogk快(服务器原因，后面跑就nlogk快了)，这就很奇怪
+//         */
+//        for(Map.Entry<Integer,Integer> entry: map.entrySet()) {
+//            heap.offer(entry);
+//            if(heap.size() > k) {
+//                heap.poll();
+//            }
+//        }
+//        int[] res = new int[k];
+//        for(int i = 0; i < k; i++) {
+//            res[i] = heap.poll().getKey();
+//        }
+//        return res;
 
 
         /**
