@@ -36,7 +36,7 @@ import java.util.*;
 public class TopKFrequentElements{
       public static void main(String[] args) {
            Solution solution = new TopKFrequentElements().new Solution();
-          solution.topKFrequent(new int[]{1, 1, 1, 2, 2, 3}, 2);
+          solution.topKFrequent(new int[]{1}, 1);
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
@@ -52,6 +52,38 @@ class Solution {
          */
 
         /**
+         * 桶排序
+         */
+
+        Map<Integer, Integer> countMap = new HashMap<>();
+        for (int num : nums) {
+            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
+        }
+
+        //不能直接用数组记录，因为会存在多个数字出现次数一样，这种用数组会被覆盖
+        //因此直接在每个数组位置放一个list。
+        //桶的含义是每个出现次数包含的数字，桶里的元素是多个
+        //一个桶里会包含所有出现次数为该桶下标的数字
+        List<Integer>[] tong = new ArrayList[nums.length + 1];
+        for (Map.Entry<Integer, Integer> num : countMap.entrySet()) {
+            if (tong[num.getValue()]==null) tong[num.getValue()] = new ArrayList<>();
+            tong[num.getValue()].add(num.getKey());
+        }
+
+        int[] res = new int[k];
+        int index = 0;
+        //因为数组元素赋值是到了nums.length,因此是从nums.length而不是nums.length-1
+        for (int i = nums.length; i >= 0; i--) {
+            if (tong[i] == null) continue;
+            for (int n : tong[i]) {
+                res[index++] = n;
+                if (index == k) return res;
+            }
+        }
+
+        return res;
+
+        /**
          * 对在nlogk的复杂度下实现有两种，找最小k个数，这种就没必要维护一个小根堆,因为小根堆的时间复杂度出来是O(nlogn),
          * 而是维护一个大根堆，堆里只有k个元素，每次超过k个，然后用堆顶元素和入堆元素比较，如果比堆顶小，对顶元素出堆，该元素入堆，
          * 这样时间复杂度是O(nlogk)。
@@ -59,32 +91,32 @@ class Solution {
          *
          */
 
-        if (nums.length == 0 || nums.length < k) {
-            return new int[]{};
-        }
-
-        Map<Integer, Integer> numsMap = new HashMap<>();
-        for (int num : nums) {
-            numsMap.put(num, numsMap.getOrDefault(num, 0) + 1);
-        }
-
-        PriorityQueue<Map.Entry<Integer, Integer>> pri = new PriorityQueue<>((o1, o2) -> o1.getValue() - o2.getValue());
-        for (Map.Entry<Integer, Integer> num : numsMap.entrySet()) {
-            if (pri.size() < k) {
-                pri.offer(num);
-            } else if (pri.peek().getValue() < num.getValue()) {
-                pri.poll();
-                pri.offer(num);
-            }
-        }
-
-        int[] res = new int[k];
-        for (int i = 0; i < k; i++) {
-            res[i] = pri.poll().getKey();
-        }
-
-
-        return res;
+//        if (nums.length == 0 || nums.length < k) {
+//            return new int[]{};
+//        }
+//
+//        Map<Integer, Integer> numsMap = new HashMap<>();
+//        for (int num : nums) {
+//            numsMap.put(num, numsMap.getOrDefault(num, 0) + 1);
+//        }
+//
+//        PriorityQueue<Map.Entry<Integer, Integer>> pri = new PriorityQueue<>((o1, o2) -> o1.getValue() - o2.getValue());
+//        for (Map.Entry<Integer, Integer> num : numsMap.entrySet()) {
+//            if (pri.size() < k) {
+//                pri.offer(num);
+//            } else if (pri.peek().getValue() < num.getValue()) {
+//                pri.poll();
+//                pri.offer(num);
+//            }
+//        }
+//
+//        int[] res = new int[k];
+//        for (int i = 0; i < k; i++) {
+//            res[i] = pri.poll().getKey();
+//        }
+//
+//
+//        return res;
 
 
         /**
@@ -153,7 +185,7 @@ class Solution {
 //        /**
 //         * 这里也是维护一个小根堆，但是这里思路和正常有点区别，正常思路是会在k个元素满之后判断元素是否比堆顶大，然后出堆入堆，
 //         * 这里实现有点不一样，是先入堆，然后在出堆堆顶元素，这里时间复杂度是O(nlog(k+1))，理论上说应该比O(nlogk)慢，
-//         * 但是实际上比nlogk快(服务器原因，后面跑就nlogk快了)，这就很奇怪
+//         * 但是实际上比nlogk快(服务器原因，后面跑就nlogk快了)
 //         */
 //        for(Map.Entry<Integer,Integer> entry: map.entrySet()) {
 //            heap.offer(entry);
