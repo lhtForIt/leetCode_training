@@ -30,6 +30,68 @@ public class MaximumProductSubarray{
 class Solution {
     public int maxProduct(int[] nums) {
 
+
+        /**
+         * 正常dp，状态转移方程为dpmax[i]=Math.max(Math.max(dpMax[i-1]*nums[i],dpMin[i-1]*nums[i]),nums[i])
+         * dpmin[i]=Math.min(Math.min(dpMax[i-1]*nums[i],dpMin[i-1]*nums[i]),nums[i])
+         */
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        int[] dpMax = new int[nums.length];
+        int[] dpMin = new int[nums.length];
+
+        int max = nums[0];
+        dpMax[0] = nums[0];
+        dpMin[0] = nums[0];
+
+        for (int i = 1; i < nums.length; i++) {
+            dpMax[i] = Math.max(Math.max(dpMin[i - 1] * nums[i], dpMax[i - 1] * nums[i]), nums[i]);
+            dpMin[i] = Math.min(Math.min(dpMax[i - 1] * nums[i], dpMin[i - 1] * nums[i]), nums[i]);
+            max = Math.max(dpMax[i], max);
+        }
+
+        return max;
+
+
+        /**
+         * 其实想想这个的状态数组能进一步压缩，只用两个变量代表分别记录最大值和最小值即可，
+         */
+
+//        int dpMax = nums[0];
+//        int dpMin = nums[0];
+//
+//        int max = nums[0];
+//        for (int i = 1; i < nums.length; i++) {
+//
+//            int tempMax = dpMax, tempMin = dpMin;
+//            dpMax = Math.max(Math.max(tempMax * nums[i], tempMin * nums[i]), nums[i]);
+//            dpMin = Math.min(Math.min(tempMax * nums[i], tempMin * nums[i]), nums[i]);
+//
+//            max = Math.max(dpMax, max);
+//        }
+//
+//        return max;
+
+        /**
+         * 要么是以i为前缀的乘积，要么是以i为后缀的乘积，然后求最大值
+         * 说实话我不知道怎么去证明
+         */
+//        int n = nums.length, res = nums[0], l = 0, r = 0;
+//        for (int i = 0; i < n; i++) {
+//            l =  (l == 0 ? 1 : l) * nums[i];
+//            r =  (r == 0 ? 1 : r) * nums[n - 1 - i];
+//            res = Math.max(res, Math.max(l, r));
+//        }
+//        return res;
+
+
+
+
+
+
+
         /**
          * 动态规划
          *
@@ -68,24 +130,24 @@ class Solution {
          * 时间复杂度O(n)，空间复杂度O(1)
          *
          */
-        if (nums == null || nums.length == 0) {
-            return 0;
-        }
-
-
-        int dpMax = nums[0];
-        int dpMin = nums[0];
-        int max = nums[0];
-
-        for (int i = 1; i < nums.length; i++) {
-            //这儿需要两个零时变量存储dpMax和dpMin的值，不然会在计算的时候被覆盖，导致dpMin计算有问题
-            int tMax = dpMax, tMin = dpMin;
-            dpMax = Math.max(tMax * nums[i], Math.max(nums[i], tMin * nums[i]));
-            dpMin = Math.min(tMax * nums[i], Math.min(nums[i], tMin * nums[i]));
-            max = Math.max(max, dpMax);
-        }
-
-        return max;
+//        if (nums == null || nums.length == 0) {
+//            return 0;
+//        }
+//
+//
+//        int dpMax = nums[0];
+//        int dpMin = nums[0];
+//        int max = nums[0];
+//
+//        for (int i = 1; i < nums.length; i++) {
+//            //这儿需要两个零时变量存储dpMax和dpMin的值，不然会在计算的时候被覆盖，导致dpMin计算有问题
+//            int tMax = dpMax, tMin = dpMin;
+//            dpMax = Math.max(tMax * nums[i], Math.max(nums[i], tMin * nums[i]));
+//            dpMin = Math.min(tMax * nums[i], Math.min(nums[i], tMin * nums[i]));
+//            max = Math.max(max, dpMax);
+//        }
+//
+//        return max;
 
 
 

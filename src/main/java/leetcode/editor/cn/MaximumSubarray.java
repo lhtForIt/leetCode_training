@@ -65,23 +65,63 @@
 class Solution {
     public int maxSubArray(int[] nums) {
 
-        int max = nums[0];
-        int[] dp = new int[nums.length + 1];
-        dp[0] = nums[0];
+        /**
+         * 我们能很快的用数学归纳法得出dp[i-1]+nums[i]或者nums[i]最大值，
+         * 但是有个疑问，dp[i-1]的最大值能否保证连续性呢？
+         * 答案是可以的，为什么呢？因为在dp[i-1]的时候一定会有nums[i-1]，因此
+         * dp[i-1]+nums[i]一定是连续的
+         */
 
+        /**
+         * 下面这种方法不需要在外面初始化数据，但是代码会比较繁琐，不太推荐
+         */
+//        int[] dp = new int[nums.length];
+//        int max = Integer.MIN_VALUE;
+//        for (int i = 0; i < nums.length; i++) {
+//            if (i == 0) {
+//                dp[i] = nums[i];
+//            } else {
+//                dp[i] = Math.max(dp[i - 1] + nums[i], nums[i]);
+//            }
+//            max = max < dp[i] ? dp[i] : max;
+//        }
+//
+//        return max;
+
+//        int[] dp = new int[nums.length];
+//        int max = nums[0];
+//        dp[0] = nums[0];
+//        for (int i = 1; i < nums.length; i++) {
+//            dp[i] = Math.max(dp[i - 1] + nums[i], nums[i]);
+//            max = max < dp[i] ? dp[i] : max;
+//        }
+//
+//        return max;
+
+        /**
+         * 直接在原数组上修改，实际工程上不推荐，修改源数据是大忌，除非你copy一个来改。
+         */
+//        int max = nums[0];
+//        for (int i = 1; i < nums.length; i++) {
+//            nums[i] = Math.max(nums[i - 1] + nums[i], nums[i]);
+//            max = Math.max(max, nums[i]);
+//        }
+//
+//
+//
+//        return max;
+
+        /**
+         * 这种算是状态方程压缩吧，可以省去一个dp数组
+         */
+        int max = nums[0];
+        int currMax = nums[0];
         for (int i = 1; i < nums.length; i++) {
-            dp[i] = Math.max(dp[i - 1] + nums[i], nums[i]);
-            max = max > dp[i] ? max : dp[i];
+            currMax = Math.max(currMax + nums[i], nums[i]);
+            max = Math.max(currMax, max);
         }
 
         return max;
-
-
-
-
-
-
-
 
 
 
