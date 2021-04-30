@@ -60,15 +60,17 @@ import jdk.nashorn.internal.ir.annotations.Ignore;
 
 import javax.security.auth.login.Configuration;
 import java.util.*;
+import java.util.logging.Level;
 
 public class CoinChange {
     public static void main(String[] args) {
         Solution solution = new CoinChange().new Solution();
-        solution.coinChange(new int[]{2}, 3);
+        solution.coinChange(new int[]{2,4,6,8,10,12,14,16,18,20,22,24}, 9999);
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
+
         public int coinChange(int[] coins, int amount) {
 
             /**
@@ -109,6 +111,58 @@ public class CoinChange {
 //
 //            return -1;
 
+            /**
+             * 双端BFS
+             *
+             * 纠正个误区，BFS不一定比双端BFS慢，如果不是每层没有比上一层增长的话，
+             * 双端BFS的节点交换和其他操作可能比直接BFS还慢点
+             *
+             * 还有双端BFS的边界要考虑清楚，不然很容易导致死循环
+             *
+             * 比如这个题的下面这个测试用例，双端BFS会造成在进行交换之后一直使用endSet,
+             * 有种还不如不交换的感觉
+             * 测试用例:[2,4,6,8,10,12,14,16,18,20,22,24]
+             * 9999
+             *
+             */
+
+//            if (amount == 0) {
+//                return 0;
+//            }
+//            Set<Integer> beginSet = new HashSet<>();
+//            Set<Integer> endSet = new HashSet<>();
+//            Set<Integer> visited = new HashSet<>();
+//            beginSet.add(0);
+//            endSet.add(amount);
+//            visited.add(0);
+//            boolean reverseFlag = false;
+//            int count = 0;
+//            while (!beginSet.isEmpty()) {
+//                if (beginSet.size() > endSet.size()) {
+//                    Set<Integer> set = beginSet;
+//                    beginSet = endSet;
+//                    endSet = set;
+//                    reverseFlag = !reverseFlag;
+//                }
+//                Set<Integer> temp = new HashSet<>();
+//                for (int money : beginSet) {
+//                    for (int coin : coins) {
+//                        int curr = reverseFlag ? money - coin : money + coin;
+//                        if (endSet.contains(curr)) {
+//                            return count + 1;
+//                        }
+//                        if (!visited.contains(curr) && curr < amount && curr >= 0) {
+//                            temp.add(curr);
+//                            visited.add(curr);
+//                        }
+//                    }
+//                }
+//                beginSet = temp;
+//                count++;
+//            }
+//            return -1;
+
+
 
             /**
              * 这个很巧妙的一点是dp[n]里面的n代表amount的金额，然后dp[n]的值代表金币数量。
@@ -119,12 +173,13 @@ public class CoinChange {
 
             int[] dp = new int[amount + 1];
 //            Arrays.fill(dp, amount + 1);
+//            dp[0] = 0;
             //因为下标代表金额，0是没有意义的，所以从1开始
             for (int i = 1; i <= amount; i++) {
                 int min = amount + 1;
                 for (int coin : coins) {
                     if (coin <= i) {
-//                        dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+                        dp[i] = Math.min(dp[i], dp[i - coin] + 1);
                         min = Math.min(min, dp[i - coin] + 1);
                     }
                 }
@@ -134,6 +189,40 @@ public class CoinChange {
             return dp[amount] > amount ? -1 : dp[amount];
 
 
+            /**
+             * DFS
+             *
+             * 这里的思路是贪心的dfs一起用，因为正常的一个点一个点访问太慢了，
+             * 有可能会超时，我理解这里的贪心运算也叫剪枝的一种
+             *
+             * 而且因为是贪心，所以是一般是从最大的硬币开始算，然后尽量用大的
+             * 硬币值，当大硬币值能把当前值除尽的时候，就找到终点，否则继续递归，
+             * 这里用+不好实现，用-会好实现很多
+             *
+             * 这里需要先排序，保证最大值在最后(PS:上面这种方法由于leetcode官方新加的测试用例已经通过不了了)
+             *
+             * 这里dfs可以用dfs+cache的方法，有点类似动态规划推导，自顶向下，然后在自顶向下的时候加上缓存，
+             * 后面在查询的时候会查看缓存
+             *
+             * 需要牢记的一个点，递归是从上而下的，从下往上会有问题，这会我感觉从下往上都是动态规划的推导
+             * 且如果有缓存的话，dfs都是会有返回值的，和一般的递归有点区别
+             *
+             *
+             */
+
+//            if (amount < 1) return 0;
+//            return dfs(coins, amount, new HashMap<>());
+
+            /**
+             * dfs
+             *
+             * 将map替换成array，可以提升时间
+             */
+
+//            if (amount < 1) {
+//                return 0;
+//            }
+//            return dfsArray(coins, amount, new int[amount]);
 
 
 
@@ -194,6 +283,47 @@ public class CoinChange {
 
 
         }
+
+        private int dfsArray(int[] coins, int rem, int[] count) {
+            if (rem < 0) {
+                return -1;
+            }
+            if (rem == 0) {
+                return 0;
+            }
+            if (count[rem - 1] != 0) {
+                return count[rem - 1];
+            }
+            int min = Integer.MAX_VALUE;
+            for (int coin : coins) {
+                int res = dfsArray(coins, rem - coin, count);
+                if (res >= 0 && res < min) {
+                    min = 1 + res;
+                }
+            }
+            count[rem - 1] = (min == Integer.MAX_VALUE) ? -1 : min;
+            return count[rem - 1];
+
+        }
+
+        private int dfs(int[] coins, int amount, Map<Integer, Integer> memo) {
+
+            if (amount < 0) return -1;
+            if (amount == 0) return 0;
+            if (memo.containsKey(amount)) return memo.get(amount);
+
+            int count = -1;
+            for (int coin : coins) {
+                int remCount = dfs(coins, amount - coin, memo);
+                if (remCount == -1) continue;
+                count = (count == -1) ? (remCount + 1) : Math.min(count, remCount + 1);
+            }
+            memo.put(amount, count);
+            return count;
+
+        }
+
+
     }
 //leetcode submit region end(Prohibit modification and deletion)
 

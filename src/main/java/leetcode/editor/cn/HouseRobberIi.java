@@ -55,6 +55,46 @@ public class HouseRobberIi{
 class Solution {
     public int rob(int[] nums) {
 
+        if (nums.length == 1) {
+            return nums[0];
+        }
+
+        if (nums.length == 2) {
+            return Math.max(nums[0], nums[1]);
+        }
+
+        //分两种情况，因为第一家和最后一家不能都偷，那么超过两家的时候
+        //我们分情况讨论，偷第一家情况和偷最后一家的情况，然后两种情况的最大值
+        //在做比较，最后的最大值就是结果
+
+        int[] dp1 = new int[nums.length];
+        dp1[0] = nums[0];
+        dp1[1] = Math.max(nums[0], nums[1]);
+
+        //因为包含了第一家，所以不能投最后一家，因此右边界是nums.length-2
+        for (int i = 2; i < nums.length - 1; i++) {
+            dp1[i] = Math.max(dp1[i - 2] + nums[i], dp1[i - 1]);
+        }
+
+        int[] dp2 = new int[nums.length];
+        dp2[0] = 0;
+        dp2[1] = nums[1];
+        dp2[2] = Math.max(nums[1], nums[2]);
+
+        for (int i = 3; i < nums.length; i++) {
+            dp2[i] = Math.max(dp2[i - 2] + nums[i], dp2[i - 1]);
+        }
+
+        //这里dp1的右边界是nums.length-2，不是nums.length-1了
+        return Math.max(dp1[nums.length - 2], dp2[nums.length - 1]);
+
+
+
+
+
+
+
+
 
 //        if(nums.length == 0) return 0;
 //        if(nums.length == 1) return nums[0];
@@ -62,33 +102,33 @@ class Solution {
 //                recurRob(Arrays.copyOfRange(nums, 1, nums.length)));
 
 
-        if (nums.length == 0) {
-            return 0;
-        }
-        if (nums.length == 1) {
-            return nums[0];
-        }
-        if (nums.length == 2) {
-            return Math.max(nums[0], nums[1]);
-        }
-
-
-        //分两种情况，偷第一家和偷最后一家，然后比较大小
-        int[] dp1 = new int[nums.length];
-        dp1[0] = nums[0];
-        dp1[1] = Math.max(nums[0], nums[1]);
-        for (int i = 2; i <= nums.length - 2; i++) {
-            dp1[i] = Math.max(dp1[i - 2] + nums[i], dp1[i - 1]);
-        }
-
-        int[] dp2 = new int[nums.length];
-        dp2[1] = nums[1];
-        dp2[2] = Math.max(nums[1], nums[2]);
-        for (int i = 3; i <= nums.length - 1; i++) {
-            dp2[i] = Math.max(dp2[i - 2] + nums[i], dp2[i - 1]);
-        }
-
-        return Math.max(dp1[nums.length - 2], dp2[nums.length - 1]);
+//        if (nums.length == 0) {
+//            return 0;
+//        }
+//        if (nums.length == 1) {
+//            return nums[0];
+//        }
+//        if (nums.length == 2) {
+//            return Math.max(nums[0], nums[1]);
+//        }
+//
+//
+//        //分两种情况，偷第一家和偷最后一家，然后比较大小
+//        int[] dp1 = new int[nums.length];
+//        dp1[0] = nums[0];
+//        dp1[1] = Math.max(nums[0], nums[1]);
+//        for (int i = 2; i <= nums.length - 2; i++) {
+//            dp1[i] = Math.max(dp1[i - 2] + nums[i], dp1[i - 1]);
+//        }
+//
+//        int[] dp2 = new int[nums.length];
+//        dp2[1] = nums[1];
+//        dp2[2] = Math.max(nums[1], nums[2]);
+//        for (int i = 3; i <= nums.length - 1; i++) {
+//            dp2[i] = Math.max(dp2[i - 2] + nums[i], dp2[i - 1]);
+//        }
+//
+//        return Math.max(dp1[nums.length - 2], dp2[nums.length - 1]);
     }
 
           private int recurRob(int[] nums) {

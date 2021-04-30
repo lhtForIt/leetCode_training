@@ -43,6 +43,38 @@ public class HouseRobber{
 class Solution {
     public int rob(int[] nums) {
 
+
+        //这里的nums条件好像是nums.length>1,而不是题解写的那样nums>=0,所以不用判断0的情况
+        if (nums.length == 1) {
+            return nums[0];
+        }
+
+        int[] dp = new int[nums.length + 1];
+
+        dp[0] = nums[0];
+        dp[1] = Math.max(nums[0], nums[1]);
+
+        for (int i = 2; i < nums.length; i++) {
+            dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1]);
+        }
+
+        return dp[nums.length - 1];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         /**
          * 子问题：S(i)=Math.max(S(i-1),S(i-2)+nums[i])
          * 状态转移结构：dp[]
@@ -90,14 +122,14 @@ class Solution {
 //        }
 //
 //        return cur;
-        int pre = 0, cur = 0, max = 0;
-        for (int i = 0; i < nums.length; i++) {
-            max = Math.max(pre + nums[i], cur);
-            pre = cur;
-            cur = max;
-        }
-
-        return max;
+//        int pre = 0, cur = 0, max = 0;
+//        for (int i = 0; i < nums.length; i++) {
+//            max = Math.max(pre + nums[i], cur);
+//            pre = cur;
+//            cur = max;
+//        }
+//
+//        return max;
 
 
 
