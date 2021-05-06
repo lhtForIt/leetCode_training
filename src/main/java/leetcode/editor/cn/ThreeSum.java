@@ -59,16 +59,16 @@ class Solution {
 
 
         List<List<Integer>> res = new ArrayList<>();
-        if (nums.length < 3) {
+        if (nums == null || nums.length < 3) {
             return res;
         }
 
         Arrays.sort(nums);
 
         for (int i = 0; i < nums.length - 2; i++) {
-            if (nums[i] > 0) break;
-            if (i>0&&nums[i] == nums[i-1]) continue;
             int left = i + 1, right = nums.length - 1;
+            if (nums[i] > 0) break;
+            if (i > 0 && nums[i] == nums[i-1]) continue;
             while (left < right) {
                 if (nums[left] + nums[right] == -nums[i]) {
                     res.add(Arrays.asList(nums[left], nums[right], nums[i]));
@@ -85,9 +85,6 @@ class Solution {
         }
 
         return res;
-
-
-
 
 
 
