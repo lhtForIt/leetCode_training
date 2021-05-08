@@ -54,20 +54,15 @@ class Solution {
           public int longestCommonSubsequence(String text1, String text2) {
 
 
-              int m = text1.length(), n = text2.length();
-              char[] c1 = text1.toCharArray(), c2 = text2.toCharArray();
-              if (m == 0 || n == 0) {
-                  return 0;
-              }
+              int m = text1.length();
+              int n = text2.length();
 
+              char[] c1 = text1.toCharArray(), c2 = text2.toCharArray();
               int[][] dp = new int[m + 1][n + 1];
+
               for (int i = 1; i <= m; i++) {
                   for (int j = 1; j <= n; j++) {
-                      /**
-                       * 这里charAt会比直接数组访问慢10ms左右
-                       */
                       if (c1[i - 1] == c2[j - 1]) {
-//                      if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
                           dp[i][j] = dp[i - 1][j - 1] + 1;
                       } else {
                           dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
@@ -78,9 +73,64 @@ class Solution {
               return dp[m][n];
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//              int m = text1.length(), n = text2.length();
+//              char[] c1 = text1.toCharArray(), c2 = text2.toCharArray();
+//              if (m == 0 || n == 0) {
+//                  return 0;
+//              }
+//
+//              int[][] dp = new int[m + 1][n + 1];
+//              for (int i = 1; i <= m; i++) {
+//                  for (int j = 1; j <= n; j++) {
+//                      /**
+//                       * 这里charAt会比直接数组访问慢6-10ms左右
+//                       */
+////                      if (c1[i - 1] == c2[j - 1]) {
+//                      if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
+//                          dp[i][j] = dp[i - 1][j - 1] + 1;
+//                      } else {
+//                          dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+//                      }
+//                  }
+//              }
+//
+//              return dp[m][n];
+
+
               /**
                *    这里二维数组等于0的时候两个字符串是没有交界的，只有都>=1才会有交互，这
                *    也是为什么从dp[1][1]开始的原因
+               *
+               *    我们可以默认在i==0或者j==0的时候dp[i][j]都是0，text1和text2有交界处是当
+               *    i,j>=1的时候开始的，动态规划的循环起始条件是i=1和j=1
+               *
+               *    二位矩阵结构类似如下：
+               *      a c e
+               *    a 1 1 1
+               *    b 1 1 1
+               *    c 1 2 2
+               *    d 1 2 2
+               *    e 1 2 3
                 */
 //        int m = text1.length(), n = text2.length();
 //        if (m == 0 || n == 0) {

@@ -36,6 +36,7 @@ public class ReverseLinkedList{
 class Solution {
     public ListNode reverseList(ListNode head) {
 
+
         if (head == null || head.next == null) {
             return head;
         }
@@ -45,13 +46,6 @@ class Solution {
         head.next = null;
 
         return p;
-
-
-
-
-
-
-
 
 
 
