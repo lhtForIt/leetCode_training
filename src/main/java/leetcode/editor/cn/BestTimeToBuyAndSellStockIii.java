@@ -52,6 +52,10 @@
 
   
 package leetcode.editor.cn;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 public class BestTimeToBuyAndSellStockIii{
       public static void main(String[] args) {
           Solution solution = new BestTimeToBuyAndSellStockIii().new Solution();
@@ -60,15 +64,67 @@ public class BestTimeToBuyAndSellStockIii{
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int maxProfit(int[] prices) {
-        int hold1 = Integer.MIN_VALUE, hold2 = Integer.MIN_VALUE;
-        int release1 = 0, release2 = 0;
-        for(int i:prices){                              // Assume we only have 0 money at first
-            release2 = Math.max(release2, hold2+i);     // The maximum if we've just sold 2nd stock so far.
-            hold2    = Math.max(hold2,    release1-i);  // The maximum if we've just buy  2nd stock so far.
-            release1 = Math.max(release1, hold1+i);     // The maximum if we've just sold 1nd stock so far.
-            hold1    = Math.max(hold1,    -i);          // The maximum if we've just buy  1st stock so far.
+
+//        if (prices.length == 0) {
+//            return 0;
+//        }
+//
+//        int[][] dp = new int[3][prices.length];
+//        int[] min = new int[3];
+//        Arrays.fill(min, prices[0]);
+//
+//        for (int i = 1; i < prices.length; i++) {
+//            for (int k = 1; k <= 2; k++) {
+//                min[k] = Math.min(min[k], prices[i] - dp[k - 1][i - 1]);
+//                dp[k][i] = Math.max(dp[k][i - 1], prices[i] - min[k]);
+//
+//            }
+//        }
+//
+//        return dp[2][prices.length - 1];
+
+
+        /**
+         * 买的时候一定是要最小值，卖的时候一定是要最大值
+         */
+//        int buy1 = Integer.MAX_VALUE, buy2 = Integer.MAX_VALUE;
+//        int sell1 = 0, sell2 = 0;
+//
+//        for (int i = 0; i < prices.length; i++) {
+//            buy1 = Math.min(buy1, prices[i]);
+//            sell1 = Math.max(sell1, prices[i] - buy1);
+//            buy2 = Math.min(buy2, prices[i] - sell1);
+//            sell2 = Math.max(sell2, prices[i] - buy2);
+//        }
+//
+//        return sell2;
+
+
+        int buy1 = Integer.MAX_VALUE, buy2 = Integer.MAX_VALUE;
+        int sell1 = 0, sell2 = 0;
+
+        for (int i = 0; i < prices.length; i++) {
+            buy1 = Math.min(buy1, prices[i]);
+            sell1 = Math.max(sell1, prices[i] - buy1);
+            buy2 = Math.min(buy2, prices[i] - sell1);
+            sell2 = Math.max(sell2, prices[i] - buy2);
         }
-        return release2; ///Since release1 is initiated as 0, so release2 will always higher than release1.
+
+        return sell2;
+
+
+
+
+
+//        int hold1 = Integer.MIN_VALUE, hold2 = Integer.MIN_VALUE;
+//        int release1 = 0, release2 = 0;
+//        for(int i:prices){                              // Assume we only have 0 money at first
+//            release2 = Math.max(release2, hold2+i);     // The maximum if we've just sold 2nd stock so far.
+//            hold2    = Math.max(hold2,    release1-i);  // The maximum if we've just buy  2nd stock so far.
+//            release1 = Math.max(release1, hold1+i);     // The maximum if we've just sold 1nd stock so far.
+//            hold1    = Math.max(hold1,    -i);          // The maximum if we've just buy  1st stock so far.
+//        }
+//        return release2; ///Since release1 is initiated as 0, so release2 will always higher than release1.
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
