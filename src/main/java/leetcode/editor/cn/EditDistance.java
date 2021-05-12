@@ -53,25 +53,12 @@ public class EditDistance {
     //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int minDistance(String word1, String word2) {
-        /**
-         *
-         * 子问题：if charAt(i)==charAt(j) S(i,j)=S(i-1,j-1)
-         *         else S(i,j)=min(S(i-1,j-1), S(i-1,j), S(i,j-1)) + 1
-         *  状态转移数组：dp[i][j] 代表word1 i位置转为word2 j位置所需的最小步数
-         *  状态转移方程：
-         *         if charAt(i)==charAt(j) dp[i][j]=dp[i-1][j-1]
-         *         else dp[i][j]=min(dp[i-1][j-1], dp[i-1][j], dp[i][j-1]) + 1
-         *
-         * 时间复杂度 ：O(mn)
-         *
-         * 空间复杂度 ：O(mn)
-         *
-         */
+
 
         int n1 = word1.length();
         int n2 = word2.length();
-        int[][] dp = new int[n1 + 1][n2 + 1];
 
+        int[][] dp = new int[n1 + 1][n2 + 1];
         for (int i = 1; i <= n1; i++) {
             dp[i][0] = i;
         }
@@ -85,14 +72,86 @@ class Solution {
                 if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
                     dp[i][j] = dp[i - 1][j - 1];
                 } else {
-                    dp[i][j] = Math.min(Math.min(dp[i - 1][j - 1], dp[i][j - 1]), dp[i - 1][j]) + 1;
+                    dp[i][j] = Math.min(Math.min(dp[i - 1][j - 1], dp[i - 1][j]), dp[i][j - 1]) + 1;
                 }
             }
         }
 
-
         return dp[n1][n2];
 
+
+        /**
+         *
+         * 子问题：if charAt(i)==charAt(j) S(i,j)=S(i-1,j-1)
+         *         else S(i,j)=min(S(i-1,j-1), S(i-1,j), S(i,j-1)) + 1
+         *  状态转移数组：dp[i][j] 代表word1 i位置转为word2 j位置所需的最小步数
+         *  状态转移方程：
+         *         if charAt(i)==charAt(j) dp[i][j]=dp[i-1][j-1]
+         *         else dp[i][j]=min(dp[i-1][j-1], dp[i-1][j], dp[i][j-1]) + 1
+         *
+         * 时间复杂度 ：O(mn)
+         *
+         * 空间复杂度 ：O(mn)
+         *   ''  r o s
+         * '' 0  1 2 3
+         * h  1  1      //h转换成r只需要替换一个字符即可
+         * o  2
+         * r  3
+         * s  4
+         * e  5
+         *
+         */
+
+//        int n1 = word1.length();
+//        int n2 = word2.length();
+//        int[][] dp = new int[n1 + 1][n2 + 1];
+//
+//        for (int i = 1; i <= n1; i++) {
+//            dp[i][0] = i;
+//        }
+//
+//        for (int j = 1; j <= n2; j++) {
+//            dp[0][j] = j;
+//        }
+//
+//        for (int i = 1; i <= n1; i++) {
+//            for (int j = 1; j <= n2; j++) {
+//                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+//                    dp[i][j] = dp[i - 1][j - 1];
+//                } else {
+//                    dp[i][j] = Math.min(Math.min(dp[i - 1][j - 1], dp[i][j - 1]), dp[i - 1][j]) + 1;
+//                }
+//            }
+//        }
+//
+//
+//        return dp[n1][n2];
+
+        /**
+         *
+         * 其实每一层的状态可以由上一层推导出来，因此可以直接用以为数据进行dp，
+         * 提高了空间复杂度
+         */
+
+//        int m = word1.length(), n = word2.length(), pre;
+//        int[] cur = new int[n + 1];
+//        for (int j = 1; j <= n; j++) {
+//            cur[j] = j;
+//        }
+//        for (int i = 1; i <= m; i++) {
+//            pre = cur[0];
+//            cur[0] = i;
+//            for (int j = 1; j <= n; j++) {
+//                int temp = cur[j];
+//                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+//                    cur[j] = pre;
+//                } else {
+//                    cur[j] = Math.min(pre, Math.min(cur[j - 1], cur[j])) + 1;
+//                }
+//                pre = temp;
+//            }
+//        }
+//        return cur[n];
 
     }
 }

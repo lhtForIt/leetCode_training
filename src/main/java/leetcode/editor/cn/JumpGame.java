@@ -47,19 +47,37 @@ public class JumpGame {
     class Solution {
         public boolean canJump(int[] nums) {
 
-            int canReach = nums.length - 1;
-            for (int i = nums.length - 2; i >= 0; i--) {
+            /**
+             * 贪心算法
+             */
+//            int canReach = nums.length - 1;
+//            for (int i = nums.length - 2; i >= 0; i--) {
+//                if (i + nums[i] >= canReach) {
+//                    canReach = i;
+//                }
+//            }
+//
+//            return canReach == 0;
+
+
+            /**
+             * 动态规划
+             * 这里反着推的话会高效很多，但是你写出这个动态规划会发现其实基本就是贪心算法
+             * 的代码了，这个boolean的数组其实没多少用，
+             */
+
+            int n = nums.length;
+            boolean[] dp = new boolean[n];
+            dp[n - 1] = true;
+            int canReach = n - 1;
+            for (int i = n - 2; i >= 0; i--) {
                 if (i + nums[i] >= canReach) {
+                    dp[i] = true;
                     canReach = i;
                 }
             }
 
-            return canReach == 0;
-
-
-
-
-
+            return dp[0];
 
 
 
