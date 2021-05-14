@@ -63,26 +63,21 @@ public class SwapNodesInPairs{
     class Solution {
         public ListNode swapPairs(ListNode head) {
 
-            if (head == null || head.next == null) {
-                return head;
+            ListNode prev = new ListNode(0);
+            prev.next = head;
+            ListNode temp = prev;
+
+            while (temp.next != null && temp.next.next != null) {
+
+                ListNode start = temp.next;
+                ListNode end = temp.next.next;
+                temp.next = end;
+                start.next = end.next;
+                end.next = start;
+                temp = start;
             }
 
-            ListNode next = head.next;
-            head.next = swapPairs(next.next);
-            next.next = head;
-
-            return next;
-
-
-
-
-
-
-
-
-
-
-
+            return prev.next;
 
 
 

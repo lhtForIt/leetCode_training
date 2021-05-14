@@ -83,10 +83,12 @@ public class LinkedListCycleIi{
 public class Solution {
     public ListNode detectCycle(ListNode head) {
 
+        if (head == null || head.next == null) {
+            return null;
+        }
 
         ListNode slow = head, fast = head;
         while (true) {
-
             if (fast == null || fast.next == null) {
                 return null;
             }
@@ -100,21 +102,15 @@ public class Solution {
 
         }
 
-        fast = head;
+        slow = head;
 
         while (slow != fast) {
-
             slow = slow.next;
             fast = fast.next;
 
         }
 
         return fast;
-
-
-
-
-
 
 
         /**
@@ -126,7 +122,9 @@ public class Solution {
          * 最后会在a位置相遇
          */
 
-
+//        if (head == null || head.next == null) {
+//            return null;
+//        }
 //        ListNode slow = head, fast = head;
 //        while (true) {
 //            if (fast == null || fast.next == null) {
@@ -139,7 +137,7 @@ public class Solution {
 //                break;
 //            }
 //        }
-//
+//        //这儿slow和fast=head都可以，没区别
 //        fast = head;
 //        while (slow != fast) {
 //            slow = slow.next;

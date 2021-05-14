@@ -20,8 +20,13 @@
 // 👍 839 👎 0
 
   
-  package leetcode.editor.cn;
-  public class JumpGameIi{
+package leetcode.editor.cn;
+
+import java.util.Arrays;
+import java.util.Deque;
+import java.util.LinkedList;
+
+public class JumpGameIi{
       public static void main(String[] args) {
            Solution solution = new JumpGameIi().new Solution();
           solution.jump(new int[]{2, 3, 1, 1, 4});
@@ -30,26 +35,29 @@
 class Solution {
     public int jump(int[] nums) {
 
-        int step = 0;
-        int curEnd = 0;
-        int curFature = 0;
 
-        for (int i = 0; i < nums.length - 1; i++) {
-            curFature = Math.max(i + nums[i], curFature);
-            if (i == curEnd) {
-                step++;
-                curEnd = curFature;
-            }
+        /**
+         * 动态规划
+         */
+        int n = nums.length;
+        int[] f = new int[n];
+        int j = 0;
+        for (int i = 1; i < n; i++) {
+            while (j + nums[j] < i) j++;
+            f[i] = f[j] + 1;
         }
+        return f[n - 1];
 
-        return step;
+
 
 
         /**
          * 贪心算法
          *
-         * 有的也说这是个BFS方案：i==curEnd代表访问完当前层所有节点，
-         * step++代表进入下一级，curEnd = curFarthest代表获得下一级你访问的queue的大小
+         * curFarthest代表范围在[currBegin(i),currEnd]之间所有点能达到的最远距离，
+         * 然后我们当前只要跳跃这个最远距离，就一定是当前最小步骤
+         * i是不会到达nums.length-1的，因为最后一个位置，我只需要跳到最后一个位置即可。
+         * 这里的贪心体现在我们每步都跳的最远距离
          *
          */
 //        int step = 0;
@@ -67,7 +75,9 @@ class Solution {
 
 
         /**
-         * BFS，为啥会比贪心快很多？
+         * BFS，
+         * 有的也说这是个BFS方案：i==curEnd代表访问完当前层所有节点，
+         * step++代表进入下一级，curEnd = curFarthest代表获得下一级你访问的queue的大小
          */
 //        if(nums.length<2)return 0;
 //        int level=0,currentMax=0,i=0,nextMax=0;

@@ -63,28 +63,10 @@ class Solution {
         int max = 0;
         for (int left = 0, right = a.length - 1; left < right; ) {
             int v = (right - left) * (a[left] < a[right] ? a[left++] : a[right--]);
-            max = max < v ? v : max;
+            max = max > v ? max : v;
         }
 
         return max;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         /**
@@ -110,21 +92,6 @@ class Solution {
          * 没思路的时候可以往这边想
          */
 
-//        int left = 0, right = height.length - 1;
-//        int max = 0;
-//        while (left < right) {
-//            if (height[left] < height[right]) {
-//                max = Math.max(max, (right - left) * height[left]);
-//                left++;
-//            } else {
-//                max = Math.max(max, (right - left) * height[right]);
-//                right--;
-//            }
-//        }
-
-
-//        int max = 0;
-//
 //        /**
 //         * 边界条件，i==j时宽度为0，因此边界是i<j
 //         *

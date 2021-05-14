@@ -48,7 +48,6 @@ class Solution {
             int one_step = 1;
             int two_step = 2;
             int all_way = 0;
-
             for (int i = 3; i <= n; i++) {
                 all_way = one_step + two_step;
                 one_step = two_step;
@@ -56,9 +55,6 @@ class Solution {
             }
 
             return all_way;
-
-
-
 
 
 
