@@ -45,21 +45,13 @@ class Solution {
                 return n;
             }
 
-            int one_step = 1;
-            int two_step = 2;
-            int all_way = 0;
-            for (int i = 3; i <= n; i++) {
-                all_way = one_step + two_step;
-                one_step = two_step;
-                two_step = all_way;
-            }
+            if (dpMap.containsKey(n)) return dpMap.get(n);
 
-            return all_way;
+            int temp = climbStairs(n - 1) + climbStairs(n - 2);
 
+            dpMap.put(n, temp);
 
-
-
-
+            return temp;
             /**
              * 法一：动态规划
              */
