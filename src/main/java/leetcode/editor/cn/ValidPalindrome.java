@@ -54,6 +54,30 @@ class Solution {
 
         return true;
 
+
+//        if (s.isEmpty()) {
+//            return false;
+//        }
+//
+//        char[] chars = s.toCharArray();
+//
+//        int left = 0, right = s.length() - 1;
+//
+//        while (left <= right) {
+//            //字符为空格
+//            if (!Character.isLetterOrDigit(chars[left])) {
+//                left++;
+//            } else if (!Character.isLetterOrDigit(chars[right])) {
+//                right--;
+//            } else {
+//                if (Character.toLowerCase(chars[left]) != Character.toLowerCase(chars[right])) {
+//                    return false;
+//                }
+//                left++;
+//                right--;
+//            }
+//        }
+//        return true;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

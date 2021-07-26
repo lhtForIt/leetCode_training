@@ -62,11 +62,12 @@ class Solution {
 
         int max = 0;
         for (int left = 0, right = a.length - 1; left < right; ) {
-            int v = (right - left) * (a[left] < a[right] ? a[left++] : a[right--]);
-            max = max > v ? max : v;
+            int area = (right - left) * (a[left] < a[right] ? a[left++] : a[right--]);
+            max = max < area ? area : max;
         }
 
         return max;
+
 
 
         /**
