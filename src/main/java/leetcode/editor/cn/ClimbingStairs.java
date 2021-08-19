@@ -41,17 +41,31 @@ class Solution {
         Map<Integer, Integer> dpMap = new HashMap<>();
         public int climbStairs(int n) {
 
+
             if (n <= 2) {
                 return n;
             }
 
-            if (dpMap.containsKey(n)) return dpMap.get(n);
+            int[] dp = new int[n + 1];
 
-            int temp = climbStairs(n - 1) + climbStairs(n - 2);
+            dp[1] = 1;
+            dp[2] = 2;
 
-            dpMap.put(n, temp);
+            for (int i = 3; i <= n; i++) {
+                dp[i] = dp[i - 1] + dp[i - 2];
+            }
 
-            return temp;
+            return dp[n];
+
+
+
+
+
+
+
+
+
+
             /**
              * 法一：动态规划
              */

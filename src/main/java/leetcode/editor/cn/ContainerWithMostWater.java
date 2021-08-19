@@ -60,13 +60,16 @@ public class ContainerWithMostWater{
 class Solution {
     public int maxArea(int[] a) {
 
-        int max = 0;
+        int maxArea = 0;
         for (int left = 0, right = a.length - 1; left < right; ) {
-            int area = (right - left) * (a[left] < a[right] ? a[left++] : a[right--]);
-            max = max < area ? area : max;
+            int v = (right - left) * (a[left] < a[right] ? a[left++] : a[right--]);
+            maxArea = maxArea < v ? v : maxArea;
         }
 
-        return max;
+        return maxArea;
+
+
+
 
 
 

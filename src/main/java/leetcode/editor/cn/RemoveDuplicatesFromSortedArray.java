@@ -63,6 +63,7 @@ class Solution {
 
         int j = 0;
         for (int i = 0; i < nums.length; i++) {
+            //当不相等时，直接j的下一位替换为另一个数
             if (nums[i] != nums[j]) {
                 nums[++j] = nums[i];
             }
@@ -91,6 +92,7 @@ class Solution {
          * 这是个排好序的数组，因此当下一次nums[i]!=nums[j]时，
          * 第一组相等的所有元素都已经走完，所以直接将nums[i]换到nums[j+1]处即
          * nums[j+1]=nums[i]，简便点可以写成nums[++j]=nums[i]
+         * 这里必须是++j,因为后面会返回j的值，所以j需要自加1，而不能直接j+1
          */
 //        if (nums == null || nums.length == 0) {
 //            return 0;

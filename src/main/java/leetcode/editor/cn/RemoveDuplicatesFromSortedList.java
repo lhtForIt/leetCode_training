@@ -48,9 +48,42 @@ public class RemoveDuplicatesFromSortedList {
  */
 class Solution {
     public ListNode deleteDuplicates(ListNode head) {
+
+
+        if (head == null) {
+            return head;
+        }
+
+        ListNode curr = head;
+        while (curr != null && curr.next != null) {
+            if (curr.val == curr.next.val) {
+                curr.next = curr.next.next;
+            } else {
+                curr = curr.next;
+            }
+        }
+
+        return head;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         /**
          * 迭代
+         * 迭代思路很简单，就是依次遍历，如果前后两个元素相等就直接指向下下个元素，
+         * 否则直接往后走，这里需要注意while条件不要忽略了curr.next != null
          */
+
 //        if (head == null) {
 //            return head;
 //        }
@@ -69,11 +102,17 @@ class Solution {
 
         /**
          * 递归
+         *
+         * 这里主要思想就是判断head和head.next值是否相等，相等则只返回head.next的值，相当于把head部分断掉了(可以理解不断取两个节点，如果相等就舍弃前面的节点)，
+         * 如1(1)->1(2)->2->3(1)->3(2) 递归到最后一层时，head为3(1)->3(2)，第二行代码执行完head.next为3(2)，
+         * 第三行代码会将3(1)和3(2)，比较最后返回3(2)，然后在1(1)和1(2)比较的时候返回1(2)->2->3(2)
+         *
          */
 
-        if(head == null || head.next == null)return head;
-        head.next = deleteDuplicates(head.next);
-        return head.val == head.next.val ? head.next : head;
+
+//        if(head == null || head.next == null)return head;
+//        head.next = deleteDuplicates(head.next);
+//        return head.val == head.next.val ? head.next : head;
 
 
     }
