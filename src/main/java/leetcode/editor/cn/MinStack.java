@@ -63,6 +63,7 @@ class MinStack {
          */
         //我们可以在节点中保存数值的信息并同时保存最小值
         private Node head;
+
         public void push(int x) {
             if (head == null) {
                 head = new Node(x, x);
@@ -85,9 +86,9 @@ class MinStack {
 
        private class Node{
 
-           int val;
-           int min;
-           Node next;
+           private int val;
+           private int min;
+           private Node next;
 
            public Node(int val, int min, Node next) {
                this.val = val;

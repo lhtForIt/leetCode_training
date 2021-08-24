@@ -65,7 +65,7 @@ import java.util.LinkedList;
 public class ValidParentheses{
       public static void main(String[] args) {
            Solution solution = new ValidParentheses().new Solution();
-          solution.isValid("{[]}");
+          solution.isValid("()");
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
@@ -93,8 +93,6 @@ class Solution {
         }
 
         return stack.isEmpty();
-
-
 
 
 

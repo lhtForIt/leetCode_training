@@ -82,31 +82,69 @@ class Solution {
     public int[] maxSlidingWindow(int[] nums, int k) {
 
 
+        if (nums == null || nums.length < k) {
+            return nums;
+        }
+
+        Deque<Integer> deque = new LinkedList<>();
+        int[] res = new int[nums.length - k + 1];
+
+        for (int i = 0; i < nums.length; i++) {
+
+            if (!deque.isEmpty() && deque.peekFirst() == i - k) {
+                deque.pollFirst();
+            }
+
+            while (!deque.isEmpty() && nums[deque.peekLast()] < nums[i]) {
+                deque.pollLast();
+            }
+
+            deque.offerLast(i);
+
+            if (i - k + 1 >= 0) {
+                res[i - k + 1] = nums[deque.peekFirst()];
+            }
+
+
+        }
+
+        return res;
+
+
+
+
+
+
+
+
+
+
+
+
 
         /**
          * 思路:将数组按k个一组分成多段，最后一段可能不足k个，
          * 1、分别从左边开始找到最大值和右边开始找到最大值。
          * 2、比较左右最大值，大的那个就是该位置滑动窗口的最大值
          */
-        final int[] max_left = new int[nums.length];
-        final int[] max_right = new int[nums.length];
-
-        max_left[0] = nums[0];
-        max_right[nums.length - 1] = nums[nums.length - 1];
-
-        for (int i = 1; i < nums.length; i++) {
-            max_left[i] = (i % k == 0) ? nums[i] : Math.max(max_left[i - 1], nums[i]);
-
-            final int j = nums.length - i - 1;
-            max_right[j] = (j % k == 0) ? nums[j] : Math.max(max_right[j + 1], nums[j]);
-        }
-
-        final int[] sliding_max = new int[nums.length - k + 1];
-        for (int i = 0, j = 0; i + k <= nums.length; i++) {
-            sliding_max[j++] = Math.max(max_right[i], max_left[i + k - 1]);
-        }
-
-        return sliding_max;
+//        final int[] max_left = new int[nums.length];
+//        final int[] max_right = new int[nums.length];
+//
+//        max_left[0] = nums[0];
+//        max_right[nums.length - 1] = nums[nums.length - 1];
+//
+//        for (int i = 1; i < nums.length; i++) {
+//            max_left[i] = (i % k == 0) ? nums[i] : Math.max(max_left[i - 1], nums[i]);
+//
+//            final int j = nums.length - i - 1;
+//            max_right[j] = (j % k == 0) ? nums[j] : Math.max(max_right[j + 1], nums[j]);
+//        }
+//
+//        final int[] sliding_max = new int[nums.length - k + 1];
+//        for (int i = 0, j = 0; i + k <= nums.length; i++) {
+//            sliding_max[j++] = Math.max(max_right[i], max_left[i + k - 1]);
+//        }
+//        return sliding_max;
 
         /**
          * 暴力
