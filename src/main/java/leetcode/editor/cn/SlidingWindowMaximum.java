@@ -83,19 +83,18 @@ class Solution {
 
 
         if (nums == null || nums.length < k) {
-            return nums;
+            return new int[]{};
         }
 
-        Deque<Integer> deque = new LinkedList<>();
         int[] res = new int[nums.length - k + 1];
+        Deque<Integer> deque = new LinkedList<>();
 
         for (int i = 0; i < nums.length; i++) {
-
             if (!deque.isEmpty() && deque.peekFirst() == i - k) {
                 deque.pollFirst();
             }
 
-            while (!deque.isEmpty() && nums[deque.peekLast()] < nums[i]) {
+            while (!deque.isEmpty() && nums[i] > nums[deque.peekLast()]) {
                 deque.pollLast();
             }
 
@@ -104,12 +103,9 @@ class Solution {
             if (i - k + 1 >= 0) {
                 res[i - k + 1] = nums[deque.peekFirst()];
             }
-
-
         }
 
         return res;
-
 
 
 

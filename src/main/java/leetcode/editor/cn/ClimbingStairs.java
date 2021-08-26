@@ -46,19 +46,17 @@ class Solution {
                 return n;
             }
 
-            int[] dp = new int[n + 1];
-
-            dp[1] = 1;
-            dp[2] = 2;
+            int one_step = 1;
+            int two_step = 2;
+            int all_way = 0;
 
             for (int i = 3; i <= n; i++) {
-                dp[i] = dp[i - 1] + dp[i - 2];
+                all_way = one_step + two_step;
+                one_step = two_step;
+                two_step = all_way;
             }
 
-            return dp[n];
-
-
-
+            return all_way;
 
 
 

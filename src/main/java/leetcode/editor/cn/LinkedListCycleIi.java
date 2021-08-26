@@ -99,7 +99,6 @@ public class Solution {
             if (slow == fast) {
                 break;
             }
-
         }
 
         slow = head;
@@ -107,10 +106,16 @@ public class Solution {
         while (slow != fast) {
             slow = slow.next;
             fast = fast.next;
-
         }
 
         return fast;
+
+
+
+
+
+
+
 
 
         /**
@@ -122,6 +127,7 @@ public class Solution {
          * 最后会在a位置相遇
          */
 
+        //这而不能反回head，因为如果只有一个节点即head.next==null,这样会以为head为环起始点，其实不是，因此必须反回null
 //        if (head == null || head.next == null) {
 //            return null;
 //        }

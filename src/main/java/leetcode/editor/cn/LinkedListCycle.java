@@ -80,8 +80,8 @@ public class Solution {
         }
 
         ListNode slow = head, fast = head.next;
-        while (slow != fast) {
 
+        while (slow != fast) {
             if (fast == null || fast.next == null) {
                 return false;
             }
@@ -92,8 +92,6 @@ public class Solution {
         }
 
         return true;
-
-
 
 
 
