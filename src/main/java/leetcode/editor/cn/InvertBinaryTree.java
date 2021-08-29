@@ -61,34 +61,18 @@ class Solution {
     public TreeNode invertTree(TreeNode root) {
 
 
-        if (root == null) {
+        if (root==null) {
             return null;
         }
 
-        Deque<TreeNode> stack = new LinkedList<>();
-        stack.push(root);
+        TreeNode temp = root.left;
+        root.left = root.right;
+        root.right = temp;
 
-        while (!stack.isEmpty()) {
-
-            TreeNode node = stack.pop();
-            TreeNode temp = node.left;
-            node.left = node.right;
-            node.right = temp;
-
-            if (node.left != null) {
-                stack.push(node.left);
-            }
-
-            if (node.right != null) {
-                stack.push(node.right);
-            }
-        }
+        invertTree(root.left);
+        invertTree(root.right);
 
         return root;
-
-
-
-
 
 
         /**
