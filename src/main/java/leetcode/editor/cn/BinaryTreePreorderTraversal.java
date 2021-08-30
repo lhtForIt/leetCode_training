@@ -57,6 +57,7 @@
   
 package leetcode.editor.cn;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -87,29 +88,24 @@ class Solution {
     LinkedList<Integer> res = new LinkedList<>();
 
     public List<Integer> preorderTraversal(TreeNode root) {
-        List<Integer> result = new ArrayList<>();
 
+
+        List<Integer> res1 = new ArrayList<>();
         Deque<TreeNode> stack = new LinkedList<>();
 
-
         while (root != null || !stack.isEmpty()) {
+
             while (root != null) {
-                result.add(root.val);
+                res1.add(root.val);
                 stack.push(root);
                 root = root.left;
             }
-            TreeNode node = stack.pop();
-            root = node.right;
+
+            root = stack.pop();
+            root = root.right;
         }
 
-        return result;
-
-
-
-
-
-
-
+        return res1;
 
 
 

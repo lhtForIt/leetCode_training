@@ -66,18 +66,18 @@ class Solution {
         stack.push(root);
 
         while (!stack.isEmpty()) {
+
             Node node = stack.pop();
             result.add(node.val);
+
             for (int i = node.children.size() - 1; i >= 0; i--) {
                 stack.push(node.children.get(i));
             }
+
         }
 
 
         return result;
-
-
-
 
 
 
@@ -111,6 +111,7 @@ class Solution {
          * 法二：非递归
          *
          * 自己维护一个栈模拟递归过程
+         * 这题非递归会比递归慢很多
          *
          * 时间复杂度O(n)，空间复杂度O(n)
          *

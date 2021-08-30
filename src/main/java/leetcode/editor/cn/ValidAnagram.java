@@ -37,7 +37,7 @@ class Solution {
     public boolean isAnagram(String s, String t) {
 
         /**
-         * Map
+         * array
          */
 
 
@@ -45,16 +45,14 @@ class Solution {
             return false;
         }
 
-        int[] chars = new int[26];
+        int[] charArray = new int[26];
 
         for (char c : s.toCharArray()) {
-            chars[c - 'a']++;
+            charArray[c - 'a']++;
         }
 
-
         for (char c : t.toCharArray()) {
-            int count = --chars[c - 'a'];
-            if (count < 0) {
+            if (--charArray[c - 'a'] < 0) {
                 return false;
             }
         }
@@ -69,11 +67,12 @@ class Solution {
 
 
 
-
-
-
         /**
          * 法一：直接用封装的hashMap
+         * 这里可能会有个疑问，觉得count--是否能包含所有情况，会不会存在有正数但是没有负数的情况，这种是一定不会的，
+         * 因为位数相等，如果不是异位词就一定会有负数，有两种情况：
+         * 1、直接那个字符没有，就是0-1=-1，这个比较好理解。
+         * 2、都有这些字符，只是一个多一个少，那势必多的那个会是负数。
          * 时间复杂度O（n）,空间复杂度O(n)
          */
 

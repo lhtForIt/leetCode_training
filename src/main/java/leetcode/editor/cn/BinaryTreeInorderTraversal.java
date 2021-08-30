@@ -62,6 +62,7 @@ import java.util.*;
 public class BinaryTreeInorderTraversal{
       public static void main(String[] args) {
            Solution solution = new BinaryTreeInorderTraversal().new Solution();
+          solution.inorderTraversal(new TreeNode(1, null, new TreeNode(2, new TreeNode(3, null, null), null)));
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 /**
@@ -94,14 +95,13 @@ class Solution {
                 stack.push(root);
                 root = root.left;
             }
-
-            TreeNode node = stack.pop();
-            res.add(node.val);
-            root = node.right;
-
+            root = stack.pop();
+            res.add(root.val);
+            root = root.right;
         }
 
         return res;
+
 
 
 
@@ -115,6 +115,9 @@ class Solution {
          * 然后弹出栈顶元素，将值放入result中，然后将根节点替换成右子树重复上述过程,
          * 就是由于有root=root.right的原因，所以外层while的root!=null不能去掉，因为如果只有
          * !stack.isEmpty()会存在当前stack为空，但是右节点没有压入栈中
+         *
+         * 感觉以前注释写的有问题，root！=null不能去掉的原因是，stack一开始是null的，
+         * 如果去掉第一次循环都进不去
          */
 
 //        List<Integer> res = new ArrayList<>();
@@ -213,7 +216,7 @@ class Solution {
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
-public class TreeNode {
+public static class TreeNode {
       int val;
       TreeNode left;
       TreeNode right;

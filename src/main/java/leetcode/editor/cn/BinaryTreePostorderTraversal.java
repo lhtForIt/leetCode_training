@@ -52,6 +52,40 @@ class Solution {
     public List<Integer> postorderTraversal(TreeNode root) {
 
 
+        List<Integer> ress = new LinkedList<>();
+        if (root == null) {
+            return ress;
+        }
+        Deque<TreeNode> stack = new LinkedList<>();
+
+        stack.push(root);
+
+        while (!stack.isEmpty()) {
+
+            TreeNode node = stack.pop();
+            ress.add(0, node.val);
+
+            if (node.left != null) {
+                stack.push(node.left);
+            }
+
+            if (node.right != null) {
+                stack.push(node.right);
+            }
+        }
+
+        return ress;
+
+
+
+
+
+
+
+
+
+
+
         /**
          * 递归
          */
@@ -92,29 +126,32 @@ class Solution {
 
         /**
          * 迭代2
+         *
+         * 这种写法也可以写前序遍历，只需要将Node.left和node.right换顺序以及后续是ress.addFirst()，前序遍历是直接ress.add()即可。
+         *
          */
-        LinkedList<Integer> ress = new LinkedList<>();
-        Deque<TreeNode> stack = new LinkedList<>();
-
-        stack.push(root);
-
-        while (!stack.isEmpty()) {
-
-            TreeNode node = stack.pop();
-
-            ress.addFirst(node.val);
-
-            if (node.left != null) {
-                stack.push(node.left);
-            }
-
-            if (node.right != null) {
-                stack.push(node.right);
-            }
-
-        }
-
-        return ress;
+//        LinkedList<Integer> ress = new LinkedList<>();
+//        Deque<TreeNode> stack = new LinkedList<>();
+//
+//        stack.push(root);
+//
+//        while (!stack.isEmpty()) {
+//
+//            TreeNode node = stack.pop();
+//
+//            ress.addFirst(node.val);
+//
+//            if (node.left != null) {
+//                stack.push(node.left);
+//            }
+//
+//            if (node.right != null) {
+//                stack.push(node.right);
+//            }
+//
+//        }
+//
+//        return ress;
 
 
 

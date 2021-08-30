@@ -34,25 +34,25 @@ public class GroupAnagrams{
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
 
+        if (strs == null || strs.length == 0) {
+            return new ArrayList<>();
+        }
+
         Map<String, List<String>> keyMap = new HashMap<>();
-        for (String str : strs) {
-            char[] chars = new char[26];
-            for (char c : str.toCharArray()) {
-                chars[c - 'a']++;
+
+        for (String s : strs) {
+            char[] cc = new char[26];
+            for (char c : s.toCharArray()) {
+                cc[c - 'a']++;
             }
-            String key = new String(chars);
+            String key = new String(cc);
             if (!keyMap.containsKey(key)) {
                 keyMap.put(key, new ArrayList<>());
             }
-            keyMap.get(key).add(str);
-         }
-
+            keyMap.get(key).add(s);
+        }
 
         return new ArrayList<>(keyMap.values());
-
-
-
-
 
 
 
