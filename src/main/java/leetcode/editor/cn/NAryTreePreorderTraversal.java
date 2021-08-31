@@ -56,11 +56,9 @@ class Solution {
     public List<Integer> preorder(Node root) {
 
 
-        List<Integer> result = new ArrayList<>();
         if (root == null) {
-            return result;
+            return res;
         }
-
         Deque<Node> stack = new LinkedList<>();
 
         stack.push(root);
@@ -68,7 +66,7 @@ class Solution {
         while (!stack.isEmpty()) {
 
             Node node = stack.pop();
-            result.add(node.val);
+            res.add(node.val);
 
             for (int i = node.children.size() - 1; i >= 0; i--) {
                 stack.push(node.children.get(i));
@@ -76,10 +74,7 @@ class Solution {
 
         }
 
-
-        return result;
-
-
+        return res;
 
 
 

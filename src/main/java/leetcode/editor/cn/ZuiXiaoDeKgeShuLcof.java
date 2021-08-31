@@ -40,6 +40,47 @@ public class ZuiXiaoDeKgeShuLcof{
 class Solution {
     public int[] getLeastNumbers(int[] arr, int k) {
 
+        if (arr == null || arr.length < k || k == 0) {
+            return new int[]{};
+        }
+
+        int[] res = new int[k];
+        PriorityQueue<Integer> pq = new PriorityQueue<>((o1, o2) -> (o2 - o1));
+
+        for (int i = 0; i < arr.length; i++) {
+            if (pq.size() < k) {
+                pq.offer(arr[i]);
+            } else{
+                if (arr[i] < pq.peek()) {
+                    pq.poll();
+                    pq.offer(arr[i]);
+                }
+            }
+        }
+
+        for (int i = 0; i < k; i++) {
+            res[i] = pq.poll();
+        }
+
+        return res;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         /**
          * sort 然后直接取前四个数
          * 时间复杂度O(nlogn),空间复杂度O(logn)排序需要额外logn空间
@@ -57,33 +98,33 @@ class Solution {
          *
          * 注意，这里不能直接维护小顶堆，虽然写着简单，但是时间复杂度就是nlogn，而不是nlogk，
          * 当n和k差别很大的时候时间差距会很明显
-         * 正确做法是维护一个大顶堆（大根堆），对里只有k个元素，当堆满了且遇到大于顶部元素时，
+         * 正确做法是维护一个大顶堆（大根堆），堆里只有k个元素，当堆满了且遇到大于顶部元素时，
          * 将堆顶元素拿出并将改元素放入堆中
          *
          * 时间复杂度O(n * logk),空间复杂度O(n)
          */
-        if (arr.length == 0 || k == 0 || arr == null) {
-            return new int[]{};
-        }
-
-        PriorityQueue<Integer> pri = new PriorityQueue<>((o1, o2) -> (o2 - o1));
-        int[] res = new int[k];
-
-        for (int i = 0; i < arr.length; i++) {
-            if (i < k) {
-                pri.offer(arr[i]);
-            } else if (arr[i] < pri.peek()) {
-                pri.poll();
-                pri.offer(arr[i]);
-            }
-        }
-
-
-        for (int i = 0; i < k; i++) {
-            res[i] = pri.poll();
-        }
-
-        return res;
+//        if (arr.length == 0 || k == 0 || arr == null) {
+//            return new int[]{};
+//        }
+//
+//        PriorityQueue<Integer> pri = new PriorityQueue<>((o1, o2) -> (o2 - o1));
+//        int[] res = new int[k];
+//
+//        for (int i = 0; i < arr.length; i++) {
+//            if (i < k) {
+//                pri.offer(arr[i]);
+//            } else if (arr[i] < pri.peek()) {
+//                pri.poll();
+//                pri.offer(arr[i]);
+//            }
+//        }
+//
+//        //这儿不能写成pri.size(),因为pri在拿出元素的时候size会变，所以要用固定的k值
+//        for (int i = 0; i < k; i++) {
+//            res[i] = pri.poll();
+//        }
+//
+//        return res;
 
     }
 }

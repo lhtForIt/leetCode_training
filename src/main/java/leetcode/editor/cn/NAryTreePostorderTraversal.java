@@ -83,12 +83,10 @@ class Solution {
     public List<Integer> postorder(Node root) {
 
 
-        List<Integer> ress = new LinkedList<>();
-
+        LinkedList<Integer> result = new LinkedList<>();
         if (root == null) {
-            return ress;
+            return result;
         }
-
         Deque<Node> stack = new LinkedList<>();
 
         stack.push(root);
@@ -96,22 +94,14 @@ class Solution {
         while (!stack.isEmpty()) {
 
             Node node = stack.pop();
-
-            ress.add(0, node.val);
-
-            for (Node child : node.children) {
+            result.addFirst(node.val);
+            for (Node child:node.children) {
                 stack.push(child);
             }
 
         }
 
-        return ress;
-
-
-
-
-
-
+        return result;
 
 
 

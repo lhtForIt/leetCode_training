@@ -40,8 +40,6 @@
 package leetcode.editor.cn;
 
 import java.util.ArrayList;
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.List;
 
 public class NAryTreeLevelOrderTraversal{
@@ -74,46 +72,10 @@ class Solution {
 
     public List<List<Integer>> levelOrder(Node root) {
 
-        List<List<Integer>> result = new ArrayList<>();
 
-        if (root == null) {
-            return result;
-        }
-        Deque<Node> queue = new LinkedList<>();
+        recur1(0, root, res);
 
-        queue.offer(root);
-
-        while (!queue.isEmpty()) {
-
-            int size = queue.size();
-
-            List<Integer> subRes = new ArrayList<>();
-            for (int i = 0; i < size; i++) {
-
-                Node node = queue.poll();
-
-                subRes.add(node.val);
-
-//                queue.addAll(node.children);
-
-                for (Node child : node.children) {
-                    queue.offer(child);
-                }
-            }
-
-            result.add(subRes);
-        }
-
-        return result;
-
-
-
-
-
-
-
-
-
+        return res;
 
 
 
@@ -170,7 +132,7 @@ class Solution {
          * 时间复杂度O(n)，空间复杂度O(n)
          *
          */
-
+          //这段可以省略，递归代码里面有判断
 //        if (root == null) {
 //            return res;
 //        }
@@ -180,6 +142,26 @@ class Solution {
 //        return res;
 
     }
+
+    private void recur1(int level, Node root, List<List<Integer>> res) {
+
+        if (root == null) {
+            return;
+        }
+
+        if (level == res.size()) {
+            res.add(new ArrayList<>());
+        }
+
+        res.get(level).add(root.val);
+
+
+        for (Node child : root.children) {
+            recur1(level + 1, child, res);
+        }
+
+    }
+
 
     private void recure(int level, Node root, List<List<Integer>> res) {
 

@@ -52,34 +52,24 @@ class Solution {
     public List<Integer> postorderTraversal(TreeNode root) {
 
 
-        List<Integer> ress = new LinkedList<>();
-        if (root == null) {
-            return ress;
-        }
+
         Deque<TreeNode> stack = new LinkedList<>();
+        List<Integer> result = new ArrayList<>();
 
-        stack.push(root);
+        while (root != null || !stack.isEmpty()) {
 
-        while (!stack.isEmpty()) {
-
-            TreeNode node = stack.pop();
-            ress.add(0, node.val);
-
-            if (node.left != null) {
-                stack.push(node.left);
+            while (root != null) {
+                stack.push(root);
+                result.add(0, root.val);
+                root = root.right;
             }
 
-            if (node.right != null) {
-                stack.push(node.right);
-            }
+            root = stack.pop();
+            root = root.left;
+
         }
 
-        return ress;
-
-
-
-
-
+        return result;
 
 
 
