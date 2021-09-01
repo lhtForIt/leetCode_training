@@ -80,26 +80,25 @@ public class ReverseNodesInKGroup{
 class Solution {
     public ListNode reverseKGroup(ListNode head, int k) {
 
-        int n = 0;
-        for (ListNode i = head; i != null; n++, i = i.next) ;
-
-        ListNode dmy = new ListNode();
-        dmy.next = head;
-
-        for (ListNode prev = dmy, tail = head; n >= k; n -= k) {
-            for (int i = 1; i < k; i++) {
-                ListNode next = tail.next.next;
-                tail.next.next = prev.next;
-                prev.next = tail.next;
-                tail.next = next;
-            }
-            prev=tail;
-            tail = tail.next;
+        ListNode curr = head;
+        int count = 0;
+        while (curr != null && count < k) {
+            curr = curr.next;
+            count++;
         }
 
-        return dmy.next;
+        if (count == k) {
+            curr = reverseKGroup(curr, k);
+            while (count-- > 0) {
+                ListNode next = head.next;
+                head.next = curr;
+                curr = head;
+                head = next;
+            }
+            head = curr;
+        }
 
-
+        return head;
 
 
 
