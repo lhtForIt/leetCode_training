@@ -65,8 +65,6 @@
   
 package leetcode.editor.cn;
 
-import com.sun.java.swing.plaf.windows.WindowsGraphicsUtils;
-
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -75,40 +73,31 @@ import java.util.PriorityQueue;
 public class SlidingWindowMaximum{
       public static void main(String[] args) {
            Solution solution = new SlidingWindowMaximum().new Solution();
-          solution.maxSlidingWindow(new int[]{1,3,1,2,0,5}, 3);
+          solution.maxSlidingWindow(new int[]{1,3,-1,-3,5,3,6,7}, 3);
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int[] maxSlidingWindow(int[] nums, int k) {
 
 
-        if (nums.length < k || nums == null) {
-            return nums;
+        if (nums.length < k) {
+            return new int[]{};
         }
 
         int[] res = new int[nums.length - k + 1];
-
         PriorityQueue<Integer> pri = new PriorityQueue<>((o1, o2) -> (nums[o2] - nums[o1]));
 
         for (int i = 0; i < nums.length; i++) {
             while (!pri.isEmpty() && pri.peek() <= i - k) {
                 pri.poll();
             }
-
             pri.offer(i);
-
             if (i - k + 1 >= 0) {
                 res[i - k + 1] = nums[pri.peek()];
             }
         }
 
         return res;
-
-
-
-
-
-
 
 
 
@@ -223,6 +212,16 @@ class Solution {
          * 这个堆和topk的思路还不太一样，那个是n个数里面求最小k个，
          * 所以用大顶堆将时间复杂度弄成O(nlogk),
          * 这儿是k里面最大的数，所以直接就是logk，直接用大顶堆即可
+         *
+         * note at 2021-09-02
+         * 这里分析的有问题，时间复杂度不是nlogk，而是nlogn,因为它堆里不是
+         * 始终保持的k个元素，而是运用的下面思路
+         *
+         * 将元素始终放入大顶堆中，然后每次先判断堆顶元素是否在窗口内，如果不在则拿出去，
+         * 再则继续往下走，得到结果。
+         *
+         * 这个和双端队列的思路最大区别是，双端队列会保证队列里面始终只有k个元素里面的最大值，不会
+         * 有越界的元素，而堆这种解法里面会有越界元素，然后在得到结果的时候去判断是否满足而已。
          *
          */
 
