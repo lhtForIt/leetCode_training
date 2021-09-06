@@ -122,9 +122,9 @@ public class SwapNodesInPairs{
 
             //为了循环条件统一，引入哑结点，然后都变成temp.next和temp.next.next比较
             //后面返回的也是pre.next，因为头结点是null的
-//            ListNode pre = new ListNode();
-//            pre.next = head;
-//            ListNode temp = pre;
+//            ListNode prev = new ListNode();
+//            prev.next = head;
+//            ListNode temp = prev;
 //
 //            while (temp.next != null && temp.next.next != null) {
 //                ListNode start = temp.next;
@@ -136,16 +136,16 @@ public class SwapNodesInPairs{
 //                temp = start;
 //            }
 //
-//            //pre.next就是temp.next，其实位置
-//            return pre.next;
+//            //prev.next就是temp.next，其实位置
+//            return prev.next;
 
         }
 
 //    public ListNode swapPairs(ListNode head) {
 ////
-////        ListNode pre = new ListNode();
-////        pre.next = head;
-////        ListNode temp = pre;
+////        ListNode prev = new ListNode();
+////        prev.next = head;
+////        ListNode temp = prev;
 ////
 ////        while (temp.next != null && temp.next.next != null) {
 ////            //记录两个节点位置
@@ -161,7 +161,7 @@ public class SwapNodesInPairs{
 ////            temp = start;
 ////        }
 ////
-////        return pre.next;
+////        return prev.next;
 ////    }
 
     }

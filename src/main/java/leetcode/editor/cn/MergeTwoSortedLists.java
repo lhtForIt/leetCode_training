@@ -90,21 +90,21 @@ public class MergeTwoSortedLists{
 
 
 //            ListNode dummy = new ListNode(0);
-//            ListNode pre = dummy;
+//            ListNode prev = dummy;
 //
 //            while (l1 != null && l2 != null) {
 //                if (l1.val <= l2.val) {
-//                    pre.next = l1;
+//                    prev.next = l1;
 //                    l1 = l1.next;
 //                } else {
-//                    pre.next = l2;
+//                    prev.next = l2;
 //                    l2 = l2.next;
 //                }
-//                pre = pre.next;
+//                prev = prev.next;
 //            }
 //
 //            if (l1 != null || l2 != null) {
-//                pre.next = l1 == null ? l2 : l1;
+//                prev.next = l1 == null ? l2 : l1;
 //            }
 //
 //            return dummy.next;
@@ -144,22 +144,22 @@ public class MergeTwoSortedLists{
              */
 
 //            ListNode result = new ListNode();
-//            ListNode pre = result;
+//            ListNode prev = result;
 //
 //            while (l1 != null && l2 != null) {
 //                if (l1.val < l2.val) {
-//                    pre.next = l1;
+//                    prev.next = l1;
 //                    l1 = l1.next;
 //                } else {
-//                    pre.next = l2;
+//                    prev.next = l2;
 //                    l2 = l2.next;
 //                }
 //
-//                pre = pre.next;
+//                prev = prev.next;
 //
 //            }
 //
-//            pre.next = l1 == null ? l2 : l1;
+//            prev.next = l1 == null ? l2 : l1;
 //
 //            return result.next;
 
@@ -175,23 +175,23 @@ public class MergeTwoSortedLists{
 //
 //        //因为这里的pre会一直被替换为pre.next，因此需要个其他变量
 //        //否則result会找不到一开始的位置
-//        ListNode pre = result;
+//        ListNode prev = result;
 //
 //        while (l1 != null && l2 != null) {
 //            //比较大小，直接将pre指向小的那个链表，然后将相应链表指针后移
 //            if (l1.val <= l2.val) {
-//                pre.next = l1;
+//                prev.next = l1;
 //                l1 = l1.next;
 //            } else {
-//                pre.next = l2;
+//                prev.next = l2;
 //                l2 = l2.next;
 //            }
 //            //pre里面增加了一个元素，因此要将指针后移
-//            pre = pre.next;
+//            prev = prev.next;
 //        }
 //
 //        //这是一边链表比另一边长的时候，直接将长的部分放到pre后面即可
-//        pre.next = l1 == null ? l2 : l1;
+//        prev.next = l1 == null ? l2 : l1;
 //
 //        return result.next;
 //    }

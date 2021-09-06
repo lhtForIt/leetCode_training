@@ -226,7 +226,7 @@ public class DesignCircularDeque{
 //          public MyCircularDeque(int k) {
 //              head = new DoubleListNode(-1);
 //              tail = new DoubleListNode(-1);
-//              head.pre = tail;
+//              head.prev = tail;
 //              tail.next = head;
 //              this.k = k;
 //              this.size = 0;
@@ -238,9 +238,9 @@ public class DesignCircularDeque{
 //                  return false;
 //              DoubleListNode node = new DoubleListNode(value);
 //              node.next = head;
-//              node.pre = head.pre;
-//              head.pre.next = node;
-//              head.pre = node;
+//              node.prev = head.prev;
+//              head.prev.next = node;
+//              head.prev = node;
 //              size++;
 //              return true;
 //          }
@@ -251,9 +251,9 @@ public class DesignCircularDeque{
 //                  return false;
 //              DoubleListNode node = new DoubleListNode(value);
 //              node.next = tail.next;
-//              tail.next.pre = node;
+//              tail.next.prev = node;
 //              tail.next = node;
-//              node.pre = tail;
+//              node.prev = tail;
 //              size++;
 //              return true;
 //          }
@@ -262,8 +262,8 @@ public class DesignCircularDeque{
 //          public boolean deleteFront() {
 //              if (size == 0)
 //                  return false;
-//              head.pre.pre.next = head;
-//              head.pre = head.pre.pre;
+//              head.prev.prev.next = head;
+//              head.prev = head.prev.prev;
 //              size--;
 //              return true;
 //          }
@@ -272,7 +272,7 @@ public class DesignCircularDeque{
 //          public boolean deleteLast() {
 //              if (size == 0)
 //                  return false;
-//              tail.next.next.pre = tail;
+//              tail.next.next.prev = tail;
 //              tail.next = tail.next.next;
 //              size--;
 //              return true;
@@ -280,7 +280,7 @@ public class DesignCircularDeque{
 //
 //          /** Get the front item from the deque. */
 //          public int getFront() {
-//              return head.pre.val;
+//              return head.prev.val;
 //          }
 //
 //          /** Get the last item from the deque. */
@@ -301,7 +301,7 @@ public class DesignCircularDeque{
 //
 //
 //      class DoubleListNode {
-//          DoubleListNode pre;
+//          DoubleListNode prev;
 //          DoubleListNode next;
 //          int val;
 //          public DoubleListNode(int val) {

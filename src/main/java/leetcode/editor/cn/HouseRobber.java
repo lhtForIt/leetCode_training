@@ -114,18 +114,18 @@ class Solution {
          * 参考爬楼梯问题
          */
 
-//        int pre = 0, cur = 0, temp;
+//        int prev = 0, cur = 0, temp;
 //        for (int i = 0; i < nums.length; i++) {
 //            temp = cur;
-//            cur = Math.max(pre + nums[i], cur);
-//            pre = temp;
+//            cur = Math.max(prev + nums[i], cur);
+//            prev = temp;
 //        }
 //
 //        return cur;
-//        int pre = 0, cur = 0, max = 0;
+//        int prev = 0, cur = 0, max = 0;
 //        for (int i = 0; i < nums.length; i++) {
-//            max = Math.max(pre + nums[i], cur);
-//            pre = cur;
+//            max = Math.max(prev + nums[i], cur);
+//            prev = cur;
 //            cur = max;
 //        }
 //

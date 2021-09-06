@@ -152,7 +152,7 @@ class Solution {
 //        }
 //
 //        Stack<TreeNode> stack = new Stack<>();
-//        TreeNode pre = null;
+//        TreeNode prev = null;
 //
 //        while (root != null || !stack.isEmpty()) {
 //            while (root != null) {
@@ -161,10 +161,10 @@ class Solution {
 //            }
 //            root = stack.pop();
 //            //这里的pre代表的左儿子
-//            if (pre != null && root.val <= pre.val) {
+//            if (prev != null && root.val <= prev.val) {
 //                return false;
 //            }
-//            pre = root;
+//            prev = root;
 //            root = root.right;
 //        }
 //

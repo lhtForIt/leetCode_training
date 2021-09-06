@@ -89,17 +89,17 @@ class Solution {
          *
          */
 
-//        ListNode pre = null;
+//        ListNode prev = null;
 //        ListNode curr = head;
 //        while (curr != null) {
 //            ListNode next = curr.next;
 //            //1->2变成1<-2，反转链表
-//            curr.next = pre;
+//            curr.next = prev;
 //            //将curr和next像后移
-//            pre = curr;
+//            prev = curr;
 //            curr = next;
 //        }
-//        return pre;
+//        return prev;
 
 
         /**

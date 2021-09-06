@@ -133,22 +133,22 @@ class Solution {
          * 提高了空间复杂度
          */
 
-//        int m = word1.length(), n = word2.length(), pre;
+//        int m = word1.length(), n = word2.length(), prev;
 //        int[] cur = new int[n + 1];
 //        for (int j = 1; j <= n; j++) {
 //            cur[j] = j;
 //        }
 //        for (int i = 1; i <= m; i++) {
-//            pre = cur[0];
+//            prev = cur[0];
 //            cur[0] = i;
 //            for (int j = 1; j <= n; j++) {
 //                int temp = cur[j];
 //                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
-//                    cur[j] = pre;
+//                    cur[j] = prev;
 //                } else {
-//                    cur[j] = Math.min(pre, Math.min(cur[j - 1], cur[j])) + 1;
+//                    cur[j] = Math.min(prev, Math.min(cur[j - 1], cur[j])) + 1;
 //                }
-//                pre = temp;
+//                prev = temp;
 //            }
 //        }
 //        return cur[n];

@@ -91,10 +91,10 @@ class Solution {
          */
 
 //        if(root == null) return null;
-//        Node pre = root;
+//        Node prev = root;
 //
-//        while(pre.left != null){
-//            Node curr = pre;
+//        while(prev.left != null){
+//            Node curr = prev;
 //
 //            while(curr != null){
 //                curr.left.next = curr.right;
@@ -103,7 +103,7 @@ class Solution {
 //                }
 //                curr = curr.next;
 //            }
-//            pre = pre.left;
+//            prev = prev.left;
 //        }
 //        return root;
 
