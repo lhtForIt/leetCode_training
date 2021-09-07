@@ -57,28 +57,30 @@
 package leetcode.editor.cn;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 public class LruCache {
     public static void main(String[] args) {
         LruCache LruCache = new LruCache();
+//        LRUCache cache = new LRUCache(2);
+//        cache.put(1, 1);
+//        cache.put(2, 2);
+//        cache.get(1);
+//        cache.put(3, 3);
+//        cache.get(2);
+//        cache.put(4, 4);
+//        cache.get(1);
+//        cache.get(3);
+//        cache.get(4);
     }
     //leetcode submit region begin(Prohibit modification and deletion)
-class LRUCache {
-
-        /**
-         * 思路：因为时间复杂度要是O（1），那数组一定不行，因为数组插入删除是O(n)，
-         * 树堆这些高级数据结构也不行，因为只能到O(logn)，因此只能是链表，严格来说双向链表，因为单向链表删除是O(n)的，因为要查前驱节点需要遍历整个链表，
-         * 但是链表有个致命问题就是查询是O(n)的，那就需要一个数据结构去专门记录链表每个节点的位置，然后又需要是O(1)操作能实现，很自然想到哈希表HashMap，
-         * 然后就组成了java里面的LinkedHashMap,这里利用了head和tail节点站位，省去了很多空判断
-         */
+    class LRUCache {
 
         class DLinkedNode{
             private int key;
             private int value;
-            private DLinkedNode prev;
-            private DLinkedNode next;
+            private DLinkedNode prev, next;
+
             public DLinkedNode(){}
 
             public DLinkedNode(int key, int value) {
@@ -87,47 +89,64 @@ class LRUCache {
             }
         }
 
+        class DLinkedList{
+
+            private DLinkedNode head, tail;
+
+            public DLinkedList(){
+                head = new DLinkedNode();
+                tail = new DLinkedNode();
+                head.next = tail;
+                tail.prev = head;
+            }
+
+            public void addToHead(DLinkedNode node) {
+                node.prev = head;
+                node.next = head.next;
+                head.next.prev = node;
+                head.next = node;
+            }
+
+            public void removeNode(DLinkedNode node) {
+                node.prev.next = node.next;
+                node.next.prev = node.prev;
+            }
+
+            public void removeToHead(DLinkedNode node) {
+                removeNode(node);
+                addToHead(node);
+            }
+
+            public DLinkedNode removeTail(){
+                DLinkedNode tailNode = tail.prev;
+                removeNode(tailNode);
+                return tailNode;
+            }
+
+
+        }
+
         private int capacity;
         private Map<Integer, DLinkedNode> cache = new HashMap<>();
-        private DLinkedNode head, tail;
+        private DLinkedList dLinkedList = new DLinkedList();
+
 
         public LRUCache(int capacity) {
             this.capacity = capacity;
-            head = new DLinkedNode();
-            tail = new DLinkedNode();
-            head.next = tail;
-            tail.prev = head;
         }
 
         public int get(int key) {
 
-            if (cache.containsKey(key)) {
-                DLinkedNode node = cache.get(key);
-                moveToHead(node);
-                return node.value;
+            DLinkedNode node = cache.get(key);
+            if (node == null) {
+                return -1;
             }
 
-            return -1;
-
+            dLinkedList.removeToHead(node);
+            return node.value;
 
         }
 
-        private void moveToHead(DLinkedNode node) {
-            removeNode(node);
-            addToHead(node);
-        }
-
-        private void addToHead(DLinkedNode node) {
-            node.prev = head;
-            node.next = head.next;
-            head.next.prev = node;
-            head.next = node;
-        }
-
-        private void removeNode(DLinkedNode node) {
-            node.next.prev = node.prev;
-            node.prev.next = node.next;
-        }
 
 
         public void put(int key, int value) {
@@ -135,25 +154,109 @@ class LRUCache {
             DLinkedNode node = cache.get(key);
             if (node == null) {
                 DLinkedNode newHead = new DLinkedNode(key, value);
+                dLinkedList.addToHead(newHead);
                 cache.put(key, newHead);
-                addToHead(newHead);
                 if (cache.size() > capacity) {
-                    DLinkedNode tail = removeTail();
+                    DLinkedNode tail = dLinkedList.removeTail();
                     cache.remove(tail.key);
                 }
             } else {
-                moveToHead(node);
+                dLinkedList.removeToHead(node);
                 node.value = value;
             }
 
+
         }
 
-        private DLinkedNode removeTail() {
-            DLinkedNode node = tail.prev;
-            removeNode(node);
 
-            return node;
-        }
+
+        /**
+         * 思路：因为时间复杂度要是O（1），那数组一定不行，因为数组插入删除是O(n)，
+         * 树堆这些高级数据结构也不行，因为只能到O(logn)，因此只能是链表，严格来说双向链表，因为单向链表删除是O(n)的，因为要查前驱节点需要遍历整个链表，
+         * 但是链表有个致命问题就是查询是O(n)的，那就需要一个数据结构去专门记录链表每个节点的位置，然后又需要是O(1)操作能实现，很自然想到哈希表HashMap，
+         * 然后就组成了java里面的LinkedHashMap,这里利用了head和tail节点站位，省去了很多空判断
+         */
+
+//        class DLinkedNode{
+//            private int key;
+//            private int value;
+//            private DLinkedNode prev;
+//            private DLinkedNode next;
+//            public DLinkedNode(){}
+//
+//            public DLinkedNode(int key, int value) {
+//                this.key = key;
+//                this.value = value;
+//            }
+//        }
+//
+//        private int capacity;
+//        private Map<Integer, DLinkedNode> cache = new HashMap<>();
+//        private DLinkedNode head, tail;
+//
+//        public LRUCache(int capacity) {
+//            this.capacity = capacity;
+//            head = new DLinkedNode();
+//            tail = new DLinkedNode();
+//            head.next = tail;
+//            tail.prev = head;
+//        }
+//
+//        public int get(int key) {
+//
+//            if (cache.containsKey(key)) {
+//                DLinkedNode node = cache.get(key);
+//                moveToHead(node);
+//                return node.value;
+//            }
+//
+//            return -1;
+//
+//
+//        }
+//
+//        private void moveToHead(DLinkedNode node) {
+//            removeNode(node);
+//            addToHead(node);
+//        }
+//
+//        private void addToHead(DLinkedNode node) {
+//            node.prev = head;
+//            node.next = head.next;
+//            head.next.prev = node;
+//            head.next = node;
+//        }
+//
+//        private void removeNode(DLinkedNode node) {
+//            node.next.prev = node.prev;
+//            node.prev.next = node.next;
+//        }
+//
+//
+//        public void put(int key, int value) {
+//
+//            DLinkedNode node = cache.get(key);
+//            if (node == null) {
+//                DLinkedNode newHead = new DLinkedNode(key, value);
+//                cache.put(key, newHead);
+//                addToHead(newHead);
+//                if (cache.size() > capacity) {
+//                    DLinkedNode tail = removeTail();
+//                    cache.remove(tail.key);
+//                }
+//            } else {
+//                moveToHead(node);
+//                node.value = value;
+//            }
+//
+//        }
+//
+//        private DLinkedNode removeTail() {
+//            DLinkedNode node = tail.prev;
+//            removeNode(node);
+//
+//            return node;
+//        }
 
 
         /**

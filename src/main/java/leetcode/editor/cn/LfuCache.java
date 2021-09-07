@@ -85,115 +85,152 @@ public class LfuCache {
     }
     //leetcode submit region begin(Prohibit modification and deletion)
 
-    class LFUCache {
+class LFUCache{
 
-        Map<Integer, Node> cache; // 存储缓存的内容
+    private Map<Integer, DLinkedNode> cache = new HashMap<>();
+    private Map<Integer, DLinkedList> freqMap = new HashMap<>();
+    int min;
+    int capacity;
 
-        Map<Integer, DLinkedList> freqMap; // 存储每个频次对应的双向链表
-        int size;
-        int capacity;
-        int min; // 存储当前最小频次
 
-        public LFUCache(int capacity) {
-            cache = new HashMap<>(capacity);
-            freqMap = new HashMap<>();
-            this.capacity = capacity;
-        }
+    public LFUCache(int capacity) {
 
-        public int get(int key) {
-            Node node = cache.get(key);
-            if (node == null) {
-                return -1;
-            }
-            freqInc(node);
-            return node.value;
-        }
+        this.capacity = capacity;
 
-        public void put(int key, int value) {
-            if (capacity == 0) {
-                return;
-            }
-            Node node = cache.get(key);
-            if (node == null) {
-                Node newNode = new Node(key, value);
-                cache.put(key, newNode);
-                if (size == capacity) {
-                    DLinkedList minFreqLinkedList = freqMap.get(min);
-                    cache.remove(minFreqLinkedList.removeTail().key);// 这里不需要维护min, 因为下面add了newNode后min肯定是1.
-                    size--;
-                }
-                size++;
-                min = 1;
-                DLinkedList newList = freqMap.getOrDefault(newNode.freq,new DLinkedList());
-                newList.addToHead(newNode);
-                freqMap.put(newNode.freq, newList);
-            } else {
-                node.value = value;
-                freqInc(node);
-            }
-        }
-
-        void freqInc(Node node) {
-            // 从原freq对应的链表里移除, 并更新min
-            DLinkedList oldList = freqMap.get(node.freq);
-            oldList.removeNode(node);
-            //该节点就是最小访问节点且该频率对应链表只有这一个元素，则min+1
-            if (node.freq == min && oldList.head.next == oldList.tail) min++;
-            // 加入新freq对应的链表
-            node.freq++;
-            DLinkedList newList = freqMap.getOrDefault(node.freq,new DLinkedList());
-            newList.addToHead(node);
-            freqMap.put(node.freq, newList);
-        }
     }
 
-    class Node {
+
+    public int get(int key) {
+
+        DLinkedNode node = cache.get(key);
+        if (node == null) {
+            return -1;
+        }
+
+        frenyUpdate(node);
+
+        return node.value;
+    }
+
+    private void frenyUpdate(DLinkedNode node) {
+
+        //这里可能会以为oldList会为空，其实不会为空，一定有值的，因为cache里面是有值得，frenyMap里面也一定有对应的值
+        DLinkedList oldList = freqMap.get(node.frency);
+        oldList.removeNode(node);
+
+        //当前访问元素是最低频次，且该链表没有元素了，所以最小值变成了min+1
+        if (min == node.frency && oldList.head.next == oldList.tail) min++;
+
+        node.frency++;
+
+        doFreqUpdate(node, node.frency);
+
+
+    }
+
+    private void doFreqUpdate(DLinkedNode node, int frency) {
+        DLinkedList newList = freqMap.getOrDefault(frency, new DLinkedList());
+        newList.addToHead(node);
+        freqMap.put(frency, newList);
+    }
+
+
+    public void put(int key, int value) {
+
+        if (capacity == 0) {
+            return;
+        }
+
+        DLinkedNode node = cache.get(key);
+        if (node == null) {
+
+            DLinkedNode newHead = new DLinkedNode(key, value);
+            cache.put(key, newHead);
+            if (cache.size() > capacity) {
+                DLinkedList oldList = freqMap.get(min);
+                DLinkedNode tailNode = oldList.removeTail();
+                cache.remove(tailNode.key);
+            }
+            min = 1;
+            doFreqUpdate(newHead, min);
+
+
+        } else {
+            frenyUpdate(node);
+            node.value = value;
+        }
+
+    }
+
+
+    class DLinkedNode{
         int key;
         int value;
-        int freq;
-        Node prev;
-        Node next;
+        int frency;
+        DLinkedNode prev, next;
 
-        public Node() {}
+        public DLinkedNode(){}
 
-        public Node(int key, int value) {
+        public DLinkedNode(int key, int value) {
             this.key = key;
             this.value = value;
-            this.freq = 1;
+            this.frency = 1;
         }
+
     }
 
+
     class DLinkedList {
-        Node head;
-        Node tail;
+
+        DLinkedNode head, tail;
 
         public DLinkedList() {
-            head = new Node();
-            tail = new Node();
+            head = new DLinkedNode();
+            tail = new DLinkedNode();
             head.next = tail;
             tail.prev = head;
         }
 
-        void removeNode(Node node) {
+        void removeNode(DLinkedNode node) {
             node.prev.next = node.next;
             node.next.prev = node.prev;
         }
 
-        void addToHead(Node node) {
-            node.next = head.next;
+        void addToHead(DLinkedNode node) {
             node.prev = head;
+            node.next = head.next;
             head.next.prev = node;
             head.next = node;
         }
 
-        Node removeTail() {
-            Node node = tail.prev;
-            removeNode(node);
-
-            return node;
+        DLinkedNode removeTail() {
+            DLinkedNode tailNode = tail.prev;
+            removeNode(tailNode);
+            return tailNode;
         }
 
+        void moveToHead(DLinkedNode node) {
+            removeNode(node);
+            addToHead(node);
+        }
+
+
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
 
 
 
@@ -220,7 +257,6 @@ public class LfuCache {
 //        Map<Integer, Node> cache; // 存储缓存的内容
 //
 //        Map<Integer, DLinkedList> freqMap; // 存储每个频次对应的双向链表
-//        int size;
 //        int capacity;
 //        int min; // 存储当前最小频次
 //
@@ -247,12 +283,10 @@ public class LfuCache {
 //            if (node == null) {
 //                Node newNode = new Node(key, value);
 //                cache.put(key, newNode);
-//                if (size == capacity) {
+//                if (cache.size() > capacity) {
 //                    DLinkedList minFreqLinkedList = freqMap.get(min);
 //                    cache.remove(minFreqLinkedList.removeTail().key);// 这里不需要维护min, 因为下面add了newNode后min肯定是1.
-//                    size--;
 //                }
-//                size++;
 //                min = 1;
 //                DLinkedList newList = freqMap.getOrDefault(newNode.freq,new DLinkedList());
 //                newList.addToHead(newNode);
