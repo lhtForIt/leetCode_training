@@ -42,11 +42,23 @@ public class LargestRectangleInHistogram{
 class Solution {
     public int largestRectangleArea(int[] heights) {
 
+        /**
+         * 思路，因为栈压入是递增的，所以我可以从大到小一个一个的去计算每个index的最大值，
+         * 如[2,1,5,6,2,3]，当1,5,6压入栈中后，遍历到2的时候，会把6拿出来，然后算出以6为最大高度的面积，然后会把5拿出来，
+         * 算出以5为最大高度的面积，这里可能会有疑问，为什么5拿出来能算出来，有两点：
+         * 1、栈里前一个元素一定比后一个元素小，所以，前一个元素的最右边值一定是能到当前i-1的位置的，而且只要没有入栈，i值就不会变，可以把栈里每个元素都拿出来计算。
+         * 2、高度和右边界知道了，现在只要知道左边界了，左边界其实就是存储的index，这里需要分情况，如果栈里有元素，就是栈顶元素+1,否则就是0，因为没有比当前元素大的元素，就是0.
+         *
+         * 这个想通之后真的觉得思路太巧妙了
+         *
+         */
         int maxArea = 0;
         Deque<Integer> stack = new LinkedList<>();
+
         for (int i = 0; i <= heights.length; ) {
+
             int h = i == heights.length ? 0 : heights[i];
-            if (stack.isEmpty() || heights[stack.peek()] <= h) {
+            if (stack.isEmpty() || h >= heights[stack.peek()]) {
                 stack.push(i++);
             } else {
                 int high = heights[stack.pop()];
@@ -55,6 +67,7 @@ class Solution {
                 int v = high * (right - left + 1);
                 maxArea = maxArea < v ? v : maxArea;
             }
+
         }
 
         return maxArea;

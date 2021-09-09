@@ -58,12 +58,10 @@ public class RotateArray{
 class Solution {
     public void rotate(int[] nums, int k) {
 
-        int n = nums.length;
-        k = k % n;
-
-        reversTemp(0, nums.length - 1, nums);
-        reversTemp(0, k - 1, nums);
-        reversTemp(k, nums.length - 1, nums);
+        k = k % nums.length;
+        revert(0, nums.length - 1, nums);
+        revert(0, k - 1, nums);
+        revert(k, nums.length - 1, nums);
 
 
 
@@ -122,6 +120,38 @@ class Solution {
 
 
     }
+
+          private void revert(int start, int end, int[] nums) {
+
+              while (start < end) {
+                  int temp = nums[start];
+                  nums[start] = nums[end];
+                  nums[end] = temp;
+                  start++;
+                  end--;
+              }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          }
 
           private void reversTemp(int start, int end, int[] nums) {
 

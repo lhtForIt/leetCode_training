@@ -57,6 +57,7 @@
   
 package leetcode.editor.cn;
 
+import com.sun.jndi.toolkit.ctx.HeadTail;
 import com.sun.xml.internal.ws.api.pipe.NextAction;
 
 import java.util.Deque;
@@ -80,28 +81,25 @@ public class ReverseNodesInKGroup{
 class Solution {
     public ListNode reverseKGroup(ListNode head, int k) {
 
-        ListNode curr = head;
-        int count = 0;
-        while (curr != null && count < k) {
-            curr = curr.next;
-            count++;
-        }
+        int n = 0;
+        for (ListNode i = head; i != null; n++, i = i.next) ;
 
-        if (count == k) {
-            curr = reverseKGroup(curr, k);
-            while (count-- > 0) {
-                ListNode next = head.next;
-                head.next = curr;
-                curr = head;
-                head = next;
+
+        ListNode dummy = new ListNode();
+        dummy.next = head;
+
+        for (ListNode prev = dummy, tail = head; n >= k; n -= k) {
+            for (int i = 1; i < k; i++) {
+                ListNode next = tail.next.next;
+                tail.next.next = prev.next;
+                prev.next = tail.next;
+                tail.next = next;
             }
-            head = curr;
+            prev = tail;
+            tail = tail.next;
         }
 
-        return head;
-
-
-
+        return dummy.next;
 
         /**
          * 法一：用栈先进后出的特性，

@@ -79,15 +79,8 @@ public class SwapNodesInPairs{
 
             }
 
+
             return dummy.next;
-
-
-
-
-
-
-
-
 
 
 

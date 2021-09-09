@@ -80,24 +80,44 @@ class Solution {
     public int[] maxSlidingWindow(int[] nums, int k) {
 
 
-        if (nums.length < k) {
+        if (nums == null || nums.length < k) {
             return new int[]{};
         }
 
         int[] res = new int[nums.length - k + 1];
+
         PriorityQueue<Integer> pri = new PriorityQueue<>((o1, o2) -> (nums[o2] - nums[o1]));
 
         for (int i = 0; i < nums.length; i++) {
+
             while (!pri.isEmpty() && pri.peek() <= i - k) {
                 pri.poll();
             }
+
             pri.offer(i);
+
             if (i - k + 1 >= 0) {
                 res[i - k + 1] = nums[pri.peek()];
             }
+
         }
 
+
         return res;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

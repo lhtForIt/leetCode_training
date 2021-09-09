@@ -104,14 +104,13 @@ public class Solution {
         slow = head;
 
         while (slow != fast) {
+
             slow = slow.next;
             fast = fast.next;
+
         }
 
         return fast;
-
-
-
 
 
 

@@ -56,6 +56,8 @@
 
 package leetcode.editor.cn;
 
+import javafx.scene.text.TextAlignment;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,6 +76,8 @@ public class LruCache {
 //        cache.get(4);
     }
     //leetcode submit region begin(Prohibit modification and deletion)
+
+
     class LRUCache {
 
         class DLinkedNode{
@@ -92,12 +96,16 @@ public class LruCache {
         class DLinkedList{
 
             private DLinkedNode head, tail;
-
             public DLinkedList(){
-                head = new DLinkedNode();
-                tail = new DLinkedNode();
+                this.head = new DLinkedNode();
+                this.tail = new DLinkedNode();
                 head.next = tail;
                 tail.prev = head;
+            }
+
+            public void removeNode(DLinkedNode node) {
+                node.prev.next = node.next;
+                node.next.prev = node.prev;
             }
 
             public void addToHead(DLinkedNode node) {
@@ -107,12 +115,7 @@ public class LruCache {
                 head.next = node;
             }
 
-            public void removeNode(DLinkedNode node) {
-                node.prev.next = node.next;
-                node.next.prev = node.prev;
-            }
-
-            public void removeToHead(DLinkedNode node) {
+            public void moveToHead(DLinkedNode node) {
                 removeNode(node);
                 addToHead(node);
             }
@@ -126,13 +129,16 @@ public class LruCache {
 
         }
 
+
         private int capacity;
-        private Map<Integer, DLinkedNode> cache = new HashMap<>();
-        private DLinkedList dLinkedList = new DLinkedList();
+        private Map<Integer, DLinkedNode> cache;
+        private DLinkedList dLinkedList;
 
 
         public LRUCache(int capacity) {
             this.capacity = capacity;
+            this.cache = new HashMap<>();
+            this.dLinkedList = new DLinkedList();
         }
 
         public int get(int key) {
@@ -142,9 +148,8 @@ public class LruCache {
                 return -1;
             }
 
-            dLinkedList.removeToHead(node);
+            dLinkedList.moveToHead(node);
             return node.value;
-
         }
 
 
@@ -154,19 +159,116 @@ public class LruCache {
             DLinkedNode node = cache.get(key);
             if (node == null) {
                 DLinkedNode newHead = new DLinkedNode(key, value);
-                dLinkedList.addToHead(newHead);
                 cache.put(key, newHead);
                 if (cache.size() > capacity) {
-                    DLinkedNode tail = dLinkedList.removeTail();
-                    cache.remove(tail.key);
+                    DLinkedNode tailNode = dLinkedList.removeTail();
+                    cache.remove(tailNode.key);
                 }
+                dLinkedList.addToHead(newHead);
             } else {
-                dLinkedList.removeToHead(node);
+                dLinkedList.moveToHead(node);
                 node.value = value;
             }
 
 
         }
+
+
+        /**
+         * 将双链表抽成一个类，这种方法复用性更强一点
+         */
+//        class DLinkedNode{
+//            private int key;
+//            private int value;
+//            private DLinkedNode prev, next;
+//
+//            public DLinkedNode(){}
+//
+//            public DLinkedNode(int key, int value) {
+//                this.key = key;
+//                this.value = value;
+//            }
+//        }
+//
+//        class DLinkedList{
+//
+//            private DLinkedNode head, tail;
+//            public DLinkedList(){
+//                this.head = new DLinkedNode();
+//                this.tail = new DLinkedNode();
+//                head.next = tail;
+//                tail.prev = head;
+//            }
+//
+//            public void removeNode(DLinkedNode node) {
+//                node.prev.next = node.next;
+//                node.next.prev = node.prev;
+//            }
+//
+//            public void addToHead(DLinkedNode node) {
+//                node.prev = head;
+//                node.next = head.next;
+//                head.next.prev = node;
+//                head.next = node;
+//            }
+//
+//            public void moveToHead(DLinkedNode node) {
+//                removeNode(node);
+//                addToHead(node);
+//            }
+//
+//            public DLinkedNode removeTail(){
+//                DLinkedNode tailNode = tail.prev;
+//                removeNode(tailNode);
+//                return tailNode;
+//            }
+//
+//
+//        }
+//
+//
+//        private int capacity;
+//        private Map<Integer, DLinkedNode> cache;
+//        private DLinkedList dLinkedList;
+//
+//
+//        public LRUCache(int capacity) {
+//            this.capacity = capacity;
+//            this.cache = new HashMap<>();
+//            this.dLinkedList = new DLinkedList();
+//        }
+//
+//        public int get(int key) {
+//
+//            DLinkedNode node = cache.get(key);
+//            if (node == null) {
+//                return -1;
+//            }
+//
+//            dLinkedList.moveToHead(node);
+//            return node.value;
+//        }
+//
+//
+//
+//        public void put(int key, int value) {
+//
+//            DLinkedNode node = cache.get(key);
+//            if (node == null) {
+//                DLinkedNode newHead = new DLinkedNode(key, value);
+//                cache.put(key, newHead);
+//                if (cache.size() > capacity) {
+//                    DLinkedNode tailNode = dLinkedList.removeTail();
+//                    cache.remove(tailNode.key);
+//                }
+//                dLinkedList.addToHead(newHead);
+//            } else {
+//                dLinkedList.moveToHead(node);
+//                node.value = value;
+//            }
+//
+//
+//        }
 
 
 

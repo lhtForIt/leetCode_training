@@ -63,14 +63,14 @@ class Solution {
 
         int j = 0;
         for (int i = 0; i < nums.length; i++) {
-            //当不相等时，直接j的下一位替换为另一个数
+
             if (nums[i] != nums[j]) {
                 nums[++j] = nums[i];
             }
+
         }
 
         return j + 1;
-
 
 
 
