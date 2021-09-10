@@ -42,10 +42,36 @@ import java.util.Arrays;
 public class MergeSortedArray{
       public static void main(String[] args) {
            Solution solution = new MergeSortedArray().new Solution();
+          solution.merge(new int[]{0}, 0, new int[]{1}, 1);
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public void merge(int[] nums1, int m, int[] nums2, int n) {
+
+        int p = m - 1, q = n - 1, curr = m + n - 1;
+
+        while (p >= 0 && q >= 0) {
+            if (nums1[p] <= nums2[q]) {
+                nums1[curr--] = nums2[q--];
+            } else {
+                nums1[curr--] = nums1[p--];
+            }
+        }
+        while (q >= 0) {
+            nums1[curr--] = nums2[q--];
+        }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         /**

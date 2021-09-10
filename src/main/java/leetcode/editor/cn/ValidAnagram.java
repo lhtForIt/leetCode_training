@@ -45,19 +45,19 @@ class Solution {
             return false;
         }
 
-        int[] cs = new int[26];
+        int[] chars = new int[26];
+
         for (char c : s.toCharArray()) {
-            cs[c - 'a']++;
+            chars[c - 'a']++;
         }
 
         for (char c : t.toCharArray()) {
-            if (--cs[c - 'a'] < 0) {
+            if (--chars[c - 'a'] < 0) {
                 return false;
             }
         }
 
         return true;
-
 
 
 

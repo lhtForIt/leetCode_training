@@ -217,6 +217,9 @@ public class DesignCircularDeque{
 //    }
 //}
 
+    /**
+     * 链表实现
+     */
 //      class MyCircularDeque {
 //          int size;
 //          int k;

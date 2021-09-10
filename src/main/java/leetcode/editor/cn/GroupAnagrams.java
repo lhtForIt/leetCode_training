@@ -35,28 +35,37 @@ class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
 
 
-        Map<String, List<String>> keyMap = new HashMap<>();
+        if (strs == null || strs.length == 0) {
+            return new ArrayList<>();
+        }
 
+        Map<String, List<String>> charMap = new HashMap<>();
 
         for (String s : strs) {
 
             char[] cs = new char[26];
+
             for (char c : s.toCharArray()) {
                 cs[c - 'a']++;
             }
 
             String str = new String(cs);
 
-            if (!keyMap.containsKey(str)) {
-                keyMap.put(str, new ArrayList<>());
+//            List<String> list = charMap.getOrDefault(str, new ArrayList<>());
+//
+//            list.add(s);
+//
+//            charMap.put(str, list);
+
+            if (!charMap.containsKey(str)) {
+                charMap.put(str, new ArrayList<>());
             }
 
-            keyMap.get(str).add(s);
+            charMap.get(str).add(s);
 
         }
 
-        return new ArrayList<>(keyMap.values());
-
+        return new ArrayList<>(charMap.values());
 
 
 
@@ -123,6 +132,12 @@ class Solution {
 //                ca[c - 'a']++;
 //            }
 //
+//
+////            List<String> list = charMap.getOrDefault(str, new ArrayList<>());
+////
+////            list.add(s);
+////
+////            charMap.put(str, list);
 //            String keyStr = String.valueOf(ca);
 //            if (!map.containsKey(keyStr)) {
 //                map.put(keyStr, new ArrayList<>());
