@@ -40,21 +40,16 @@ public class GenerateParentheses{
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+
     public List<String> generateParenthesis(int n) {
+
 
         List<String> res = new ArrayList<>();
 
-        char[] chars = new char[2 * n];
-        recursion(0, 0, n, res, chars,0);
+        char[] chars = new char[n * 2];
+        rescurtions2(0, 0, 0, n, res, chars);
 
         return res;
-
-
-
-
-
-
-
 
 
 
@@ -301,6 +296,81 @@ class Solution {
 //
 //        return result;
     }
+
+          private void rescurtions2(int left, int right, int level, int n, List<String> res, char[] chars) {
+
+              if (level == 2*n) {
+                  res.add(new String(chars));
+                  return;
+              }
+
+              if(left<n){
+                  chars[level] = '(';
+                  rescurtions2(left + 1, right, level + 1, n, res, chars);
+              }
+
+              if (right < left) {
+                  chars[level] = ')';
+                  rescurtions2(left, right + 1, level + 1, n, res, chars);
+              }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          }
+
+          private void rescurtions1(int left, int right, int n, List<String> res, String str) {
+
+              //递归终止条件
+              if (str.length() == 2 * n) {
+                  res.add(str);
+                  return;
+              }
+
+              //当前层逻辑
+
+              //下拽到下一层
+              if (left<n) rescurtions1(left + 1, right, n, res, str + "(");
+              if (right<left) rescurtions1(left, right + 1, n, res, str + ")");
+
+
+              //重置状态
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          }
 
           private void recursion(int left, int right, int n, List<String> res, char[] chars,int level) {
 
