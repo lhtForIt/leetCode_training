@@ -36,6 +36,7 @@
   
 package leetcode.editor.cn;
 
+import java.lang.management.MonitorInfo;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -66,37 +67,10 @@ class Solution {
             return 0;
         }
 
-        Deque<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
-        int depth = 1;
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-            for (int i = 0; i < size; i++) {
+        int left = minDepth(root.left);
+        int right = minDepth(root.right);
 
-                TreeNode node = queue.poll();
-                if (node.left == null && node.right == null) {
-                    return depth;
-                }
-
-                if (node.left != null) {
-                    queue.offer(node.left);
-                }
-
-                if (node.right != null) {
-                    queue.offer(node.right);
-                }
-
-            }
-            depth++;
-        }
-
-        return depth;
-
-
-
-
-
-
+        return 1 + (Math.min(left, right) > 0 ? Math.min(left, right) : Math.max(left, right));
 
 
 

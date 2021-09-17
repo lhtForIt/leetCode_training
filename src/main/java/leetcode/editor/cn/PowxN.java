@@ -51,8 +51,19 @@ public class PowxN {
     class Solution {
         public double myPow(double x, int n) {
 
+
+            long N = n;
+            return N >= 0 ? pow2(x, N) : 1 / pow2(x, -N);
+
+
+
+
+
+
             /**
              * 递归
+             * 这里只是借用二分的思维，每次将n变为n/2而已，但是和二分查找其实没多大关系，因为
+             * 整个过程中没有查找的情况
              */
 //            long N = n;
 //            return N >= 0 ? pow(x, N) : 1 / pow(x, -N);
@@ -64,26 +75,38 @@ public class PowxN {
 //        return N >= 0 ? pow1(x, N) :1/pow1(x,-N);
 
             /**
-             * 非递归,有问题
+             * 在原函数上递归,并且不需要将n改为Long型
              */
 
-        if (n == 0) {
-            return 1;
+//        if (n == 0) {
+//            return 1;
+//        }
+//
+//        //当为负数时，其实求得1/x的n次
+//        if (n < 0) {
+//            //这里要考虑溢出的问题
+//            if(n == Integer.MIN_VALUE) {
+//                n += 2;
+//            }
+//            n = -n;
+//            x = 1 / x;
+//        }
+//
+//        //这里思路是每次将pow的x扩大为原来的平方，且n/2，当n不为奇数时，结果为x*x，当n为奇数时，需要在乘以个x
+//        return (n % 2 == 0) ? myPow(x * x, n / 2) : x * myPow(x * x, n / 2);
+//
+//
         }
 
-        //当为负数时，其实求得1/x的n次
-        if (n < 0) {
-            //这里要考虑溢出的问题
-            if(n == Integer.MIN_VALUE) {
-                n += 2;
+        private double pow2(double x, long n) {
+
+            if (n == 0) {
+                return 1d;
             }
-            n = -n;
-            x = 1 / x;
-        }
 
-        //这里思路是每次将pow的x扩大为原来的平方，且n/2，当n不为奇数时，结果为x*x，当n为奇数时，需要在乘以个x
-        return (n % 2 == 0) ? myPow(x * x, n / 2) : x * myPow(x * x, n / 2);
+            double y = pow2(x, n / 2);
 
+            return n % 2 == 0 ? y * y : y * y * x;
 
         }
 

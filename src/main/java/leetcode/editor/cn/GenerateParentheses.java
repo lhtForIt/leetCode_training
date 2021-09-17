@@ -422,7 +422,7 @@ class Solution {
 
               //当前层逻辑
               if (left < max) {
-                  dfs(left + 1, right, max, res, s+"(");
+                  dfs(left + 1, right, max, res, s + "(");
               }
 
               if (right < left) {

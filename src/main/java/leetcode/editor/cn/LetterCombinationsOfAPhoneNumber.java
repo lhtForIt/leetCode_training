@@ -43,7 +43,10 @@
   
 package leetcode.editor.cn;
 
+import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
+
 import java.util.*;
+import java.util.logging.Level;
 
 public class LetterCombinationsOfAPhoneNumber{
       public static void main(String[] args) {
@@ -57,6 +60,40 @@ class Solution {
     private final String[] KEYS = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
     public List<String> letterCombinations(String digits) {
 
+        List<String> res = new ArrayList<>();
+        if (digits == null || digits.length() == 0) {
+            return res;
+        }
+
+
+        Map<Character, String> strMap = new HashMap<>();
+        strMap.put('2', "abc");
+        strMap.put('3', "def");
+        strMap.put('4', "ghi");
+        strMap.put('5', "jkl");
+        strMap.put('6', "mno");
+        strMap.put('7', "pqrs");
+        strMap.put('8', "tuv");
+        strMap.put('9', "wxyz");
+
+        recuv(res, digits, strMap, 0, "");
+
+        return res;
+
+
+
+
+
+
+
+
+
+
+
+
+        /**
+         * 图标为hashMap在做hash映射的时候有时间消耗，所以自己用数组实现的话会比用Map快
+         */
 //        List<String> res = new ArrayList<>();
 //        if (digits == null || digits.length() == 0) {
 //            return res;
@@ -78,26 +115,26 @@ class Solution {
          * 时间复杂度：O(3^m * 4^n)，其中 mm 是输入中对应 33 个字母的数字个数（包括数字 22、33、44、55、66、88），nn 是输入中对应 44 个字母的数字个数（包括数字 77、99），m+nm+n 是输入数字的总个数。
          * 空间复杂度：O(m+n)
          */
-        List<String> res = new ArrayList<>();
-        if (digits == null || digits.length() == 0) {
-            return res;
-        }
-        Map<Character, String> numMap = new HashMap<>();
-        numMap.put('2', "abc");
-        numMap.put('3', "def");
-        numMap.put('4', "ghi");
-        numMap.put('5', "jkl");
-        numMap.put('6', "mno");
-        numMap.put('7', "pqrs");
-        numMap.put('8', "tuv");
-        numMap.put('9', "wxyz");
-        //这里的递归层数表示操作第几个字符
-        recur(0, numMap, res, digits, new StringBuilder());
-        //用string的话可以不用重置状态
-//        testRecur(0, numMap, res, digits, "");
-
-
-        return res;
+//        List<String> res = new ArrayList<>();
+//        if (digits == null || digits.length() == 0) {
+//            return res;
+//        }
+//        Map<Character, String> numMap = new HashMap<>();
+//        numMap.put('2', "abc");
+//        numMap.put('3', "def");
+//        numMap.put('4', "ghi");
+//        numMap.put('5', "jkl");
+//        numMap.put('6', "mno");
+//        numMap.put('7', "pqrs");
+//        numMap.put('8', "tuv");
+//        numMap.put('9', "wxyz");
+//        //这里的递归层数表示操作第几个字符
+//        recur(0, numMap, res, digits, new StringBuilder());
+//        //用string的话可以不用重置状态
+////        testRecur(0, numMap, res, digits, "");
+//
+//
+//        return res;
 
 
         /**
@@ -131,6 +168,22 @@ class Solution {
 
 
     }
+
+          /**
+           * 这里for(i)循环和foreach循环都可以，需要注意的一点是，str的改变如果是在外面需要在后续重置状态，否则会出问题,因为会将str的状态带到下一层去
+           */
+          private void recuv(List<String> res, String digits, Map<Character, String> strMap, int level, String str) {
+
+              if (level == digits.length()) {
+                  res.add(str);
+                  return;
+              }
+
+              for (char cs : strMap.get(digits.charAt(level)).toCharArray()) {
+                  recuv(res, digits, strMap, level + 1, str + cs);
+              }
+
+          }
 
           private void testRecur(int level, Map<Character, String> numMap, List<String> res, String digits, String s) {
               if (level == digits.length()) {

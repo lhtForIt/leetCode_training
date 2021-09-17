@@ -61,12 +61,28 @@ class Solution {
 
 
         List<List<String>> res = new ArrayList<>();
+        boolean[] visited = new boolean[n];
+        boolean[] pie = new boolean[2 * n - 1];
+        boolean[] na = new boolean[2 * n - 1];
         char[] chess = new char[n];
         Arrays.fill(chess, '.');
 
-        recurMap(0, res, new ArrayList<>(), chess, n);
+
+        recuv(visited, pie, na, res, new ArrayList<>(), chess, 0, n);
 
         return res;
+
+
+
+
+
+//        List<List<String>> res = new ArrayList<>();
+//        char[] chess = new char[n];
+//        Arrays.fill(chess, '.');
+//
+//        recurMap(0, res, new ArrayList<>(), chess, n);
+//
+//        return res;
 
 
 
@@ -131,6 +147,44 @@ class Solution {
 
     }
 
+          private void recuv(boolean[] visited, boolean[] pie, boolean[] na, List<List<String>> res, ArrayList<String> subRes, char[] chess, int row, int n) {
+              if (row == n) {
+                  res.add(new ArrayList<>(subRes));
+                  return;
+              }
+
+              for (int i = 0; i < n; i++) {
+
+                  if (visited[i] || pie[row + i] || na[row - i + n - 1]) {
+                      continue;
+                  }
+
+                  chess[i] = 'Q';
+                  subRes.add(new String(chess));
+                  chess[i] = '.';
+
+                  visited[i] = true;
+                  pie[row + i] = true;
+                  na[row - i + n - 1] = true;
+
+                  recuv(visited, pie, na, res, subRes, chess, row + 1, n);
+
+                  subRes.remove(subRes.size() - 1);
+                  visited[i] = false;
+                  pie[row + i] = false;
+                  na[row - i + n - 1] = false;
+
+
+
+              }
+
+
+
+
+
+
+          }
+
           private void recurMap(int row, List<List<String>> res, ArrayList<String> list, char[] chess, int n) {
 
               if (row == n) {
@@ -184,22 +238,6 @@ class Solution {
                       chess[row][i] = ',';
                   }
               }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
           }
 

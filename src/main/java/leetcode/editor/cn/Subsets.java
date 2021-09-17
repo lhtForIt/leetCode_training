@@ -35,6 +35,7 @@
   
 package leetcode.editor.cn;
 
+import java.awt.font.NumericShaper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -47,6 +48,19 @@ public class Subsets{
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public List<List<Integer>> subsets(int[] nums) {
+
+        List<List<Integer>> res = new ArrayList<>();
+        recv(res, new ArrayList<Integer>(), nums, 0);
+
+        return res;
+
+
+
+
+
+
+
+
 
         /** 递归
          * 回溯法：
@@ -71,11 +85,11 @@ class Solution {
          *
          */
 
-        List<List<Integer>> list = new ArrayList<>();
-//        排序主要看是否有重复元素
-//        Arrays.sort(nums);
-        backtrack(list, new ArrayList<>(), nums, 0);
-        return list;
+//        List<List<Integer>> list = new ArrayList<>();
+////        排序主要看是否有重复元素
+////        Arrays.sort(nums);
+//        backtrack(list, new ArrayList<>(), nums, 0);
+//        return list;
 
 
 
@@ -97,6 +111,48 @@ class Solution {
 //        return res;
 
     }
+
+          private void recv(List<List<Integer>> res, ArrayList<Integer> subRes, int[] nums, int level) {
+
+              res.add(new ArrayList<>(subRes));
+
+              for (int i = level; i < nums.length; i++) {
+                  subRes.add(nums[i]);
+                  recv(res, subRes, nums, i + 1);
+                  subRes.remove(subRes.size() - 1);
+              }
+
+          }
+
+          private void rec(int level, List<List<Integer>> res, List<Integer> subRes, int[] nums) {
+
+              if (level == nums.length) {
+                  res.add(new ArrayList<>(subRes));
+                  return;
+              }
+
+
+              rec(level + 1, res, subRes, nums);
+
+              subRes.add(nums[level]);
+
+              rec(level + 1, res, subRes, nums);
+
+              subRes.remove(subRes.size() - 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+          }
 
 
           private void dfs(int level, List<List<Integer>> res, ArrayList<Integer> subRes, int[] nums) {
@@ -126,38 +182,6 @@ class Solution {
 
           }
 
-          private void rec(int level, List<List<Integer>> res, ArrayList<Integer> subRes, int[] nums) {
-
-              if (level == nums.length) {
-                  res.add(new ArrayList<>(subRes));
-                  return;
-              }
-
-              //不加入
-              rec(level + 1, res, subRes, nums);
-
-              subRes.add(nums[level]);
-
-              //加入当前元素
-              rec(level + 1, res, subRes, nums);
-
-              subRes.remove(subRes.size() - 1);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-          }
 
           private void backtrack(List<List<Integer>> list, ArrayList<Integer> tempList, int[] nums, int start) {
               System.out.println("当前第" + start + "层梦境，加入List为：" + Arrays.toString(tempList.toArray()));

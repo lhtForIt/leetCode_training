@@ -45,6 +45,26 @@ public class MajorityElement {
     class Solution {
         public int majorityElement(int[] nums) {
 
+            int maxNumber = nums[0], count = 1;
+            for (int i = 1; i < nums.length; i++) {
+                if (maxNumber == nums[i]) {
+                    count++;
+                } else if (--count == 0) {
+                    maxNumber = nums[i];
+                    count = 1;
+                }
+            }
+            return maxNumber;
+
+
+
+
+
+
+
+
+
+
             /**
              * 法一：Map记录每个数出现次数，遍历map得到count>n/2的即可
              *
@@ -105,7 +125,7 @@ public class MajorityElement {
             /**
              * 法四：分治
              */
-            return majorityElementRec(nums, 0, nums.length - 1);
+//            return majorityElementRec(nums, 0, nums.length - 1);
 
 
         }
