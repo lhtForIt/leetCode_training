@@ -74,6 +74,7 @@ class Solution {
          * q = root ，且 p 在 root 的左或右子树中；
          *
          */
+
         if (root == null || root == p || root == q) {
             return root;
         }
@@ -90,6 +91,7 @@ class Solution {
         }
 
         return root;
+
 
     }
 }

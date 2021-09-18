@@ -23,8 +23,6 @@
   
 package leetcode.editor.cn;
 
-import sun.reflect.generics.tree.Tree;
-
 import java.util.*;
 
 public class ConstructBinaryTreeFromPreorderAndInorderTraversal{
@@ -56,16 +54,40 @@ class Solution {
 
     public TreeNode buildTree(int[] preorder, int[] inorder) {
 
-        /**
-         * 这里记住要持续递归，而不能靠常规思维去判断，有时候容易把左右子节点判断出错，要不断用前序和中序去判断
-         */
+
         if (preorder == null || inorder == null) {
             return null;
         }
 
-        for (int i = 0; i < inorder.length; i++) indexMap.put(inorder[i], i);
+        Map<Integer, Integer> myMap = new HashMap<>();
+        for (int i = 0; i < inorder.length; i++) myMap.put(inorder[i], i);
+        //inorder的rightIndex完全没有用，可以去掉
+        return recurs(preorder, 0, preorder.length - 1, 0, myMap);
 
-        return recursion(preorder, 0, preorder.length - 1, 0, inorder.length - 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /**
+         * 这里记住要持续递归，而不能靠常规思维去判断，有时候容易把左右子节点判断出错，要不断用前序和中序去判断
+         */
+//        if (preorder == null || inorder == null) {
+//            return null;
+//        }
+//
+//        for (int i = 0; i < inorder.length; i++) indexMap.put(inorder[i], i);
+//
+//        return recursion(preorder, 0, preorder.length - 1, 0, inorder.length - 1);
 
 
 
@@ -131,6 +153,36 @@ class Solution {
 
 
     }
+
+    private TreeNode recurs(int[] preorder, int preLeft, int preRight, int inLeft, Map<Integer, Integer> myMap) {
+
+        if (preLeft > preRight) {
+            return null;
+        }
+
+        TreeNode root = new TreeNode(preorder[preLeft]);
+
+        int rootIndex = myMap.get(preorder[preLeft]);
+
+        int leftSize = rootIndex - inLeft;
+
+        root.left = recurs(preorder, preLeft + 1, preLeft + leftSize, inLeft, myMap);
+        root.right = recurs(preorder, preLeft + leftSize + 1, preRight, rootIndex + 1, myMap);
+
+
+        return root;
+
+
+
+
+
+
+
+
+
+
+    }
+
 
     private TreeNode recursion(int[] preOrder, int preOrderLeft, int preOrderRight, int inOrderLeft, int inOrderRight) {
 
