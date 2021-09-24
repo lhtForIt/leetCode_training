@@ -23,6 +23,8 @@
   
 package leetcode.editor.cn;
 
+import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
+
 import java.util.*;
 
 public class ConstructBinaryTreeFromPreorderAndInorderTraversal{
@@ -54,15 +56,34 @@ class Solution {
 
     public TreeNode buildTree(int[] preorder, int[] inorder) {
 
-
         if (preorder == null || inorder == null) {
             return null;
         }
 
-        Map<Integer, Integer> myMap = new HashMap<>();
-        for (int i = 0; i < inorder.length; i++) myMap.put(inorder[i], i);
-        //inorder的rightIndex完全没有用，可以去掉
-        return recurs(preorder, 0, preorder.length - 1, 0, myMap);
+
+        for (int i = 0; i < inorder.length; i++) indexMap.put(inorder[i], i);
+
+        return recurtion(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1,indexMap);
+
+
+
+
+
+
+
+
+
+
+
+
+//        if (preorder == null || inorder == null) {
+//            return null;
+//        }
+//
+//        Map<Integer, Integer> myMap = new HashMap<>();
+//        for (int i = 0; i < inorder.length; i++) myMap.put(inorder[i], i);
+//        //inorder的rightIndex完全没有用，可以去掉
+//        return recurs(preorder, 0, preorder.length - 1, 0, myMap);
 
 
 
@@ -148,6 +169,43 @@ class Solution {
          */
 
 //        return build(preorder, inorder, Integer.MIN_VALUE);
+
+
+
+
+    }
+
+    private TreeNode recurtion(int[] preorder, int preLeft, int preRight, int[] inorder, int inOrderLeft, int inOrderRight, Map<Integer, Integer> indexMap) {
+
+        if (preLeft > preRight) {
+            return null;
+        }
+
+        TreeNode root = new TreeNode(preorder[preLeft]);
+
+        int inOrderRoot = indexMap.get(preorder[preLeft]);
+
+        int leftSize = inOrderRoot - inOrderLeft;
+
+        root.left = recurtion(preorder, preLeft + 1, preLeft + leftSize, inorder, inOrderLeft, inOrderRoot - 1, indexMap);
+        root.right = recurtion(preorder, preLeft + leftSize + 1, preRight, inorder, inOrderRoot + 1, inOrderRight, indexMap);
+
+        return root;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

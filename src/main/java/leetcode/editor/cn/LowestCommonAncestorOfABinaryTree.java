@@ -75,7 +75,8 @@ class Solution {
          *
          */
 
-        if (root == null || root == p || root == q) {
+
+        if (root == null || root == q || root == p) {
             return root;
         }
 
@@ -91,6 +92,13 @@ class Solution {
         }
 
         return root;
+
+
+
+
+
+
+
 
 
     }

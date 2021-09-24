@@ -47,36 +47,69 @@ public class FindLargestValueInEachTreeRow{
 class Solution {
     public List<Integer> largestValues(TreeNode root) {
 
+
+        List<Integer> res = new ArrayList<>();
+
+        recur(0, root, res);
+
+        return res;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         /**
          * 一开始想到的应该是BFS
          * 时间复杂度O(n)，空间复杂度O(n)，树的深度
          */
 
-        List<Integer> res = new ArrayList<>();
-        if (root == null) {
-            return res;
-        }
+//        List<Integer> res = new ArrayList<>();
+//
+//        if (root == null) {
+//            return res;
+//        }
+//
+//        Deque<TreeNode> queue = new LinkedList<>();
+//        queue.offer(root);
+//
+//        while (!queue.isEmpty()) {
+//
+//            int size = queue.size();
+//            int max = Integer.MIN_VALUE;
+//            for (int i = 0; i < size; i++) {
+//
+//                TreeNode node = queue.poll();
+//
+//                max = max < node.val ? node.val : max;
+//
+//                if (node.left != null) {
+//                    queue.offer(node.left);
+//                }
+//
+//                if (node.right != null) {
+//                    queue.offer(node.right);
+//                }
+//
+//            }
+//
+//            res.add(max);
+//        }
+//
+//        return res;
 
-        Deque<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
-
-        while (!queue.isEmpty()) {
-            int max = Integer.MIN_VALUE;
-            int size = queue.size();
-            for (int i = 0; i < size; i++) {
-                TreeNode node = queue.poll();
-                max = Math.max(max, node.val);
-                if (node.left != null) {
-                    queue.offer(node.left);
-                }
-                if (node.right != null) {
-                    queue.offer(node.right);
-                }
-            }
-            res.add(max);
-        }
-
-        return res;
 
         /**
          * DFS
@@ -101,6 +134,32 @@ class Solution {
 
 
 //        return res;
+
+
+
+    }
+
+    private void recur(int level, TreeNode root, List<Integer> res) {
+
+        if (root == null) {
+            return;
+        }
+
+        if (level == res.size()) {
+            res.add(Integer.MIN_VALUE);
+        }
+
+
+        res.set(level, res.get(level) < root.val ? root.val : res.get(level));
+
+        recur(level + 1, root.left, res);
+        recur(level + 1, root.right, res);
+
+
+
+
+
+
 
 
 

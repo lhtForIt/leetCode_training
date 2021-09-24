@@ -60,19 +60,17 @@ class Solution {
     public List<List<String>> solveNQueens(int n) {
 
 
+        Set<Integer> lie = new HashSet<>();
+        Set<Integer> pie = new HashSet<>();
+        Set<Integer> na = new HashSet<>();
+
         List<List<String>> res = new ArrayList<>();
-        boolean[] visited = new boolean[n];
-        boolean[] pie = new boolean[2 * n - 1];
-        boolean[] na = new boolean[2 * n - 1];
         char[] chess = new char[n];
         Arrays.fill(chess, '.');
 
-
-        recuv(visited, pie, na, res, new ArrayList<>(), chess, 0, n);
+        recurtion(0, res, new ArrayList<>(), lie, pie, na, n, chess);
 
         return res;
-
-
 
 
 
@@ -146,6 +144,56 @@ class Solution {
 //        return res;
 
     }
+
+          private void recurtion(int row, List<List<String>> res, ArrayList<String> subRes, Set<Integer> lie, Set<Integer> pie, Set<Integer> na, int n, char[] chess) {
+
+              if (row == n) {
+                  res.add(new ArrayList<>(subRes));
+                  return;
+              }
+
+
+              for (int i = 0; i < n; i++) {
+
+                  if (lie.contains(i) || pie.contains(row + i) || na.contains(row - i)) {
+                      continue;
+                  }
+
+                  chess[i] = 'Q';
+                  subRes.add(new String(chess));
+                  chess[i] = '.';
+
+                  lie.add(i);
+                  pie.add(row + i);
+                  na.add(row - i);
+
+                  recurtion(row + 1, res, subRes, lie, pie, na, n, chess);
+                  subRes.remove(subRes.size() - 1);
+                  lie.remove(i);
+                  pie.remove(row + i);
+                  na.remove(row - i);
+
+
+              }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          }
 
           private void recuv(boolean[] visited, boolean[] pie, boolean[] na, List<List<String>> res, ArrayList<String> subRes, char[] chess, int row, int n) {
               if (row == n) {

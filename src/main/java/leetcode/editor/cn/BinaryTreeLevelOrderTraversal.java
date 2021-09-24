@@ -30,8 +30,6 @@
   
 package leetcode.editor.cn;
 
-import sun.awt.SubRegionShowable;
-
 import java.util.*;
 
 public class BinaryTreeLevelOrderTraversal{
@@ -59,16 +57,17 @@ public class BinaryTreeLevelOrderTraversal{
 class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
 
-
         List<List<Integer>> res = new ArrayList<>();
 
-        if (root == null) {
-            return res;
-        }
+//        if (root == null) {
+//            return res;
+//        }
 
-        recurs(0, res, root);
+        recur2(root, 0, res);
 
         return res;
+
+
 
 
 
@@ -146,6 +145,33 @@ class Solution {
 //        }
 //        dfs(root, 0, res);
 //        return res;
+    }
+
+    private void recur2(TreeNode root, int level, List<List<Integer>> res) {
+
+        if (root == null) {
+            return;
+        }
+
+        if (level == res.size()) {
+            res.add(new ArrayList<>());
+        }
+
+        res.get(level).add(root.val);
+
+        recur2(root.left, level + 1, res);
+        recur2(root.right, level + 1, res);
+
+
+
+
+
+
+
+
+
+
+
     }
 
     private void recurs(int level, List<List<Integer>> res, TreeNode root) {

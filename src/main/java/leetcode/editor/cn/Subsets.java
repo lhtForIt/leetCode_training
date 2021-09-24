@@ -50,9 +50,20 @@ class Solution {
     public List<List<Integer>> subsets(int[] nums) {
 
         List<List<Integer>> res = new ArrayList<>();
-        recv(res, new ArrayList<Integer>(), nums, 0);
 
+        res.add(new ArrayList<>());
+
+        for (int n : nums) {
+            int size = res.size();
+            for (int i = 0; i < size; i++) {
+                List<Integer> subRes = new ArrayList<>(res.get(i));
+                subRes.add(n);
+                res.add(subRes);
+            }
+        }
         return res;
+
+
 
 
 
@@ -112,17 +123,20 @@ class Solution {
 
     }
 
-          private void recv(List<List<Integer>> res, ArrayList<Integer> subRes, int[] nums, int level) {
+          private void recurv(int level, List<List<Integer>> res, ArrayList<Integer> subRes, int[] nums) {
+
 
               res.add(new ArrayList<>(subRes));
 
               for (int i = level; i < nums.length; i++) {
                   subRes.add(nums[i]);
-                  recv(res, subRes, nums, i + 1);
+                  recurv(i + 1, res, subRes, nums);
                   subRes.remove(subRes.size() - 1);
               }
 
+
           }
+
 
           private void rec(int level, List<List<Integer>> res, List<Integer> subRes, int[] nums) {
 

@@ -45,17 +45,35 @@ class Solution {
 
 
         List<String> res = new ArrayList<>();
+        Deque<Node> queue = new LinkedList<>();
 
-        char[] chars = new char[n * 2];
-        rescurtions2(0, 0, 0, n, res, chars);
+        queue.offer(new Node("", 0, 0));
+
+        while (!queue.isEmpty()) {
+
+            int size = queue.size();
+            //这个for循环要不要都可以，因为只有两个节点，这个size一定是2
+            for (int i = 0; i < size; i++) {
+                Node node = queue.poll();
+
+                if (node.left == n && node.right == n) {
+                    res.add(node.res);
+                }
+
+                if (node.left < n) {
+                    queue.offer(new Node(node.res + "(", node.left + 1, node.right));
+                }
+
+                if (node.right < node.left) {
+                    queue.offer(new Node(node.res + ")", node.left, node.right + 1));
+                }
+
+            }
+
+
+        }
 
         return res;
-
-
-
-
-
-
 
 
 

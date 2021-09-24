@@ -70,6 +70,63 @@ class Solution {
 
     public int minMutation(String start, String end, String[] bank) {
 
+
+        Set<String> bankSet = new HashSet<>();
+        for (String b : bank) bankSet.add(b);
+
+        if (bank == null || start.length() != end.length() || !bankSet.contains(end)) {
+            return -1;
+        }
+
+        Set<String> visitedSet = new HashSet<>();
+        Deque<String> queue = new LinkedList<>();
+        queue.offer(start);
+
+        visitedSet.add(start);
+
+        String tt="ACGT";
+
+        int min = 0;
+
+        while (!queue.isEmpty()) {
+
+            int size = queue.size();
+
+            for (int i = 0; i < size; i++) {
+                String s = queue.poll();
+                char[] cs = s.toCharArray();
+                for (int k = 0; k < cs.length; k++) {
+                    char t = cs[k];
+                    for (char c : tt.toCharArray()) {
+                        cs[k] = c;
+                        String temp = new String(cs);
+                        if (temp.equals(end)) {
+                            return min + 1;
+                        }
+
+                        if (!visitedSet.contains(temp) && bankSet.contains(temp)) {
+                            visitedSet.add(temp);
+                            queue.offer(temp);
+                        }
+                    }
+                    cs[k] = t;
+                }
+            }
+
+            min++;
+
+        }
+
+        return -1;
+
+
+
+
+
+
+
+
+
         /**
          * 最小基因变化这个题其实有点取巧，因为只有四个字母变化，其实不需要遍历整个char数组，
          * 且不需要记录当前的位置，只需要看是否相差字符为1即可，但是怎么说不具常规性，代表性，
@@ -88,52 +145,52 @@ class Solution {
          */
 
 
-        Set<String> bankSet = new HashSet<>();
-
-        for(String s:bank) bankSet.add(s);
-        if (start.length() != end.length() || !bankSet.contains(end)) {
-            return -1;
-        }
-
-        Deque<String> queue = new LinkedList<>();
-        Set<String> visited = new HashSet<>();
-        queue.offer(start);
-        visited.add(start);
-
-        int step = 0;
-        while (!queue.isEmpty()) {
-
-            int size = queue.size();
-
-            for (int i = 0; i < size; i++) {
-
-                String temp = queue.poll();
-                if (temp.equals(end)) {
-                    return step;
-                }
-
-
-                for (String s : bankSet) {
-                    int diff = 0;
-                    for (int j = 0; j < temp.length(); j++) {
-                        if (s.charAt(j) != temp.charAt(j)) {
-                            if(++diff>1) break;
-                        }
-                    }
-
-                    if (diff == 1 && !visited.contains(s)) {
-                        queue.offer(s);
-                        visited.add(s);
-                    }
-                }
-
-            }
-
-            step++;
-
-        }
-
-        return -1;
+//        Set<String> bankSet = new HashSet<>();
+//
+//        for(String s:bank) bankSet.add(s);
+//        if (start.length() != end.length() || !bankSet.contains(end)) {
+//            return -1;
+//        }
+//
+//        Deque<String> queue = new LinkedList<>();
+//        Set<String> visited = new HashSet<>();
+//        queue.offer(start);
+//        visited.add(start);
+//
+//        int step = 0;
+//        while (!queue.isEmpty()) {
+//
+//            int size = queue.size();
+//
+//            for (int i = 0; i < size; i++) {
+//
+//                String temp = queue.poll();
+//                if (temp.equals(end)) {
+//                    return step;
+//                }
+//
+//
+//                for (String s : bankSet) {
+//                    int diff = 0;
+//                    for (int j = 0; j < temp.length(); j++) {
+//                        if (s.charAt(j) != temp.charAt(j)) {
+//                            if(++diff>1) break;
+//                        }
+//                    }
+//
+//                    if (diff == 1 && !visited.contains(s)) {
+//                        queue.offer(s);
+//                        visited.add(s);
+//                    }
+//                }
+//
+//            }
+//
+//            step++;
+//
+//        }
+//
+//        return -1;
 
 
 
@@ -231,7 +288,7 @@ class Solution {
          * DFS 数组存储访问结果
          * 一开始没看懂啥意思，
          * 思路其实是用运用数组的特性，直接在数组上面去标记是否访问，
-         * 这里其实完全没必要转成二维数组，直接以为也没影响
+         * 这里其实完全没必要转成二维数组，直接一维也没影响
          */
 
 //        char[][] banks = new char[bank.length][8];

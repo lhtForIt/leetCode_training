@@ -33,16 +33,39 @@ public class Combinations{
 class Solution {
     public List<List<Integer>> combine(int n, int k) {
 
-
         List<List<Integer>> res = new ArrayList<>();
-
-        if (k <= 0 || n < k) {
+        if (n < k) {
             return res;
         }
-        boolean[] visited = new boolean[n + 1];
-        recursion(visited, res, new ArrayList<Integer>(), n, k);
+
+        recurtion(res, new ArrayList<>(), n, k, 1);
 
         return res;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//        List<List<Integer>> res = new ArrayList<>();
+//
+//        if (k <= 0 || n < k) {
+//            return res;
+//        }
+//        boolean[] visited = new boolean[n + 1];
+//        recursion(visited, res, new ArrayList<Integer>(), n, k);
+//
+//        return res;
 
 
 
@@ -109,6 +132,24 @@ class Solution {
 
 
     }
+
+          private void recurtion(List<List<Integer>> res, ArrayList<Integer> subRes, int n, int k, int level) {
+
+              if (k == 0) {
+                  res.add(new ArrayList<>(subRes));
+                  return;
+              }
+
+              for (int i = level; i <= n - k + 1; i++) {
+
+                  subRes.add(i);
+                  recurtion(res, subRes, n, k - 1, i + 1);
+                  subRes.remove(subRes.size() - 1);
+
+              }
+
+
+          }
 
           //dfs解法，会慢很多，不推荐，如果是有序的情况下,直接i==level，会快特别多
           private void recursion(boolean[] visited, List<List<Integer>> res, ArrayList<Integer> subRes, int n, int k) {

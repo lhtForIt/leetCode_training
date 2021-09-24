@@ -36,6 +36,7 @@
   
 package leetcode.editor.cn;
 
+import java.awt.*;
 import java.lang.management.MonitorInfo;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -67,10 +68,43 @@ class Solution {
             return 0;
         }
 
-        int left = minDepth(root.left);
-        int right = minDepth(root.right);
+        Deque<TreeNode> queue = new LinkedList<>();
 
-        return 1 + (Math.min(left, right) > 0 ? Math.min(left, right) : Math.max(left, right));
+        int high = 0;
+
+        queue.offer(root);
+
+        while (!queue.isEmpty()) {
+
+            int size = queue.size();
+
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                //以为看的是left或者right子树是否为空，但当前层是有值得，所以要+1
+                if (node.left == null || node.right == null) {
+                    return high + 1;
+                }
+
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+
+
+            }
+
+            high++;
+
+        }
+
+        return high;
+
+
+
+
 
 
 

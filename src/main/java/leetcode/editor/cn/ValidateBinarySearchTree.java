@@ -71,7 +71,7 @@ class Solution {
 
         Deque<TreeNode> stack = new LinkedList<>();
 
-        TreeNode prev = null;
+        TreeNode pre = null;
         while (root != null || !stack.isEmpty()) {
 
             while (root != null) {
@@ -80,15 +80,21 @@ class Solution {
             }
 
             root = stack.pop();
-            if (prev != null && prev.val >= root.val) {
+            if (pre != null && pre.val >= root.val) {
                 return false;
             }
-            prev = root;
+
+            pre = root;
             root = root.right;
 
         }
 
         return true;
+
+
+
+
+
 
 
 
@@ -177,6 +183,20 @@ class Solution {
 //        }
 //
 //        return true;
+    }
+
+    private boolean isValidBST2(TreeNode root, long minValue, long maxValue) {
+
+        if (root == null) {
+            return true;
+        }
+
+        if (root.val <= minValue || root.val >= maxValue) {
+            return false;
+        }
+
+        return isValidBST2(root.left, minValue, root.val) && isValidBST2(root.right, root.val, maxValue);
+
     }
 
 

@@ -42,7 +42,7 @@ import java.util.List;
 public class PermutationsIi{
       public static void main(String[] args) {
           Solution solution = new PermutationsIi().new Solution();
-          solution.permuteUnique(new int[]{1, 1, 1});
+          solution.permuteUnique(new int[]{1, 1, 2});
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
@@ -58,10 +58,33 @@ class Solution {
 
               boolean[] visited = new boolean[nums.length];
 
-              recursion(visited, res, new ArrayList<>(), nums);
-
+              recuv(res, new ArrayList<Integer>(), visited, nums);
 
               return res;
+
+
+
+
+
+
+
+
+
+
+
+//              List<List<Integer>> res = new ArrayList<>();
+//              if (nums == null || nums.length == 0) {
+//                  return res;
+//              }
+//
+//              Arrays.sort(nums);
+//
+//              boolean[] visited = new boolean[nums.length];
+//
+//              recursion(visited, res, new ArrayList<>(), nums);
+//
+//
+//              return res;
 
 
 
@@ -77,6 +100,25 @@ class Solution {
 //              recur(res, new ArrayList<>(), visited, nums);
 //
 //              return res;
+          }
+
+          private void recuv(List<List<Integer>> res, ArrayList<Integer> subRes, boolean[] visited, int[] nums) {
+
+              if (subRes.size() == nums.length) {
+                  res.add(new ArrayList<>(subRes));
+                  return;
+              }
+
+              for (int i = 0; i < nums.length; i++) {
+                  if (visited[i] || i > 0 && nums[i - 1] == nums[i] && !visited[i - 1]) continue;
+                  subRes.add(nums[i]);
+                  visited[i] = true;
+                  recuv(res, subRes, visited, nums);
+                  visited[i] = false;
+                  subRes.remove(subRes.size() - 1);
+              }
+
+
           }
 
           private void recursion(boolean[] visited, List<List<Integer>> res, ArrayList<Integer> subRes, int[] nums) {

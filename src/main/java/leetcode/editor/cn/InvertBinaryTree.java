@@ -69,26 +69,26 @@ class Solution {
 
         stack.push(root);
 
-
         while (!stack.isEmpty()) {
+
             TreeNode node = stack.pop();
 
             TreeNode left = node.left;
             node.left = node.right;
             node.right = left;
 
-            if (node.left != null) {
-                stack.push(node.left);
-            }
-
             if (node.right != null) {
                 stack.push(node.right);
             }
 
+            if (node.left != null) {
+                stack.push(node.left);
+            }
+
+
         }
 
         return root;
-
 
 
 

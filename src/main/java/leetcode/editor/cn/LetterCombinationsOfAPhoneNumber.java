@@ -43,10 +43,8 @@
   
 package leetcode.editor.cn;
 
-import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 
 import java.util.*;
-import java.util.logging.Level;
 
 public class LetterCombinationsOfAPhoneNumber{
       public static void main(String[] args) {
@@ -65,18 +63,18 @@ class Solution {
             return res;
         }
 
+        Map<Character, String> charMap = new HashMap<>();
 
-        Map<Character, String> strMap = new HashMap<>();
-        strMap.put('2', "abc");
-        strMap.put('3', "def");
-        strMap.put('4', "ghi");
-        strMap.put('5', "jkl");
-        strMap.put('6', "mno");
-        strMap.put('7', "pqrs");
-        strMap.put('8', "tuv");
-        strMap.put('9', "wxyz");
+        charMap.put('2',"abc");
+        charMap.put('3',"def");
+        charMap.put('4',"ghi");
+        charMap.put('5',"jkl");
+        charMap.put('6',"mno");
+        charMap.put('7',"pqrs");
+        charMap.put('8',"tuv");
+        charMap.put('9',"wxyz");
 
-        recuv(res, digits, strMap, 0, "");
+        recvr(0, res, charMap, digits, new StringBuilder());
 
         return res;
 
@@ -87,12 +85,11 @@ class Solution {
 
 
 
-
-
-
-
         /**
          * 图标为hashMap在做hash映射的时候有时间消耗，所以自己用数组实现的话会比用Map快
+         *
+         * note at 2021/9/22 ，其实还可以再快，传进去的的StringBuilder,改为传一个char型数组进去，这样应该会比把Map改成数组还快很多，因为主要操作其实就是
+         * str的拼装耗时
          */
 //        List<String> res = new ArrayList<>();
 //        if (digits == null || digits.length() == 0) {
@@ -168,6 +165,22 @@ class Solution {
 
 
     }
+
+          private void recvr(int level, List<String> res, Map<Character, String> charMap, String digits, StringBuilder str) {
+
+              if (level == digits.length()) {
+                  res.add(str.toString());
+                  return;
+              }
+
+
+              for (Character c : charMap.get(digits.charAt(level)).toCharArray()) {
+                  str.append(c);
+                  recvr(level + 1, res, charMap, digits, str);
+                  str.deleteCharAt(level);
+              }
+
+          }
 
           /**
            * 这里for(i)循环和foreach循环都可以，需要注意的一点是，str的改变如果是在外面需要在后续重置状态，否则会出问题,因为会将str的状态带到下一层去

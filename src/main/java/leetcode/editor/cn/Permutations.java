@@ -39,8 +39,10 @@ class Solution {
               if (nums == null || nums.length == 0) {
                   return res;
               }
+
               boolean[] visited = new boolean[nums.length];
-              recursion(res, new ArrayList<>(), nums, visited);
+
+              recuv(visited, res, new ArrayList<>(), nums);
 
               return res;
 
@@ -57,7 +59,14 @@ class Solution {
 
 
 
-
+//              List<List<Integer>> res = new ArrayList<>();
+//              if (nums == null || nums.length == 0) {
+//                  return res;
+//              }
+//              boolean[] visited = new boolean[nums.length];
+//              recursion(res, new ArrayList<>(), nums, visited);
+//
+//              return res;
 
 
 
@@ -79,6 +88,31 @@ class Solution {
 //              myRecur(res, new ArrayList<>(), visited, nums);
 //
 //              return res;
+
+
+          }
+
+          private void recuv(boolean[] visited, List<List<Integer>> res, ArrayList<Integer> subRes, int[] nums) {
+
+              if (subRes.size() == nums.length) {
+                  res.add(new ArrayList<>(subRes));
+                  return;
+              }
+
+
+              for (int i = 0; i < nums.length; i++) {
+                  if (visited[i]) continue;
+                  subRes.add(nums[i]);
+                  visited[i] = true;
+                  recuv(visited, res, subRes, nums);
+                  subRes.remove(subRes.size() - 1);
+                  visited[i] = false;
+              }
+
+
+
+
+
 
 
           }

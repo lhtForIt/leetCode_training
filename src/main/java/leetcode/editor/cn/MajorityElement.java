@@ -47,15 +47,17 @@ public class MajorityElement {
 
             int maxNumber = nums[0], count = 1;
             for (int i = 1; i < nums.length; i++) {
-                if (maxNumber == nums[i]) {
+                if (nums[i] == maxNumber) {
                     count++;
-                } else if (--count == 0) {
-                    maxNumber = nums[i];
-                    count = 1;
+                } else {
+                    if (--count == 0) {
+                        maxNumber = nums[i];
+                        count = 1;
+                    }
                 }
             }
-            return maxNumber;
 
+            return maxNumber;
 
 
 
