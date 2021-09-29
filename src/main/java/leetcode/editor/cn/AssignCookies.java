@@ -54,19 +54,28 @@ public class AssignCookies {
     class Solution {
         public int findContentChildren(int[] g, int[] s) {
 
-
+            /**
+             * 时间复杂度O（min(m,n)）m,n代表g,s的数组长度
+             *
+             * 常规贪心思路应该是直接用一个count记录最终吃饱的人数，但是其实直接用g里面的指针也可以
+             * 去代替count，因为p到了第几位就是吃饱了几个
+             *
+             */
             Arrays.sort(g);
             Arrays.sort(s);
 
-            int p = 0, q = 0;
+            int count = 0, p = 0, q = 0;
             while (p < g.length && q < s.length) {
-                if (g[p] <= s[q]) {
+                if (s[q] >= g[p]) {
+                    count++;
                     p++;
                 }
                 q++;
+
             }
 
-            return p;
+
+            return count;
 
 
 

@@ -94,36 +94,62 @@ public class WalkingRobotSimulation {
         public int robotSim(int[] commands, int[][] obstacles) {
 
 
+            /**
+             *  这个问题主要是需要知道向量的概念。
+             *  当在一个坐标系中，我们怎么根据一个命令让机器人转弯，这个就需要一个协议(约定俗称的条例)，
+             *  这里面就是用的-2左转90度，-1右转90度，那怎么让指令和这个关联上呢？
+             *  用两个一维数组就可以，dx,dy的一维数组，(dx,dy)分别代表坐标里的一个点，
+             *  int[] dx = {0, 1, 0, -1};
+             *  int[] dy = {1, 0, -1, 0};
+             *  不难看出这两个一维数组同一下标下代表的是不同方向，下标0是北，1是东，2是南，3是西。
+             *  所以我们需要将下标和-1,-2指令关联，于是就自己制定一个算法，di一开始是0，然后顺时针转动，
+             *  -2左转的话就是顺时针转3个，由于可能转多圈，变为4的倍数，下标越界，所以需要%4.
+             *  -1右转的话就是顺时针转1个，同上需要%4.
+             *
+             *  如果没有旋转就直接一步一步走即可，因为如果没旋转就是在原方向上走，直接每次走一步，走够指令大小的次数即可。
+             *  碰到障碍点就跳过就好。
+             *
+             *
+             */
+
             int[] dx = {0, 1, 0, -1};
             int[] dy = {1, 0, -1, 0};
 
-            int di = 0, x = 0, y = 0, max = 0;
+            int x = 0, y = 0, di = 0, max = 0;
 
-            Set<Long> obstacleSet = new HashSet<>();
-            for (int[] obstacle : obstacles) {
-                obstacleSet.add((long) ((obstacle[0] + 30000) << 16) + (long)(obstacle[1] + 30000));
-            }
+            Set<String> obstaclesSet = new HashSet<>();
+            for (int[] obstacle : obstacles) obstaclesSet.add(obstacle[0] + ":" + obstacle[1]);
 
-            for (int com : commands) {
-                if (com == -2) {
+            for (int c : commands) {
+                if (c == -2) {
                     di = (di + 3) % 4;
-                } else if (com == -1) {
+                } else if (c == -1) {
                     di = (di + 1) % 4;
                 } else {
-                    for (int i = 0; i < com; i++) {
+                    for (int i = 0; i < c; i++) {
                         int tempX = x + dx[di];
                         int tempY = y + dy[di];
-                        if (obstacleSet.contains((long) ((tempX + 30000) << 16) + (long)(tempY + 30000))) continue;
+                        if (obstaclesSet.contains(tempX+":"+tempY)) break;
+
                         x = tempX;
                         y = tempY;
-                        max = Math.max(max, x * x + y * y);
+
+                        max = max < (x * x + y * y) ? (x * x + y * y) : max;
+
                     }
                 }
             }
 
-
             return max;
 
+
+            /**
+             * 为什么long?
+             * 因为-30000 <= obstacle[i][0] <= 30000 -30000 <= obstacle[i][1] <= 30000，
+             * 而2^16=65536,所以obstacle[0] + 30000用16位存储足矣，
+             * 高16位存储obstacle[0] + 30000，低16位存储obstacle[1] + 30000
+             * Java int是32位，最高位是符号位，显然存不下两个16位，所以用long
+             */
 //            int[] dx = new int[]{0, 1, 0, -1};
 //            int[] dy = new int[]{1, 0, -1, 0};
 //            int x = 0, y = 0, di = 0;

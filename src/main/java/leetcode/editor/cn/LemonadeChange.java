@@ -65,6 +65,41 @@
 class Solution {
     public boolean lemonadeChange(int[] bills) {
 
+        int five = 0, ten = 0;
+        for (int bill : bills) {
+            if (bill == 20) {
+                if (ten > 0) {
+                    ten--;
+                    five--;
+                } else {
+                    five -= 3;
+                }
+            } else if (bill == 10) {
+                ten++;
+                five--;
+            } else {
+                five++;
+            }
+            if (five < 0) {
+                return false;
+            }
+        }
+        return true;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         /**
          * 贪心思路：
          * 这里只需要记录要找给客户的钞票数量即可，即5元和10元的个数
@@ -72,31 +107,31 @@ class Solution {
          * 当某个数字计算完之后钞票值变为负数即返回false
          */
 
-        int five = 0, ten = 0;
-
-        for (int bill : bills) {
-
-            if (bill == 5) {
-                five++;
-            } else if (bill == 10) {
-                five--;
-                ten++;
-            } else {
-                if (ten > 0 && five > 0) {
-                    ten--;
-                    five--;
-                } else {
-                    five -= 3;
-                }
-            }
-
-            if (five < 0) {
-                return false;
-            }
-        }
-
-
-        return true;
+//        int five = 0, ten = 0;
+//
+//        for (int bill : bills) {
+//
+//            if (bill == 5) {
+//                five++;
+//            } else if (bill == 10) {
+//                five--;
+//                ten++;
+//            } else {
+//                if (ten > 0 && five > 0) {
+//                    ten--;
+//                    five--;
+//                } else {
+//                    five -= 3;
+//                }
+//            }
+//
+//            if (five < 0) {
+//                return false;
+//            }
+//        }
+//
+//
+//        return true;
 
 
         /**
