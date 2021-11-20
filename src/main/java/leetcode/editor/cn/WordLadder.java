@@ -49,10 +49,8 @@
   
 package leetcode.editor.cn;
 
-import org.springframework.beans.factory.BeanFactory;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class WordLadder{
       public static void main(String[] args) {
@@ -72,45 +70,47 @@ class Solution {
         }
         Set<String> beginSet = new HashSet<>();
         Set<String> endSet = new HashSet<>();
-        int step = 1;
+
         beginSet.add(beginWord);
         endSet.add(endWord);
+
+        int step = 1;
+
         while (!beginSet.isEmpty()) {
             if (beginSet.size() > endSet.size()) {
-                Set<String> set = beginSet;
+                Set<String> temp = beginSet;
                 beginSet = endSet;
-                endSet = set;
+                endSet = temp;
             }
-            Set<String> temp = new HashSet<>();
-            for (String s : beginSet) {
-                char[] chars = s.toCharArray();
-                for (int i = 0; i < chars.length; i++) {
-                    char old = chars[i];
-                    for (char c = 'a'; c <= 'z'; c++) {
-                        if (chars[i] == c) continue;
-                        chars[i] = c;
-                        String target = new String(chars);
-                        if (endSet.contains(target)) {
+
+
+            Set<String> set = new HashSet<>();
+            for (String word : beginSet) {
+                char[] chars = word.toCharArray();
+                for (int k = 0; k < chars.length; k++) {
+                    char old = chars[k];
+                    for (char i = 'a'; i <= 'z'; i++) {
+                        if (old == i) {
+                            continue;
+                        }
+                        chars[k] = i;
+                        String str = new String(chars);
+                        if (endSet.contains(str)) {
                             return step + 1;
                         }
-                        if (wordSet.contains(target)) {
-                            temp.add(target);
-                            wordSet.remove(target);
+                        if (wordSet.contains(str)) {
+                            set.add(str);
+                            wordSet.remove(str);
                         }
                     }
-                    chars[i] = old;
+                    chars[k] = old;
                 }
             }
+            beginSet = set;
             step++;
-            beginSet = temp;
         }
 
-
         return 0;
-
-
-
-
 
 
 

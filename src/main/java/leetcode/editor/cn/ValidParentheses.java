@@ -71,13 +71,11 @@ public class ValidParentheses{
 class Solution {
     public boolean isValid(String s) {
 
-
         if (s.length() % 2 == 1) {
             return false;
         }
 
         Deque<Character> stack = new LinkedList<>();
-
         for (char c : s.toCharArray()) {
             if (c == '(') {
                 stack.push(')');
@@ -91,7 +89,6 @@ class Solution {
                 }
             }
         }
-
 
         return stack.isEmpty();
 

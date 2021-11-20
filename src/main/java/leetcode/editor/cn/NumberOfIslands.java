@@ -59,17 +59,35 @@ public class NumberOfIslands{
 class Solution {
     public int numIslands(char[][] grid) {
 
+        //m,n一定是大于0的，所以不用作边界判断
         int count = 0;
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
                 if (grid[i][j] == '1') {
+                    dfs1(grid, i, j);
                     count++;
-                    recursion(i, j, grid);
                 }
             }
         }
 
         return count;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -142,6 +160,30 @@ class Solution {
 
 
     }
+
+          private void dfs1(char[][] grid, int i, int j) {
+
+              if (i < 0 || i >= grid.length || j < 0 || j >= grid[i].length || grid[i][j] == '0') {
+                  return;
+              }
+
+
+              grid[i][j] = '0';
+              dfs1(grid, i - 1, j);
+              dfs1(grid, i + 1, j);
+              dfs1(grid, i, j - 1);
+              dfs1(grid, i, j + 1);
+
+
+
+
+
+
+
+
+
+
+          }
 
           private void recursion(int i, int j, char[][] grid) {
 

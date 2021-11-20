@@ -79,8 +79,8 @@
 
 package leetcode.editor.cn;
 
+
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public class WalkingRobotSimulation {
@@ -92,6 +92,66 @@ public class WalkingRobotSimulation {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int robotSim(int[] commands, int[][] obstacles) {
+
+
+            int[] dx = {0, 1, 0, -1};
+            int[] dy = {1, 0, -1, 0};
+
+            int x = 0, y = 0, di = 0, max = 0;
+
+            Set<Long> obstacleSet = new HashSet<>();
+
+            for (int[] obstacle:obstacles) obstacleSet.add((long) (((obstacle[0]+30000) << 16) + (obstacle[1]+30000)));
+
+            for (int c : commands) {
+                if (c == -1) {
+                    di = (di + 1) % 4;
+                } else if (c == -2) {
+                    di = (di + 3) % 4;
+                } else {
+                    for (int i = 0; i < c; i++) {
+                        int tempX = x + dx[di];
+                        int tempY = y + dy[di];
+                        if (obstacleSet.contains((((long)tempX+30000)<<16)+((long) tempY+30000))) break;
+
+                        x = tempX;
+                        y = tempY;
+                        max = max < (x * x + y * y) ? (x * x + y * y) : max;
+                    }
+                }
+            }
+
+            return max;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
             /**
@@ -112,35 +172,35 @@ public class WalkingRobotSimulation {
              *
              */
 
-            int[] dx = {0, 1, 0, -1};
-            int[] dy = {1, 0, -1, 0};
-
-            int x = 0, y = 0, di = 0, max = 0;
-
-            Set<String> obstaclesSet = new HashSet<>();
-            for (int[] obstacle : obstacles) obstaclesSet.add(obstacle[0] + ":" + obstacle[1]);
-
-            for (int c : commands) {
-                if (c == -2) {
-                    di = (di + 3) % 4;
-                } else if (c == -1) {
-                    di = (di + 1) % 4;
-                } else {
-                    for (int i = 0; i < c; i++) {
-                        int tempX = x + dx[di];
-                        int tempY = y + dy[di];
-                        if (obstaclesSet.contains(tempX+":"+tempY)) break;
-
-                        x = tempX;
-                        y = tempY;
-
-                        max = max < (x * x + y * y) ? (x * x + y * y) : max;
-
-                    }
-                }
-            }
-
-            return max;
+//            int[] dx = {0, 1, 0, -1};
+//            int[] dy = {1, 0, -1, 0};
+//
+//            int x = 0, y = 0, di = 0, max = 0;
+//
+//            Set<String> obstaclesSet = new HashSet<>();
+//            for (int[] obstacle : obstacles) obstaclesSet.add(obstacle[0] + ":" + obstacle[1]);
+//
+//            for (int c : commands) {
+//                if (c == -2) {
+//                    di = (di + 3) % 4;
+//                } else if (c == -1) {
+//                    di = (di + 1) % 4;
+//                } else {
+//                    for (int i = 0; i < c; i++) {
+//                        int tempX = x + dx[di];
+//                        int tempY = y + dy[di];
+//                        if (obstaclesSet.contains(tempX+":"+tempY)) break;
+//
+//                        x = tempX;
+//                        y = tempY;
+//
+//                        max = max < (x * x + y * y) ? (x * x + y * y) : max;
+//
+//                    }
+//                }
+//            }
+//
+//            return max;
 
 
             /**
@@ -159,6 +219,7 @@ public class WalkingRobotSimulation {
 //            for (int[] obstacle: obstacles) {
 //                long ox = (long) obstacle[0] + 30000;
 //                long oy = (long) obstacle[1] + 30000;
+                  //这里是将ox向前移动了16位，即用低16位装oy
 //                obstacleSet.add((ox << 16) + oy);
 //            }
 //

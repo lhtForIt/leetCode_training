@@ -81,25 +81,41 @@ public class ReverseNodesInKGroup{
 class Solution {
     public ListNode reverseKGroup(ListNode head, int k) {
 
-        int n = 0;
-        for (ListNode i = head; i != null; n++, i = i.next) ;
 
-
-        ListNode dummy = new ListNode();
-        dummy.next = head;
-
-        for (ListNode prev = dummy, tail = head; n >= k; n -= k) {
-            for (int i = 1; i < k; i++) {
-                ListNode next = tail.next.next;
-                tail.next.next = prev.next;
-                prev.next = tail.next;
-                tail.next = next;
-            }
-            prev = tail;
-            tail = tail.next;
+        int count = 0;
+        ListNode curr = head;
+        while (curr != null && count < k) {
+            curr = curr.next;
+            count++;
         }
 
-        return dummy.next;
+
+        if (count == k) {
+            curr = reverseKGroup(curr, k);
+            while (count-- > 0) {
+                ListNode next = head.next;
+                head.next = curr;
+                curr = head;
+                head = next;
+            }
+            head = curr;
+        }
+
+        return head;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         /**
          * 法一：用栈先进后出的特性，
@@ -190,6 +206,7 @@ class Solution {
 //                curr = head;
 //                head = temp;
 //            }
+        //没有这个链表中间会断掉，不知道为什么
 //            head = curr;
 //        }
 //        return head;

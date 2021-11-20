@@ -36,6 +36,7 @@ public class ReverseLinkedList{
 class Solution {
     public ListNode reverseList(ListNode head) {
 
+
         ListNode pre = null;
         ListNode curr = head;
 
@@ -47,13 +48,6 @@ class Solution {
         }
 
         return pre;
-
-
-
-
-
-
-
 
 
 
