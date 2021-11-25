@@ -84,7 +84,7 @@ public class Solution {
     public ListNode detectCycle(ListNode head) {
 
 
-        if (head == null || head.next == null) {
+        if (head==null||head.next==null) {
             return null;
         }
 
@@ -93,6 +93,7 @@ public class Solution {
             if (fast == null || fast.next == null) {
                 return null;
             }
+
             slow = slow.next;
             fast = fast.next.next;
 
@@ -109,9 +110,6 @@ public class Solution {
         }
 
         return fast;
-
-
-
 
 
 

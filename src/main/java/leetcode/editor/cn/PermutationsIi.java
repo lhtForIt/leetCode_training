@@ -55,11 +55,8 @@ class Solution {
               }
 
               Arrays.sort(nums);
-
               boolean[] visited = new boolean[nums.length];
-
-              recuv(res, new ArrayList<Integer>(), visited, nums);
-
+              recu(res, new ArrayList<>(), visited, nums);
               return res;
 
 
@@ -102,7 +99,7 @@ class Solution {
 //              return res;
           }
 
-          private void recuv(List<List<Integer>> res, ArrayList<Integer> subRes, boolean[] visited, int[] nums) {
+          private void recu(List<List<Integer>> res, ArrayList<Integer> subRes, boolean[] visited, int[] nums) {
 
               if (subRes.size() == nums.length) {
                   res.add(new ArrayList<>(subRes));
@@ -110,16 +107,19 @@ class Solution {
               }
 
               for (int i = 0; i < nums.length; i++) {
-                  if (visited[i] || i > 0 && nums[i - 1] == nums[i] && !visited[i - 1]) continue;
+                  if (visited[i]||i>0&&nums[i]==nums[i-1]&&!visited[i-1]) continue;
                   subRes.add(nums[i]);
                   visited[i] = true;
-                  recuv(res, subRes, visited, nums);
+                  recu(res, subRes, visited, nums);
                   visited[i] = false;
                   subRes.remove(subRes.size() - 1);
               }
 
 
+
+
           }
+
 
           private void recursion(boolean[] visited, List<List<Integer>> res, ArrayList<Integer> subRes, int[] nums) {
 

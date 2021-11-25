@@ -27,24 +27,21 @@ import java.util.*;
 public class Combinations{
       public static void main(String[] args) {
            Solution solution = new Combinations().new Solution();
-          solution.combine(4, 2);
+          solution.combine(5, 3);
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+          /**
+           * 递归里面的n-k+1其实是为了剪枝，比如在10位数里找5位，
+           * 那你第一层就只有到6，第一层如果是7就不需要遍历了。
+           * 所以n-k+1是6，即最多只能到6
+           *
+           */
     public List<List<Integer>> combine(int n, int k) {
 
         List<List<Integer>> res = new ArrayList<>();
-        if (n < k) {
-            return res;
-        }
-
-        recurtion(res, new ArrayList<>(), n, k, 1);
-
+        recu(res, new ArrayList<>(), n, k, 1);
         return res;
-
-
-
-
 
 
 
@@ -133,6 +130,54 @@ class Solution {
 
     }
 
+          private void recu(List<List<Integer>> res, ArrayList<Integer> subRes, int n, int k, int level) {
+
+              if (k == 0) {
+                  res.add(new ArrayList<>(subRes));
+                  return;
+              }
+
+              for (int i = level; i <= n - k + 1; i++) {
+                  subRes.add(i);
+                  recu(res, subRes, n, k - 1, i + 1);
+                  subRes.remove(subRes.size() - 1);
+              }
+
+
+
+          }
+
+
+          private void rec(List<List<Integer>> res, int n, int k, int level, ArrayList<Integer> subRes) {
+
+              if (subRes.size() == k) {
+                  res.add(new ArrayList<>(subRes));
+                  return;
+              }
+
+              for (int i = level; i <= n - (k - subRes.size()) + 1; i++) {
+                  subRes.add(i);
+                  rec(res, n, k, i + 1, subRes);
+                  subRes.remove(subRes.size() - 1);
+              }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          }
+
           private void recurtion(List<List<Integer>> res, ArrayList<Integer> subRes, int n, int k, int level) {
 
               if (k == 0) {
@@ -203,14 +248,19 @@ class Solution {
                * 比如[1,2,3],当第一层取了1，第二层只能是2，第三层只能是3，你想要的1,3,2，对不起不行，因为当你取到3时
                * 这时候i已经是2了，不可能在取小于2的数据了
                *
+               * note at 2021-11-24
+               * 这里递归传递的k是指还剩多少数可以取，
+               * n-k+1其实是判断后续还有多少个数能拿到，比如n=10,k=5，当deep=7时，后续的8,9,10其实已经不够了，这时候就没必要遍历了
+               * 用这种写法可以避免遍历。
+               *
                */
               for (int i = deep; i <= n - k + 1; i++) {
                   subRes.add(i);
                   //deep代表从几开始，k代表还剩几个数
-                  //这里参数i+1代表是否放入第i个数
+                  //因为每次添加的数要比以前的大，所以这一层加的i，所以下一层必须是i+1,deep+1会有重复
                   //这个下探的参数代表下一层能添加的数字，不能是deep+1下探，不然可以加到自身，导致重复，需要是i+1下探
                   recur2(res, subRes, i + 1, n, k-1);
-                  System.out.println("当前第" + deep + "层，k的值：" + k + "subRes: " + subRes);
+                  System.out.println("当前第" + deep + "层，k-1的值：" + (k - 1) + "subRes: " + subRes);
                   /**
                    *
                    *这里remove代表的是将一种可能移除，换另外一种可能

@@ -79,19 +79,18 @@ public class Solution {
             return false;
         }
 
-        ListNode slow = head, fast = head.next;
-        while (slow != fast) {
+        ListNode slow = head, fast = head;
+        while (true) {
             if (fast == null || fast.next == null) {
                 return false;
             }
-
             slow = slow.next;
             fast = fast.next.next;
 
+            if (slow == fast) {
+                return true;
+            }
         }
-
-        return true;
-
 
 
 

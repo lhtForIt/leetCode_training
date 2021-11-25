@@ -65,34 +65,36 @@ class Solution {
             return root;
         }
 
-        Deque<TreeNode> stack = new LinkedList<>();
+        Deque<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
 
-        stack.push(root);
+        while (!queue.isEmpty()) {
 
-        while (!stack.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                TreeNode left = node.left;
+                TreeNode right = node.right;
 
-            TreeNode node = stack.pop();
+                node.left = right;
+                node.right = left;
 
-            TreeNode left = node.left;
-            node.left = node.right;
-            node.right = left;
 
-            if (node.right != null) {
-                stack.push(node.right);
+                if (node.left != null) {
+                    node.right = left;
+                    queue.offer(node.left);
+                }
+
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
             }
 
-            if (node.left != null) {
-                stack.push(node.left);
-            }
 
 
         }
 
         return root;
-
-
-
-
 
 
 

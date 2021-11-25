@@ -43,37 +43,75 @@ class Solution {
 
     public List<String> generateParenthesis(int n) {
 
-
         List<String> res = new ArrayList<>();
-        Deque<Node> queue = new LinkedList<>();
-
-        queue.offer(new Node("", 0, 0));
-
-        while (!queue.isEmpty()) {
-
-            int size = queue.size();
-            //这个for循环要不要都可以，因为只有两个节点，这个size一定是2
-            for (int i = 0; i < size; i++) {
-                Node node = queue.poll();
-
-                if (node.left == n && node.right == n) {
-                    res.add(node.res);
-                }
-
-                if (node.left < n) {
-                    queue.offer(new Node(node.res + "(", node.left + 1, node.right));
-                }
-
-                if (node.right < node.left) {
-                    queue.offer(new Node(node.res + ")", node.left, node.right + 1));
-                }
-
-            }
-
-
-        }
-
+        rec(res, "", 0, 0, n);
         return res;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /**
+         * BFS
+         */
+//        List<String> res = new ArrayList<>();
+//        Deque<Node> queue = new LinkedList<>();
+//
+//        queue.offer(new Node("", 0, 0));
+//
+//        while (!queue.isEmpty()) {
+//
+//            int size = queue.size();
+//            //这个for循环要不要都可以，因为只有两个节点，这个size一定是2
+//            for (int i = 0; i < size; i++) {
+//                Node node = queue.poll();
+//
+//                if (node.left == n && node.right == n) {
+//                    res.add(node.res);
+//                }
+//
+//                if (node.left < n) {
+//                    queue.offer(new Node(node.res + "(", node.left + 1, node.right));
+//                }
+//
+//                if (node.right < node.left) {
+//                    queue.offer(new Node(node.res + ")", node.left, node.right + 1));
+//                }
+//
+//            }
+//
+//
+//        }
+//
+//        return res;
 
 
 
@@ -314,6 +352,30 @@ class Solution {
 //
 //        return result;
     }
+
+          private void rec(List<String> res, String str, int left, int right, int n) {
+
+              if (str.length() == 2 * n) {
+                  res.add(str);
+                  return;
+              }
+
+              if (left < n)  rec(res, str + "(", left + 1, right, n);
+
+              if (right < left)  rec(res, str + ")", left, right + 1, n);
+
+
+
+
+
+
+
+
+
+
+
+
+          }
 
           private void rescurtions2(int left, int right, int level, int n, List<String> res, char[] chars) {
 

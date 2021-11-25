@@ -82,32 +82,25 @@ class Solution {
     public ListNode reverseKGroup(ListNode head, int k) {
 
 
-        int count = 0;
-        ListNode curr = head;
-        while (curr != null && count < k) {
-            curr = curr.next;
-            count++;
-        }
+        int n = 0;
+        for (ListNode i = head; i != null; i = i.next, n++) ;
 
+        ListNode dummy = new ListNode();
+        dummy.next = head;
+        ListNode temp = dummy;
 
-        if (count == k) {
-            curr = reverseKGroup(curr, k);
-            while (count-- > 0) {
-                ListNode next = head.next;
-                head.next = curr;
-                curr = head;
-                head = next;
+        for (ListNode pre = temp, tail = head; n >= k; n -= k) {
+            for (int i = 1; i < k; i++) {
+                ListNode next = tail.next.next;
+                tail.next.next = pre.next;
+                pre.next = tail.next;
+                tail.next = next;
             }
-            head = curr;
+            pre = tail;
+            tail = tail.next;
         }
 
-        return head;
-
-
-
-
-
-
+        return dummy.next;
 
 
 
@@ -207,6 +200,7 @@ class Solution {
 //                head = temp;
 //            }
         //没有这个链表中间会断掉，不知道为什么
+        //原因：因为这时候是curr指向head,所以curr是反转后改层第二个数，head才是第一个数，因此要将head给curr,不然第一个数就没了
 //            head = curr;
 //        }
 //        return head;

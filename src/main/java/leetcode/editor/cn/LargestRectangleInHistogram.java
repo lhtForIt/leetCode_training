@@ -56,22 +56,19 @@ class Solution {
         Deque<Integer> stack = new LinkedList<>();
 
         for (int i = 0; i <= heights.length; ) {
-
-            int h = i == heights.length ? 0 : heights[i];
-            if (stack.isEmpty() || h >= heights[stack.peek()]) {
+            int high = i == heights.length ? 0 : heights[i];
+            if (stack.isEmpty() || heights[stack.peek()] <= high) {
                 stack.push(i++);
             } else {
-                int high = heights[stack.pop()];
+                int h = heights[stack.pop()];
                 int left = stack.isEmpty() ? 0 : stack.peek() + 1;
                 int right = i - 1;
-                int v = high * (right - left + 1);
+                int v = (right - left + 1) * h;
                 maxArea = maxArea < v ? v : maxArea;
             }
-
         }
 
         return maxArea;
-
 
 
 

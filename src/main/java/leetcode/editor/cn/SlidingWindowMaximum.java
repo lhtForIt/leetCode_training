@@ -81,30 +81,30 @@ class Solution {
 
 
         if (nums == null || nums.length < k) {
-            return new int[]{};
+            return new int[1];
         }
 
-        int[] res = new int[nums.length - k + 1];
-
-        PriorityQueue<Integer> pri = new PriorityQueue<>((o1, o2) -> (nums[o2] - nums[o1]));
+        int[] result = new int[nums.length - k + 1];
+        Deque<Integer> deque = new LinkedList<>();
 
         for (int i = 0; i < nums.length; i++) {
-
-            while (!pri.isEmpty() && pri.peek() <= i - k) {
-                pri.poll();
+            if (!deque.isEmpty() && deque.peekFirst() == i - k) {
+                deque.pollFirst();
             }
 
-            pri.offer(i);
+            while (!deque.isEmpty() && nums[deque.peekLast()] <= nums[i]) {
+                deque.pollLast();
+            }
+
+            deque.offerLast(i);
 
             if (i - k + 1 >= 0) {
-                res[i - k + 1] = nums[pri.peek()];
+                result[i - k + 1] = nums[deque.peekFirst()];
             }
 
         }
 
-
-        return res;
-
+        return result;
 
 
 
