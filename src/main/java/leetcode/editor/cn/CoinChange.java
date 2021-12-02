@@ -73,6 +73,38 @@ public class CoinChange {
 
         public int coinChange(int[] coins, int amount) {
 
+            int[] dp = new int[amount + 1];
+            for (int i = 1; i <= amount; i++) {
+                int min = amount + 1;
+                for (int coin : coins) {
+                    if (coin <= i) {
+                        min = Math.min(min, dp[i - coin] + 1);
+                    }
+                }
+                dp[i] = min;
+            }
+
+            return dp[amount] == amount + 1 ? -1 : dp[amount];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             /**
              * BFS
              *
@@ -171,22 +203,22 @@ public class CoinChange {
              * 因为要取最小，所以取的dp里面的最小值
              */
 
-            int[] dp = new int[amount + 1];
-//            Arrays.fill(dp, amount + 1);
-//            dp[0] = 0;
-            //因为下标代表金额，0是没有意义的，所以从1开始
-            for (int i = 1; i <= amount; i++) {
-                int min = amount + 1;
-                for (int coin : coins) {
-                    if (coin <= i) {
-                        dp[i] = Math.min(dp[i], dp[i - coin] + 1);
-                        min = Math.min(min, dp[i - coin] + 1);
-                    }
-                }
-                dp[i] = min;
-            }
-
-            return dp[amount] > amount ? -1 : dp[amount];
+//            int[] dp = new int[amount + 1];
+////            Arrays.fill(dp, amount + 1);
+////            dp[0] = 0;
+//            //因为下标代表金额，0是没有意义的，所以从1开始
+//            for (int i = 1; i <= amount; i++) {
+//                int min = amount + 1;
+//                for (int coin : coins) {
+//                    if (coin <= i) {
+////                        dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+//                        min = Math.min(min, dp[i - coin] + 1);
+//                    }
+//                }
+//                dp[i] = min;
+//            }
+//
+//            return dp[amount] > amount ? -1 : dp[amount];
 
 
             /**
