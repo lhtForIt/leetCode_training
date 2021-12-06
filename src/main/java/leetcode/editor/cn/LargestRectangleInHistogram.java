@@ -42,6 +42,42 @@ public class LargestRectangleInHistogram{
 class Solution {
     public int largestRectangleArea(int[] heights) {
 
+
+        int maxArea = 0;
+        int[] stack = new int[heights.length + 1];
+        int top = -1;
+
+        for (int i = 0; i <= heights.length; ) {
+            int h = i == heights.length ? 0 : heights[i];
+            if (top == -1 || heights[stack[top]] <= h) {
+                stack[++top] = i++;
+            } else {
+                int high = heights[stack[top--]];
+                int left = top == -1 ? 0 : stack[top] + 1;
+                int right = i - 1;
+                int v = (right - left + 1) * high;
+                maxArea = Math.max(maxArea, v);
+            }
+        }
+
+        return maxArea;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         /**
          * 思路，因为栈压入是递增的，所以我可以从大到小一个一个的去计算每个index的最大值，
          * 如[2,1,5,6,2,3]，当1,5,6压入栈中后，遍历到2的时候，会把6拿出来，然后算出以6为最大高度的面积，然后会把5拿出来，
@@ -52,23 +88,23 @@ class Solution {
          * 这个想通之后真的觉得思路太巧妙了
          *
          */
-        int maxArea = 0;
-        Deque<Integer> stack = new LinkedList<>();
-
-        for (int i = 0; i <= heights.length; ) {
-            int high = i == heights.length ? 0 : heights[i];
-            if (stack.isEmpty() || heights[stack.peek()] <= high) {
-                stack.push(i++);
-            } else {
-                int h = heights[stack.pop()];
-                int left = stack.isEmpty() ? 0 : stack.peek() + 1;
-                int right = i - 1;
-                int v = (right - left + 1) * h;
-                maxArea = maxArea < v ? v : maxArea;
-            }
-        }
-
-        return maxArea;
+//        int maxArea = 0;
+//        Deque<Integer> stack = new LinkedList<>();
+//
+//        for (int i = 0; i <= heights.length; ) {
+//            int high = i == heights.length ? 0 : heights[i];
+//            if (stack.isEmpty() || heights[stack.peek()] <= high) {
+//                stack.push(i++);
+//            } else {
+//                int h = heights[stack.pop()];
+//                int left = stack.isEmpty() ? 0 : stack.peek() + 1;
+//                int right = i - 1;
+//                int v = (right - left + 1) * h;
+//                maxArea = maxArea < v ? v : maxArea;
+//            }
+//        }
+//
+//        return maxArea;
 
 
 

@@ -83,7 +83,8 @@ class Solution {
 
 
         int n = 0;
-        for (ListNode i = head; i != null; i = i.next, n++) ;
+        for (ListNode i = head; i != null; i = i.next, n++);
+
 
         ListNode dummy = new ListNode();
         dummy.next = head;
@@ -101,10 +102,6 @@ class Solution {
         }
 
         return dummy.next;
-
-
-
-
 
 
 

@@ -76,15 +76,9 @@ public class SwapNodesInPairs{
                 start.next = end.next;
                 end.next = start;
                 temp = start;
-
             }
 
             return dummy.next;
-
-
-
-
-
 
 
 

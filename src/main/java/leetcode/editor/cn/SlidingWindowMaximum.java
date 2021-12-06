@@ -65,10 +65,7 @@
   
 package leetcode.editor.cn;
 
-import java.util.Comparator;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class SlidingWindowMaximum{
       public static void main(String[] args) {
@@ -81,13 +78,14 @@ class Solution {
 
 
         if (nums == null || nums.length < k) {
-            return new int[1];
+            return new int[0];
         }
 
-        int[] result = new int[nums.length - k + 1];
-        Deque<Integer> deque = new LinkedList<>();
+        int[] res = new int[nums.length - k + 1];
 
+        Deque<Integer> deque = new ArrayDeque<>();
         for (int i = 0; i < nums.length; i++) {
+
             if (!deque.isEmpty() && deque.peekFirst() == i - k) {
                 deque.pollFirst();
             }
@@ -99,13 +97,13 @@ class Solution {
             deque.offerLast(i);
 
             if (i - k + 1 >= 0) {
-                result[i - k + 1] = nums[deque.peekFirst()];
+                res[i - k + 1] = nums[deque.peekFirst()];
             }
+
 
         }
 
-        return result;
-
+        return res;
 
 
 
