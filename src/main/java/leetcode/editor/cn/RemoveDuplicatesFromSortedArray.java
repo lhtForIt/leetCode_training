@@ -56,22 +56,17 @@ public class RemoveDuplicatesFromSortedArray{
 class Solution {
     public int removeDuplicates(int[] nums) {
 
+        /**
+         * 至少会有一个元素
+         * 所以一定是从第二位开始交换的，交换完以后记录交换的下标其实就是个数
+         */
 
-        if (nums == null || nums.length == 0) {
-            return 0;
+        int j = 1;
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (nums[i]!=nums[i+1]) nums[j++] = nums[i + 1];
         }
 
-        int j = 0;
-        for (int i = 0; i < nums.length; i++) {
-
-            if (nums[i] != nums[j]) {
-                nums[++j] = nums[i];
-            }
-
-        }
-
-        return j + 1;
-
+        return j;
 
 
 

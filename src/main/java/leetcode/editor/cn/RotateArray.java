@@ -53,15 +53,26 @@ package leetcode.editor.cn;
 public class RotateArray{
       public static void main(String[] args) {
            Solution solution = new RotateArray().new Solution();
+          solution.rotate(new int[]{1, 2, 3, 4, 5, 6, 7}, 3);
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public void rotate(int[] nums, int k) {
 
+
         k = k % nums.length;
-        revert(0, nums.length - 1, nums);
-        revert(0, k - 1, nums);
-        revert(k, nums.length - 1, nums);
+        doRotate(0, nums.length - 1, nums);
+        doRotate(0, k - 1, nums);
+        doRotate(k, nums.length - 1, nums);
+
+
+
+
+
+
+
+
+
 
 
 
@@ -120,6 +131,40 @@ class Solution {
 
 
     }
+
+          private void doRotate(int start, int end, int[] nums) {
+
+              while (start < end) {
+                  int temp = nums[start];
+                  nums[start] = nums[end];
+                  nums[end] = temp;
+                  start++;
+                  end--;
+              }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          }
 
           private void revert(int start, int end, int[] nums) {
 
