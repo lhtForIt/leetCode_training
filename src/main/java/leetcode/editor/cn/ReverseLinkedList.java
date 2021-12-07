@@ -39,7 +39,6 @@ class Solution {
 
         ListNode pre = null;
         ListNode curr = head;
-
         while (curr != null) {
             ListNode next = curr.next;
             curr.next = pre;
@@ -48,9 +47,6 @@ class Solution {
         }
 
         return pre;
-
-
-
 
 
 

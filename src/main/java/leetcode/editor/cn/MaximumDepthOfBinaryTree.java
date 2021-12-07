@@ -56,36 +56,44 @@ class Solution {
         }
 
         Deque<TreeNode> queue = new LinkedList<>();
-
         queue.offer(root);
 
-        int height = 0;
+        int deep = 0;
         while (!queue.isEmpty()) {
 
-
             int size = queue.size();
-
             for (int i = 0; i < size; i++) {
-
                 TreeNode node = queue.poll();
-
                 if (node.left != null) {
                     queue.offer(node.left);
                 }
-
                 if (node.right != null) {
                     queue.offer(node.right);
                 }
-
             }
-
-            height++;
-
-
+            deep++;
         }
 
+        return deep;
 
-        return height;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

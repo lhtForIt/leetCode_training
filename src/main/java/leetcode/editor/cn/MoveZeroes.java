@@ -31,7 +31,7 @@ class Solution {
           public void moveZeroes(int[] nums) {
 
 
-              if (nums == null) {
+              if (nums == null || nums.length == 0) {
                   return;
               }
 
@@ -45,8 +45,28 @@ class Solution {
                       j++;
                   }
               }
-
               return;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

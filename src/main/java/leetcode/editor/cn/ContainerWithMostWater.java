@@ -64,10 +64,27 @@ class Solution {
         int max = 0;
         for (int left = 0, right = a.length - 1; left < right; ) {
             int v = (right - left) * (a[left] < a[right] ? a[left++] : a[right--]);
-            max = max < v ? v : max;
+            max = Math.max(max, v);
         }
-
         return max;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
