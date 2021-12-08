@@ -78,14 +78,15 @@ class Solution {
             return false;
         }
 
+
         Deque<Character> stack = new LinkedList<>();
         for (char c : s.toCharArray()) {
             if (c == '(') {
                 stack.push(')');
-            } else if (c == '{') {
-                stack.push('}');
             } else if (c == '[') {
                 stack.push(']');
+            } else if (c == '{') {
+                stack.push('}');
             } else {
                 if (stack.isEmpty() || stack.pop() != c) {
                     return false;
@@ -94,7 +95,6 @@ class Solution {
         }
 
         return stack.isEmpty();
-
 
 
 

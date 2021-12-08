@@ -46,13 +46,8 @@ class Solution {
             curr = next;
         }
 
+
         return pre;
-
-
-
-
-
-
         /**
          * 递归 时间复杂度O(n)，空间复杂度O(n)
          */

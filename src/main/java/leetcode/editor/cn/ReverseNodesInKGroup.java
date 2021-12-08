@@ -90,7 +90,6 @@ class Solution {
 
         for (ListNode pre = temp, tail = head; n >= k; n -= k) {
             for (int i = 1; i < k; i++) {
-
                 ListNode next = tail.next.next;
                 tail.next.next = pre.next;
                 pre.next = tail.next;
@@ -101,11 +100,6 @@ class Solution {
         }
 
         return dummy.next;
-
-
-
-
-
 
 
 

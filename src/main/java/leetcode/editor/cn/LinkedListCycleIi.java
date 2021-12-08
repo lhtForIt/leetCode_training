@@ -58,7 +58,7 @@
 // 👍 882 👎 0
 
   
-  package leetcode.editor.cn;
+package leetcode.editor.cn;
 
 import javafx.beans.binding.ListBinding;
 
@@ -84,11 +84,12 @@ public class Solution {
     public ListNode detectCycle(ListNode head) {
 
 
-        if (head==null||head.next==null) {
+        if (head == null || head.next == null) {
             return null;
         }
 
         ListNode slow = head, fast = head;
+
         while (true) {
             if (fast == null || fast.next == null) {
                 return null;
@@ -103,14 +104,12 @@ public class Solution {
         }
 
         slow = head;
-
         while (slow != fast) {
             slow = slow.next;
             fast = fast.next;
         }
 
         return fast;
-
 
 
 
