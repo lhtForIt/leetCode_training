@@ -66,13 +66,12 @@ public class MergeTwoSortedLists{
 
             ListNode dummy = new ListNode();
             ListNode p = dummy;
-
             while (l1 != null && l2 != null) {
-                if (l1.val <= l2.val) {
+                if (l1.val < l2.val) {
                     p.next = l1;
                     l1 = l1.next;
                 } else {
-                    p.next = l2;
+                    p.next=l2;
                     l2 = l2.next;
                 }
                 p = p.next;
@@ -83,7 +82,6 @@ public class MergeTwoSortedLists{
             }
 
             return dummy.next;
-
 
 
 

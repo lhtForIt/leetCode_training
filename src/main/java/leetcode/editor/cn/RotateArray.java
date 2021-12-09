@@ -61,9 +61,10 @@ class Solution {
 
 
         k = k % nums.length;
-        doRotate(0, nums.length - 1, nums);
-        doRotate(0, k - 1, nums);
-        doRotate(k, nums.length - 1, nums);
+        myRotate(0, nums.length - 1, nums);
+        myRotate(0, k - 1, nums);
+        myRotate(k, nums.length - 1, nums);
+
 
 
 
@@ -131,6 +132,41 @@ class Solution {
 
 
     }
+
+          private void myRotate(int start, int end, int[] nums) {
+
+
+              while (start < end) {
+                  int temp = nums[start];
+                  nums[start] = nums[end];
+                  nums[end] = temp;
+                  start++;
+                  end--;
+              }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          }
 
           private void doRotate(int start, int end, int[] nums) {
 
