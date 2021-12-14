@@ -36,9 +36,9 @@ public class ReverseLinkedList{
 class Solution {
     public ListNode reverseList(ListNode head) {
 
-
         ListNode pre = null;
         ListNode curr = head;
+
         while (curr != null) {
             ListNode next = curr.next;
             curr.next = pre;
@@ -46,8 +46,32 @@ class Solution {
             curr = next;
         }
 
-
         return pre;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         /**
          * 递归 时间复杂度O(n)，空间复杂度O(n)
          */

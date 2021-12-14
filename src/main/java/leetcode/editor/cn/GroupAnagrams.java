@@ -24,6 +24,7 @@
   
 package leetcode.editor.cn;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class GroupAnagrams{
@@ -34,38 +35,36 @@ public class GroupAnagrams{
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
 
-
+        /**
+         * 时间复杂度为O(26n)，空间复杂度O(n)
+         */
         if (strs == null || strs.length == 0) {
             return new ArrayList<>();
         }
 
-        Map<String, List<String>> charMap = new HashMap<>();
+        Map<String, List<String>> map = new HashMap<>();
 
         for (String s : strs) {
-
-            char[] cs = new char[26];
-
+            char[] chars = new char[26];
             for (char c : s.toCharArray()) {
-                cs[c - 'a']++;
+                chars[c - 'a']++;
             }
-
-            String str = new String(cs);
-
-//            List<String> list = charMap.getOrDefault(str, new ArrayList<>());
-//
-//            list.add(s);
-//
-//            charMap.put(str, list);
-
-            if (!charMap.containsKey(str)) {
-                charMap.put(str, new ArrayList<>());
+            String key = new String(chars);
+            if (!map.containsKey(key)) {
+                map.put(key, new ArrayList<>());
             }
-
-            charMap.get(str).add(s);
-
+            map.get(key).add(s);
         }
 
-        return new ArrayList<>(charMap.values());
+        return new ArrayList<>(map.values());
+
+
+
+
+
+
+
+
 
 
 

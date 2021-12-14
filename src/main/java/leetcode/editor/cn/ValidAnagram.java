@@ -45,19 +45,25 @@ class Solution {
             return false;
         }
 
-        int[] chars = new int[26];
+        Map<Character, Integer> charMap = new HashMap<>();
 
         for (char c : s.toCharArray()) {
-            chars[c - 'a']++;
+            charMap.put(c, charMap.getOrDefault(c, 0) + 1);
         }
 
         for (char c : t.toCharArray()) {
-            if (--chars[c - 'a'] < 0) {
+            int count = charMap.getOrDefault(c, 0) - 1;
+            if (count < 0) {
                 return false;
             }
+            charMap.put(c, count);
         }
 
         return true;
+
+
+
+
 
 
 
