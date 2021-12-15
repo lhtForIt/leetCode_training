@@ -51,16 +51,14 @@ class Solution {
 
     public List<Integer> postorderTraversal(TreeNode root) {
 
-
-
         Deque<TreeNode> stack = new LinkedList<>();
-        List<Integer> result = new ArrayList<>();
+        LinkedList<Integer> result = new LinkedList<>();
 
         while (root != null || !stack.isEmpty()) {
 
             while (root != null) {
                 stack.push(root);
-                result.add(0, root.val);
+                result.addFirst(root.val);
                 root = root.right;
             }
 
@@ -70,6 +68,11 @@ class Solution {
         }
 
         return result;
+
+
+
+
+
 
 
 

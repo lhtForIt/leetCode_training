@@ -86,22 +86,22 @@ class Solution {
 
     public List<Integer> inorderTraversal(TreeNode root) {
 
-        if (root == null) {
-            return result;
+        List<Integer> res = new ArrayList<>();
+        Deque<TreeNode> stack = new LinkedList<>();
+
+        while (root != null || !stack.isEmpty()) {
+
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+
+            root = stack.pop();
+            res.add(root.val);
+            root = root.right;
         }
 
-        inorderTraversal(root.left);
-        result.add(root.val);
-        inorderTraversal(root.right);
-
-        return result;
-
-
-
-
-
-
-
+        return res;
 
 
 

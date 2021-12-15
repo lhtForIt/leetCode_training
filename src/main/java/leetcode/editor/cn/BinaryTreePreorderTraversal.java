@@ -90,10 +90,10 @@ class Solution {
     public List<Integer> preorderTraversal(TreeNode root) {
 
 
-        LinkedList<Integer> result = new LinkedList<>();
         Deque<TreeNode> stack = new LinkedList<>();
+        List<Integer> result = new ArrayList<>();
 
-        while (root != null || !stack.isEmpty()) {
+        while (!stack.isEmpty() || root != null) {
             while (root != null) {
                 stack.push(root);
                 result.add(root.val);
@@ -104,6 +104,14 @@ class Solution {
         }
 
         return result;
+
+
+
+
+
+
+
+
 
 
 
