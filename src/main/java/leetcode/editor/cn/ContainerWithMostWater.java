@@ -66,6 +66,7 @@ class Solution {
             int v = (right - left) * (a[left] < a[right] ? a[left++] : a[right--]);
             max = Math.max(max, v);
         }
+
         return max;
 
 
