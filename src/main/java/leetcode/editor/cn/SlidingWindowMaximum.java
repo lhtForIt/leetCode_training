@@ -78,32 +78,39 @@ class Solution {
 
 
         if (nums == null || nums.length < k) {
-            return new int[0];
+            return new int[1];
         }
 
         int[] res = new int[nums.length - k + 1];
+        PriorityQueue<Integer> pq = new PriorityQueue<>((o1, o2) -> nums[o2] - nums[o1]);
 
-        Deque<Integer> deque = new ArrayDeque<>();
         for (int i = 0; i < nums.length; i++) {
 
-            if (!deque.isEmpty() && deque.peekFirst() == i - k) {
-                deque.pollFirst();
+            while (!pq.isEmpty() && pq.peek() <= i - k) {
+                pq.poll();
             }
 
-            while (!deque.isEmpty() && nums[deque.peekLast()] <= nums[i]) {
-                deque.pollLast();
-            }
-
-            deque.offerLast(i);
+            pq.offer(i);
 
             if (i - k + 1 >= 0) {
-                res[i - k + 1] = nums[deque.peekFirst()];
+                res[i - k + 1] = nums[pq.peek()];
             }
 
 
         }
 
         return res;
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -265,6 +272,12 @@ class Solution {
 
         /**
          * 法二
+         *
+         * 思路其实很简单，就是用一个大顶堆装最大的元素，然后遍历整个容器，当堆顶元素超过当前指针可达的窗口范围，
+         * 则将最大的元素扔出去，然后每次拿到的堆顶元素就是最大值。
+         *
+         *
+         *
          */
 //        if (nums.length == 0 || k == 0) {
 //            return new int[]{};

@@ -49,17 +49,17 @@ class Solution {
     public void merge(int[] nums1, int m, int[] nums2, int n) {
 
 
-        int p = m - 1, q = n - 1, c = m + n - 1;
-        while (p >=0 && q >=0) {
+        int p = m - 1, q = n - 1, curr = m + n - 1;
+        while (p >= 0 && q >= 0) {
             if (nums1[p] < nums2[q]) {
-                nums1[c--] = nums2[q--];
+                nums1[curr--] = nums2[q--];
             } else {
-                nums1[c--] = nums1[p--];
+                nums1[curr--] = nums1[p--];
             }
         }
 
         while (q >= 0) {
-            nums1[c--] = nums2[q--];
+            nums1[curr--] = nums2[q--];
         }
 
 

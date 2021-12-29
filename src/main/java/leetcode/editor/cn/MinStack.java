@@ -62,33 +62,43 @@ class MinStack {
          * 第二个方法就是自己实现一个栈,用链表
          */
         //我们可以在节点中保存数值的信息并同时保存最小值
+        private Node head;
 
 
         public void push(int x) {
-
-
+            if (head == null) {
+                head = new Node(x, x, null);
+            } else {
+                head = new Node(x, Math.min(x, head.min), head);
+            }
         }
 
         public void pop() {
+            head = head.next;
         }
 
         public int top() {
-            return 0;
-
+            return head.val;
         }
 
         public int getMin() {
-            return 0;
+            return head.min;
         }
 
        private class Node{
 
+           Node next;
+           int val;
+           int min;
 
            public Node(int val,int min){
-
+               this(val, min, null);
            }
 
            public Node(int val, int min, Node next) {
+               this.next = next;
+               this.val = val;
+               this.min = min;
            }
 
        }

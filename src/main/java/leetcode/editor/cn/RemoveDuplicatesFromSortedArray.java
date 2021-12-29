@@ -62,13 +62,11 @@ class Solution {
          */
 
         int j = 1;
-        for (int i = 0; i < nums.length - 1; i++) {
-            if (nums[i]!=nums[i+1]) nums[j++] = nums[i + 1];
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i]!=nums[i-1]) nums[j++] = nums[i];
         }
 
         return j;
-
-
 
 
 
@@ -101,6 +99,19 @@ class Solution {
 //        }
 //        //j=0时也算一个，因此要+1
 //        return j + 1;
+
+
+        /**
+         * 这种解法会比上面的好
+         */
+//        int j = 1;
+//        for (int i = 1; i < nums.length; i++) {
+//            if (nums[i]!=nums[i-1]) nums[j++] = nums[i];
+//        }
+//
+//        return j;
+
+
 
     }
 }

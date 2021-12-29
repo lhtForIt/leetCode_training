@@ -36,7 +36,7 @@ import java.util.Stack;
 public class LargestRectangleInHistogram{
       public static void main(String[] args) {
            Solution solution = new LargestRectangleInHistogram().new Solution();
-          solution.largestRectangleArea(new int[]{4,2,0,3,2,5});
+          solution.largestRectangleArea(new int[]{0});
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
@@ -52,28 +52,25 @@ class Solution {
          * 这个想通之后真的觉得思路太巧妙了
          *
          */
+
         int maxArea = 0;
         int[] stack = new int[heights.length + 1];
         int top = -1;
 
         for (int i = 0; i <= heights.length; ) {
             int h = i == heights.length ? 0 : heights[i];
-            if (top == -1 || heights[stack[top]] <= h) {
+            if (top == -1 || h >= heights[stack[top]]) {
                 stack[++top] = i++;
             } else {
                 int high = heights[stack[top--]];
                 int left = top == -1 ? 0 : stack[top] + 1;
                 int right = i - 1;
                 int v = (right - left + 1) * high;
-                maxArea = maxArea < v ? v : maxArea;
+                maxArea = Math.max(maxArea, v);
             }
         }
 
         return maxArea;
-
-
-
-
 
 
 

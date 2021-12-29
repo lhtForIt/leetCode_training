@@ -43,22 +43,21 @@ class Solution {
         }
 
         Map<String, List<String>> map = new HashMap<>();
+        for (String str : strs) {
 
-        for (String s : strs) {
             char[] chars = new char[26];
-            for (char c : s.toCharArray()) {
+            for (char c : str.toCharArray()) {
                 chars[c - 'a']++;
             }
             String key = new String(chars);
             if (!map.containsKey(key)) {
                 map.put(key, new ArrayList<>());
             }
-            map.get(key).add(s);
+            map.get(key).add(str);
+
         }
 
         return new ArrayList<>(map.values());
-
-
 
 
 
@@ -81,7 +80,7 @@ class Solution {
          * HashMap题型总结；
          * 1、字母异位：统计字母出现频次，第一个单词得到一个字母对应count，第二个单词在减去，最后看count是否为0
          * 2、字母异位分组：构建一个key，将字母异位词都转成同一个key，然后放入value中。
-         * 可以sort，也可以自建char数组，然后根据char数组为key去判定
+         * 可以sort，也可以自建char数组，然后根据char数组为key去判定,自建char数组只能是知道key的范围之后才能去做
          */
 
 

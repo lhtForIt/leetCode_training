@@ -40,23 +40,20 @@ class Solution {
          * array
          */
 
-
         if (s.length() != t.length()) {
             return false;
         }
 
-        Map<Character, Integer> charMap = new HashMap<>();
 
+        int[] chars = new int[26];
         for (char c : s.toCharArray()) {
-            charMap.put(c, charMap.getOrDefault(c, 0) + 1);
+            chars[c - 'a']++;
         }
 
         for (char c : t.toCharArray()) {
-            int count = charMap.getOrDefault(c, 0) - 1;
-            if (count < 0) {
+            if (--chars[c - 'a'] < 0) {
                 return false;
             }
-            charMap.put(c, count);
         }
 
         return true;

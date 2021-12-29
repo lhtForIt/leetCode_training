@@ -50,6 +50,9 @@
 
   
 package leetcode.editor.cn;
+
+import sun.rmi.transport.tcp.TCPEndpoint;
+
 public class RotateArray{
       public static void main(String[] args) {
            Solution solution = new RotateArray().new Solution();
@@ -62,7 +65,7 @@ class Solution {
 
         k = k % nums.length;
         myRotate(0, nums.length - 1, nums);
-        myRotate(0, k - 1, nums);
+        myRotate(0, k-1, nums);
         myRotate(k, nums.length - 1, nums);
 
 
@@ -103,6 +106,8 @@ class Solution {
          *
          * 如{1,2,3,4,5,6}
          * 翻转指将第一个和最后一个交换，然后双指针依次往中间靠拢，
+         * 如果翻转nums.length个元素其实和不翻转是一样的，所以可以取余，避免不必要计算,
+         * 注意是用k%nums.length而不是nums.length%k，因为k会比nums.length大，用大的那个当除数
          * {6,5,4,3,2,1}
          *
          *
@@ -135,7 +140,6 @@ class Solution {
 
           private void myRotate(int start, int end, int[] nums) {
 
-
               while (start < end) {
                   int temp = nums[start];
                   nums[start] = nums[end];
@@ -143,6 +147,7 @@ class Solution {
                   start++;
                   end--;
               }
+
 
 
 
