@@ -28,6 +28,7 @@
 
 package leetcode.editor.cn;
 
+import java.time.temporal.Temporal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,19 +47,19 @@ class Solution {
                 return n;
             }
 
+            int all_way = 0;
             int one_step = 1;
             int two_step = 2;
-            int all_way = 0;
 
             for (int i = 3; i <= n; i++) {
+
                 all_way = one_step + two_step;
                 one_step = two_step;
                 two_step = all_way;
+
             }
 
             return all_way;
-
-
 
 
 

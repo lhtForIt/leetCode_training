@@ -44,9 +44,8 @@ class Solution {
     public List<String> generateParenthesis(int n) {
 
         List<String> res = new ArrayList<>();
-        rec(res, "", 0, 0, n);
+        rec(0, 0, n, res,"");
         return res;
-
 
 
 
@@ -353,16 +352,24 @@ class Solution {
 //        return result;
     }
 
-          private void rec(List<String> res, String str, int left, int right, int n) {
+          private void rec(int left, int right, int n, List<String> res, String str) {
 
-              if (str.length() == 2 * n) {
+              if (left + right == 2 * n) {
                   res.add(str);
                   return;
               }
 
-              if (left < n)  rec(res, str + "(", left + 1, right, n);
 
-              if (right < left)  rec(res, str + ")", left, right + 1, n);
+              if (left < n) rec(left + 1, right, n, res, str + "(");
+
+              if (right < left) rec(left, right + 1, n, res, str + ")");
+
+
+
+
+
+
+
 
 
 
@@ -376,6 +383,7 @@ class Solution {
 
 
           }
+
 
           private void rescurtions2(int left, int right, int level, int n, List<String> res, char[] chars) {
 
