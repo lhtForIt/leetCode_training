@@ -40,6 +40,8 @@
 package leetcode.editor.cn;
 
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 
 public class NAryTreeLevelOrderTraversal{
@@ -73,15 +75,10 @@ class Solution {
     public List<List<Integer>> levelOrder(Node root) {
 
 
-        recur1(0, root, res);
+        recuver(root, 0);
+
 
         return res;
-
-
-
-
-
-
 
 
 
@@ -140,6 +137,40 @@ class Solution {
 //        dfs(root, 0, res);
 //
 //        return res;
+
+    }
+
+    private void recuver(Node root, int level) {
+
+
+        if (root == null) {
+            return;
+        }
+
+        if (res.size() == level) {
+            res.add(new ArrayList<>());
+        }
+        res.get(level).add(root.val);
+
+        for (Node child : root.children) {
+            recuver(child, level + 1);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     }
 

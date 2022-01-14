@@ -41,25 +41,23 @@ class Solution {
     public int[] getLeastNumbers(int[] arr, int k) {
 
         if (arr == null || arr.length < k || k == 0) {
-            return new int[]{};
+            return new int[0];
         }
 
-        int[] res = new int[k];
-        PriorityQueue<Integer> pq = new PriorityQueue<>((o1, o2) -> (o2 - o1));
 
+        PriorityQueue<Integer> pri = new PriorityQueue<>((o1, o2) -> (o2 - o1));
+        int[] res = new int[k];
         for (int i = 0; i < arr.length; i++) {
-            if (pq.size() < k) {
-                pq.offer(arr[i]);
-            } else{
-                if (arr[i] < pq.peek()) {
-                    pq.poll();
-                    pq.offer(arr[i]);
-                }
+            if (i < k) {
+                pri.offer(arr[i]);
+            } else if (arr[i] < pri.peek()) {
+                pri.poll();
+                pri.offer(arr[i]);
             }
         }
 
         for (int i = 0; i < k; i++) {
-            res[i] = pq.poll();
+            res[i] = pri.poll();
         }
 
         return res;

@@ -36,11 +36,45 @@ import java.util.*;
 public class TopKFrequentElements{
       public static void main(String[] args) {
            Solution solution = new TopKFrequentElements().new Solution();
-          solution.topKFrequent(new int[]{1}, 1);
+          solution.topKFrequent(new int[]{1,1,1,2,2,3}, 1);
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int[] topKFrequent(int[] nums, int k) {
+
+        Map<Integer, Integer> countMap = new HashMap<>();
+        for (int num : nums) {
+            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
+        }
+
+        List<Integer>[] tong = new ArrayList[nums.length + 1];
+
+        for (Map.Entry<Integer, Integer> num : countMap.entrySet()) {
+            if (tong[num.getValue()] == null) {
+                tong[num.getValue()] = new ArrayList<>();
+            }
+            tong[num.getValue()].add(num.getKey());
+        }
+
+
+        int[] res = new int[k];
+
+        int index = 0;
+        for (int i = nums.length; i >= 0; i--) {
+
+            if (tong[i]==null) continue;
+
+            for (int n : tong[i]) {
+                res[index++] = n;
+                if (index == k) return res;
+            }
+
+        }
+
+
+        return res;
+
+
 
 
         /**
@@ -55,33 +89,33 @@ class Solution {
          * 桶排序
          */
 
-        Map<Integer, Integer> countMap = new HashMap<>();
-        for (int num : nums) {
-            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
-        }
-
-        //不能直接用数组记录，因为会存在多个数字出现次数一样，这种用数组会被覆盖
-        //因此直接在每个数组位置放一个list。
-        //桶的含义是每个出现次数包含的数字，桶里的元素是多个
-        //一个桶里会包含所有出现次数为该桶下标的数字
-        List<Integer>[] tong = new ArrayList[nums.length + 1];
-        for (Map.Entry<Integer, Integer> num : countMap.entrySet()) {
-            if (tong[num.getValue()]==null) tong[num.getValue()] = new ArrayList<>();
-            tong[num.getValue()].add(num.getKey());
-        }
-
-        int[] res = new int[k];
-        int index = 0;
-        //因为数组元素赋值是到了nums.length,因此是从nums.length而不是nums.length-1
-        for (int i = nums.length; i >= 0; i--) {
-            if (tong[i] == null) continue;
-            for (int n : tong[i]) {
-                res[index++] = n;
-                if (index == k) return res;
-            }
-        }
-
-        return res;
+//        Map<Integer, Integer> countMap = new HashMap<>();
+//        for (int num : nums) {
+//            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
+//        }
+//
+//        //不能直接用数组记录，因为会存在多个数字出现次数一样，这种用数组会被覆盖
+//        //因此直接在每个数组位置放一个list。
+//        //桶的含义是每个出现次数包含的数字，桶里的元素是多个
+//        //一个桶里会包含所有出现次数为该桶下标的数字
+//        List<Integer>[] tong = new ArrayList[nums.length + 1];
+//        for (Map.Entry<Integer, Integer> num : countMap.entrySet()) {
+//            if (tong[num.getValue()]==null) tong[num.getValue()] = new ArrayList<>();
+//            tong[num.getValue()].add(num.getKey());
+//        }
+//
+//        int[] res = new int[k];
+//        int index = 0;
+//        //因为数组元素赋值是到了nums.length,因此是从nums.length而不是nums.length-1
+//        for (int i = nums.length; i >= 0; i--) {
+//            if (tong[i] == null) continue;
+//            for (int n : tong[i]) {
+//                res[index++] = n;
+//                if (index == k) return res;
+//            }
+//        }
+//
+//        return res;
 
         /**
          * 对在nlogk的复杂度下实现有两种，找最小k个数，这种就没必要维护一个小根堆,因为小根堆的时间复杂度出来是O(nlogn),
