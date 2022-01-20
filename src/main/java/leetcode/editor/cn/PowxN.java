@@ -52,7 +52,8 @@ public class PowxN {
         public double myPow(double x, int n) {
 
             long N = n;
-            return n > 0 ? pow3(x, N) : 1 / pow3(x, -N);
+            return N < 0 ? 1 / pow4(x, -N) : pow4(x, N);
+
 
 
 
@@ -98,6 +99,37 @@ public class PowxN {
 //        return (n % 2 == 0) ? myPow(x * x, n / 2) : x * myPow(x * x, n / 2);
 //
 //
+        }
+
+        private double pow4(double x, long n) {
+
+            if (n == 0) {
+                return 1d;
+            }
+
+            double y = pow4(x, n / 2);
+
+            return n % 2 == 0 ? y * y : y * y * x;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         }
 
         private double pow3(double x, long n) {

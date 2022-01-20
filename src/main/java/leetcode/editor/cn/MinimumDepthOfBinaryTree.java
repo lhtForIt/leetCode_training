@@ -68,10 +68,37 @@ class Solution {
             return 0;
         }
 
-        int left = minDepth(root.left);
-        int right = minDepth(root.right);
+        Deque<TreeNode> queue = new LinkedList<>();
 
-        return 1 + (Math.min(left, right) > 0 ? Math.min(left, right) : Math.max(left, right));
+        queue.offer(root);
+
+        int high = 0;
+        while (!queue.isEmpty()) {
+
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                if (node.left == null && node.right == null) {
+                    return high + 1;
+                }
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+
+            high++;
+
+        }
+
+        return high;
+
+
+
+
+
 
 
 
@@ -127,6 +154,7 @@ class Solution {
 //            //遍历每层
 //            for (int i = 0; i < size; i++) {
 //                TreeNode node = q.poll();
+        //这个相当于把这颗子树遍历完了，如果是||的话可能存在只有左子树为空右子树很长的情况
 //                if (node.left == null && node.right == null) {
 //                    return depth;
 //                }

@@ -59,24 +59,23 @@ class Solution {
     public List<String> letterCombinations(String digits) {
 
         List<String> res = new ArrayList<>();
-        if (digits == null || digits.length() == 0) {
+        if (digits.length()==0) {
             return res;
         }
-
-        Map<Character, String> charMap = new HashMap<>();
-
-        charMap.put('2',"abc");
-        charMap.put('3',"def");
-        charMap.put('4',"ghi");
-        charMap.put('5',"jkl");
-        charMap.put('6',"mno");
-        charMap.put('7',"pqrs");
-        charMap.put('8',"tuv");
-        charMap.put('9',"wxyz");
-
-        recvr(0, res, charMap, digits, new StringBuilder());
-
+        char[] chars = new char[digits.length()];
+        recu(digits, res, KEYS, 0, chars);
         return res;
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -166,6 +165,34 @@ class Solution {
 
     }
 
+          /**
+           *
+           * 这个因为每层只有一个状态，且下一层不会用到上一层的状态，所以这里可以不用回改状态，
+           * 只有当下层需要修改或者判断以前层逻辑的时候，才会需要删除当前层状态。
+           *
+           * 举个例子，如果是List或者StringBuilder这些数据结构会每次添加数据都会加载最后，然后因为递归的
+           * 一个实例，那整个list在同一个会有多个状态叠加，List就会很长。因为递归会到同一层多次，如果每到这层加一个状态
+           * 但是出来不清除的话，就发生一层多个状态不断叠加，最后结果就会长很多。
+           *
+           */
+          private void recu(String digits, List<String> res, String[] keys, int level, char[] chars) {
+
+
+              if (level == digits.length()) {
+                  res.add(new String(chars));
+                  return;
+              }
+
+
+              String s = keys[digits.charAt(level) - '0'];
+              for (char c : s.toCharArray()) {
+                  chars[level] = c;
+                  recu(digits, res, keys, level + 1, chars);
+              }
+
+
+          }
+
           private void recvr(int level, List<String> res, Map<Character, String> charMap, String digits, StringBuilder str) {
 
               if (level == digits.length()) {
@@ -229,15 +256,6 @@ class Solution {
                   recurArray(level + 1, res, digits, numArray, s);
                   s.deleteCharAt(s.length() - 1);
               }
-
-
-
-
-
-
-
-
-
 
 
           }

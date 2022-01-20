@@ -50,18 +50,24 @@ class Solution {
     public List<List<Integer>> subsets(int[] nums) {
 
         List<List<Integer>> res = new ArrayList<>();
-
         res.add(new ArrayList<>());
 
         for (int n : nums) {
             int size = res.size();
             for (int i = 0; i < size; i++) {
-                List<Integer> subRes = new ArrayList<>(res.get(i));
-                subRes.add(n);
-                res.add(subRes);
+                List<Integer> newList = new ArrayList<>(res.get(i));
+                newList.add(n);
+                res.add(newList);
             }
         }
+
         return res;
+
+
+
+
+
+
 
 
 
@@ -106,6 +112,9 @@ class Solution {
 
         /**
          * 迭代
+         *
+         * 思路就是依次构建一个list，然后不断的往里面任何一个List里面添加数字
+         *
          */
 
 //        List<List<Integer>> res = new ArrayList<>();
@@ -122,6 +131,30 @@ class Solution {
 //        return res;
 
     }
+
+          /**
+           * 因为是所有可能，所以可以认为没有递归出口，或者说所有可能都是递归出口，
+           * 然后这里需要注意的是，层数level作为循环起始点，然后每次下拽使用的不是level+1而是i+1，
+           * 比如你用的是1,2,3这三个数，你下拽的是level的话就会一直是起点，导致结果重复，如果是i+1，这样每次下一层开始
+           * 的是没有的数字，能很好地避免重复.
+           *
+           */
+          private void recu(int[] nums, ArrayList<Integer> subRes, List<List<Integer>> res, int level) {
+
+              res.add(new ArrayList<>(subRes));
+
+              for (int i = level; i < nums.length; i++) {
+                  subRes.add(nums[i]);
+                  recu(nums, subRes, res, i + 1);
+                  subRes.remove(subRes.size() - 1);
+              }
+
+
+
+
+
+
+          }
 
           private void recurv(int level, List<List<Integer>> res, ArrayList<Integer> subRes, int[] nums) {
 

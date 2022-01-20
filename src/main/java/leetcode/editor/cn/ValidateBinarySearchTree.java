@@ -66,11 +66,24 @@ class Solution {
     public boolean isValidBST(TreeNode root) {
 
 
-        if (root == null) {
-            return true;
+        Deque<TreeNode> stack = new LinkedList<>();
+        TreeNode pre = null;
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            if (pre != null && pre.val >= root.val) {
+                return false;
+            }
+            pre = root;
+            root = root.right;
         }
 
-        return isValid(root, Long.MIN_VALUE, Long.MAX_VALUE);
+        return true;
+
+
 
 
 
@@ -161,6 +174,38 @@ class Solution {
 //        }
 //
 //        return true;
+    }
+
+    private boolean isValid1(TreeNode root, long minValue, long maxValue) {
+
+        if (root == null) {
+            return true;
+        }
+
+        if (root.val <= minValue || root.val >= maxValue) {
+            return false;
+        }
+
+        return isValid1(root.left, minValue, root.val) && isValid1(root.right, root.val, maxValue);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
     private boolean isValid(TreeNode root, long minValue, long maxValue) {

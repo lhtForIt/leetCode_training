@@ -51,33 +51,36 @@ public class MaximumDepthOfBinaryTree{
 class Solution {
     public int maxDepth(TreeNode root) {
 
+
         if (root == null) {
             return 0;
         }
 
         Deque<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
 
-        int deep = 0;
+        queue.offer(root);
+        int high = 0;
         while (!queue.isEmpty()) {
 
             int size = queue.size();
             for (int i = 0; i < size; i++) {
+
                 TreeNode node = queue.poll();
+
                 if (node.left != null) {
                     queue.offer(node.left);
                 }
+
                 if (node.right != null) {
                     queue.offer(node.right);
                 }
+
             }
-            deep++;
+            high++;
+
         }
 
-        return deep;
-
-
-
+        return high;
 
 
 
@@ -119,6 +122,38 @@ class Solution {
 //        //返回层数=左右子树最大高度+1
 //        return Math.max(left, right) + 1;
 
+        /**
+         * 这种BFS的写法会更符合我的思维点
+         */
+//        if (root == null) {
+//            return 0;
+//        }
+//
+//        Deque<TreeNode> queue = new LinkedList<>();
+//
+//        queue.offer(root);
+//        int high = 0;
+//        while (!queue.isEmpty()) {
+//
+//            int size = queue.size();
+//            for (int i = 0; i < size; i++) {
+//
+//                TreeNode node = queue.poll();
+//
+//                if (node.left != null) {
+//                    queue.offer(node.left);
+//                }
+//
+//                if (node.right != null) {
+//                    queue.offer(node.right);
+//                }
+//
+//            }
+//            high++;
+//
+//        }
+//
+//        return high;
 
 
         /**
