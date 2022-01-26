@@ -64,13 +64,19 @@ class Solution {
         Set<Integer> pie = new HashSet<>();
         Set<Integer> na = new HashSet<>();
 
-        List<List<String>> res = new ArrayList<>();
         char[] chess = new char[n];
         Arrays.fill(chess, '.');
 
-        recurtion(0, res, new ArrayList<>(), lie, pie, na, n, chess);
+        List<List<String>> res = new ArrayList<>();
+
+        recu(0, lie, pie, na, res,new ArrayList<String>(), n, chess);
 
         return res;
+
+
+
+
+
 
 
 
@@ -144,6 +150,60 @@ class Solution {
 //        return res;
 
     }
+
+          private void recu(int row, Set<Integer> lie, Set<Integer> pie, Set<Integer> na, List<List<String>> res, ArrayList<String> subRes, int n, char[] chess) {
+
+              if (row == n) {
+                  res.add(new ArrayList<>(subRes));
+                  return;
+              }
+
+
+              for (int i = 0; i < n; i++) {
+
+                  if (lie.contains(i) || pie.contains(i + row) || na.contains(i - row)) {
+                      continue;
+                  }
+
+                  chess[i] = 'Q';
+                  subRes.add(new String(chess));
+                  chess[i] = '.';
+
+                  lie.add(i);
+                  pie.add(i + row);
+                  na.add(i - row);
+
+                  recu(row + 1, lie, pie, na, res, subRes, n, chess);
+
+                  lie.remove(i);
+                  pie.remove(i + row);
+                  na.remove(i - row);
+
+                  subRes.remove(subRes.size() - 1);
+
+
+
+
+
+
+              }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          }
 
           private void recurtion(int row, List<List<String>> res, ArrayList<String> subRes, Set<Integer> lie, Set<Integer> pie, Set<Integer> na, int n, char[] chess) {
 
