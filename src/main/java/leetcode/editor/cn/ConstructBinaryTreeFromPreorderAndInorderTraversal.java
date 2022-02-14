@@ -56,14 +56,35 @@ class Solution {
 
     public TreeNode buildTree(int[] preorder, int[] inorder) {
 
+        /**
+         * 根据前序中序遍历构造二叉树
+         * 其实我们用到的只有中序遍历的左边起始下标。
+         * 我们去构建树的时候都是用的前序遍结果去生成树的，其实递归最下面出来
+         * 每个都是用的头结点，然后每次决定头结点，依次构建出整个树
+         *
+         * 需要先记下中序遍历的每个节点值和下标对应关系。
+         * 然后根据中序遍历的根节点和左边节点计算左子树共有多少个节点，
+         * 然后分出左子树和右子树依次递归。
+         *
+         */
+        Map<Integer, Integer> myIndexMap = new HashMap<>();
+
         if (preorder == null || inorder == null) {
             return null;
         }
 
 
-        for (int i = 0; i < inorder.length; i++) indexMap.put(inorder[i], i);
+        for (int i = 0; i < inorder.length; i++) myIndexMap.put(inorder[i], i);
 
-        return recurtion(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1,indexMap);
+        return myRecure(preorder, 0, preorder.length - 1, 0, myIndexMap);
+
+
+
+
+
+
+
+
 
 
 
@@ -84,15 +105,6 @@ class Solution {
 //        for (int i = 0; i < inorder.length; i++) myMap.put(inorder[i], i);
 //        //inorder的rightIndex完全没有用，可以去掉
 //        return recurs(preorder, 0, preorder.length - 1, 0, myMap);
-
-
-
-
-
-
-
-
-
 
 
 
@@ -174,6 +186,30 @@ class Solution {
 
 
     }
+
+    private TreeNode myRecure(int[] preorder, int preOrderLeft, int preOrderRight, int inOrderLeft, Map<Integer, Integer> myIndexMap) {
+
+
+        if (preOrderLeft > preOrderRight) {
+            return null;
+        }
+
+        TreeNode root = new TreeNode(preorder[preOrderLeft]);
+        int rootIndex = myIndexMap.get(preorder[preOrderLeft]);
+        int leftSize = rootIndex - inOrderLeft;
+
+        root.left = myRecure(preorder, preOrderLeft + 1, preOrderLeft + leftSize, inOrderLeft, myIndexMap);
+        root.right = myRecure(preorder, preOrderLeft + leftSize + 1, preOrderRight, rootIndex + 1, myIndexMap);
+
+        return root;
+
+
+
+
+
+
+    }
+
 
     private TreeNode recurtion(int[] preorder, int preLeft, int preRight, int[] inorder, int inOrderLeft, int inOrderRight, Map<Integer, Integer> indexMap) {
 
