@@ -33,17 +33,20 @@ public class Combinations{
 class Solution {
           /**
            * 递归里面的n-k+1其实是为了剪枝，比如在10位数里找5位，
-           * 那你第一层就只有到6，第一层如果是7就不需要遍历了。
+           * 那你第一层即第一位数就只有到6，第一层如果是7就不需要遍历了，
+           * 因为7后面都不够5个数。
            * 所以n-k+1是6，即最多只能到6
+           *
+           * 对于访问的数据用map或者数组去记录是否访问过，其实就是为了剪枝，降低多余的遍历
+           * 但是加它或者不加它其实不会对整个递归的结果造成任何更改，唯一作用就是降低时耗。
            *
            */
     public List<List<Integer>> combine(int n, int k) {
 
         List<List<Integer>> res = new ArrayList<>();
-        recu(res, new ArrayList<>(), n, k, 1);
+        boolean[] visited = new boolean[n + 1];
+        recu(1, n, k, new ArrayList<>(), res);
         return res;
-
-
 
 
 
@@ -130,7 +133,30 @@ class Solution {
 
     }
 
-          private void recu(List<List<Integer>> res, ArrayList<Integer> subRes, int n, int k, int level) {
+
+          private void recu1(int level, boolean[] visited, int n, int k, ArrayList<Integer> subRes, List<List<Integer>> res) {
+
+              if (subRes.size() == k) {
+                  res.add(new ArrayList<>(subRes));
+                  return;
+              }
+
+              for (int i = level; i <= n; i++) {
+                  if (visited[i]) {
+                      continue;
+                  }
+                  subRes.add(i);
+                  visited[i] = true;
+                  recu1(i + 1, visited, n, k, subRes, res);
+                  visited[i] = false;
+                  subRes.remove(subRes.size() - 1);
+              }
+
+
+          }
+
+          private void recu(int level, int n, int k, List<Integer> subRes, List<List<Integer>> res) {
+
 
               if (k == 0) {
                   res.add(new ArrayList<>(subRes));
@@ -139,10 +165,9 @@ class Solution {
 
               for (int i = level; i <= n - k + 1; i++) {
                   subRes.add(i);
-                  recu(res, subRes, n, k - 1, i + 1);
+                  recu(i + 1, n, k - 1, subRes, res);
                   subRes.remove(subRes.size() - 1);
               }
-
 
 
           }

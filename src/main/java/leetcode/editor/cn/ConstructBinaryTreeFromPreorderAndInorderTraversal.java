@@ -23,6 +23,7 @@
   
 package leetcode.editor.cn;
 
+import jdk.nashorn.internal.runtime.arrays.IntOrLongElements;
 import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
 
 import java.util.*;
@@ -56,6 +57,18 @@ class Solution {
 
     public TreeNode buildTree(int[] preorder, int[] inorder) {
 
+        return doMyBuild(preorder, inorder, Integer.MIN_VALUE);
+
+
+
+
+
+
+
+
+
+
+
         /**
          * 根据前序中序遍历构造二叉树
          * 其实我们用到的只有中序遍历的左边起始下标。
@@ -67,32 +80,16 @@ class Solution {
          * 然后分出左子树和右子树依次递归。
          *
          */
-        Map<Integer, Integer> myIndexMap = new HashMap<>();
-
-        if (preorder == null || inorder == null) {
-            return null;
-        }
-
-
-        for (int i = 0; i < inorder.length; i++) myIndexMap.put(inorder[i], i);
-
-        return myRecure(preorder, 0, preorder.length - 1, 0, myIndexMap);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//        Map<Integer, Integer> myIndexMap = new HashMap<>();
+//
+//        if (preorder == null || inorder == null) {
+//            return null;
+//        }
+//
+//
+//        for (int i = 0; i < inorder.length; i++) myIndexMap.put(inorder[i], i);
+//
+//        return myRecure(preorder, 0, preorder.length - 1, 0, myIndexMap);
 
 
 
@@ -178,6 +175,10 @@ class Solution {
 
         /**
          * 递归优化
+         *
+         * 这个理解还是有点问题，这里面的stop其实是找左边界的最右下标,
+         * 它递归时只会遍历一次数组，而用map的方法是会遍历n^2次（貌似是，我也不太确定）
+         *
          */
 
 //        return build(preorder, inorder, Integer.MIN_VALUE);
@@ -186,6 +187,26 @@ class Solution {
 
 
     }
+
+    private TreeNode doMyBuild(int[] preorder, int[] inorder, int stop) {
+
+        if (pre >= preorder.length) {
+            return null;
+        }
+
+        if (inorder[in] == stop) {
+            in++;
+            return null;
+        }
+
+        TreeNode node = new TreeNode(preorder[pre++]);
+        node.left = doMyBuild(preorder, inorder, node.val);
+        node.right = doMyBuild(preorder, inorder, stop);
+
+        return node;
+
+    }
+
 
     private TreeNode myRecure(int[] preorder, int preOrderLeft, int preOrderRight, int inOrderLeft, Map<Integer, Integer> myIndexMap) {
 
@@ -317,6 +338,10 @@ class Solution {
         return root;
     }
 
+    /**
+     * [3,9,20,15,7]
+     * [9,3,15,20,7]
+     */
     private TreeNode build(int[] preOrder, int[] inOrder, int stop) {
 
         if (pre>=preOrder.length) return null;
@@ -330,6 +355,7 @@ class Solution {
         node.left = build(preOrder, inOrder, node.val);
         node.right = build(preOrder, inOrder, stop);
         return node;
+
     }
 
     private TreeNode recur(int[] preOrder, int[] inOrder, int preOrder_left, int preOrder_right, int inOrder_left, int inOrder_right) {
