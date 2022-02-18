@@ -66,6 +66,7 @@ public class MinimumGeneticMutation{
 class Solution {
 
     int minChange = Integer.MAX_VALUE;
+    private int minValue = Integer.MAX_VALUE;
 
 
     public int minMutation(String start, String end, String[] bank) {
@@ -120,11 +121,73 @@ class Solution {
         return -1;
 
 
+        /**
+         * note 2022/02/18 常规BFS解法，100%
+         * 用bankSet.remove而不是新加一个set去add。
+         * 这样控制节点数之后遍历会变快。
+         */
+
+//        Set<String> bankSet = new HashSet<>();
+//        for (String s:bank) bankSet.add(s);
+//        if (start.length() != end.length() || !bankSet.contains(end)) {
+//            return -1;
+//        }
+//        char[] chars = {'A', 'C', 'G', 'T'};
+//        Deque<String> queue = new LinkedList<>();
+//        queue.offer(start);
+//
+//        int step = 0;
+//        while (!queue.isEmpty()) {
+//
+//            int size = queue.size();
+//            for (int i = 0; i < size; i++) {
+//
+//                String str = queue.poll();
+//                char[] strs = str.toCharArray();
+//                for (int j = 0; j < str.length(); j++) {
+//                    char t = strs[j];
+//                    for (char c : chars) {
+//                        if (c == strs[j]) {
+//                            continue;
+//                        }
+//                        strs[j] = c;
+//                        String target = new String(strs);
+//                        if (target.equals(end)) {
+//                            return step + 1;
+//                        }
+//
+//                        if (bankSet.contains(target)) {
+//                            bankSet.remove(target);
+//                            queue.offer(target);
+//                        }
+//                    }
+//                    strs[j] = t;
+//                }
+//
+//
+//            }
+//
+//            step++;
+//
+//        }
+//
+//        return -1;
 
 
+        /**
+         * note at 2022/02/18 常规DFS解法
+         *
+         */
 
-
-
+//        Set<String> bankSet = new HashSet<>();
+//        for (String b : bank) bankSet.add(b);
+//
+//        if (start.length() != end.length() || !bankSet.contains(end)) {
+//            return -1;
+//        }
+//        char[] chars = {'A', 'C', 'G', 'T'};
+//        recur(0, start, end, bankSet, chars);
+//        return minValue == Integer.MAX_VALUE ? -1 : minValue;
 
 
         /**
@@ -330,6 +393,32 @@ class Solution {
 //        return minChange == Integer.MAX_VALUE ? -1 : minChange;
 
     }
+
+
+          private void recur(int level, String start, String end, Set<String> bankSet, char[] chars) {
+
+              if (start.equals(end)) {
+                  minValue = minValue > level ? level : minValue;
+                  return;
+              }
+
+
+              char[] strs = start.toCharArray();
+              for (int i = 0; i < strs.length; i++) {
+                  char t = strs[i];
+                  for (char c : chars) {
+                      if (strs[i] == c) continue;
+                      strs[i] = c;
+                      String temp = new String(strs);
+                      if (bankSet.contains(temp)) {
+                          bankSet.remove(temp);
+                          recur(level + 1, temp, end, bankSet, chars);
+                      }
+                  }
+                  strs[i] = t;
+              }
+
+          }
 
 
           private void recursion(int level, String start, String end, String[] bank) {

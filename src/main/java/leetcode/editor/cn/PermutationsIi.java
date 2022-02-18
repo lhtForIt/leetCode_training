@@ -47,6 +47,13 @@ public class PermutationsIi{
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
 
+          /**
+           * 避免重复（如果是数字）的一个常用方法是对数据进行排序，然后在进行操作。
+           * 在递归的时候难点就是避免结果重复，如何避免重复呢？在没有重复元素的时候避免重复可以
+           * 很简单的用一个缓存数组记录已经访问的节点，但是如果是有重复数据就需要避免如：
+           * (1a,1b,2)和(1b,1a,2)这种情况，虽然是重复的，但是只算一种结果。
+           * 这时候需要加上1a必须在1b之前访问的限制。
+           */
           public List<List<Integer>> permuteUnique(int[] nums) {
 
               List<List<Integer>> res = new ArrayList<>();

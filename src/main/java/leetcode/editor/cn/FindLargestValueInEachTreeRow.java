@@ -48,29 +48,6 @@ class Solution {
     public List<Integer> largestValues(TreeNode root) {
 
 
-        List<Integer> res = new ArrayList<>();
-
-        recur(0, root, res);
-
-        return res;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         /**
          * 一开始想到的应该是BFS
          * 时间复杂度O(n)，空间复杂度O(n)，树的深度
@@ -116,106 +93,38 @@ class Solution {
          */
 
 
-//        List<Integer> res = new ArrayList<>();
+        List<Integer> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+        dfs(0, root, res);
+        return res;
 
-//        if (root == null) {
-//            return res;
-//        }
-
-        //也是傻，没必要用个map去装，直接在res里面操作就行
-//        Map<Integer, Integer> levelMaxMap = new TreeMap<>();
-//        dfs(1, res, root, levelMaxMap);
-//
-//        for (Integer i : levelMaxMap.keySet()) {
-//            res.add(levelMaxMap.get(i));
-//        }
-
-//        dfsOpt(0, res, root);
-
-
-//        return res;
 
 
 
     }
 
-    private void recur(int level, TreeNode root, List<Integer> res) {
+
+    private void dfs(int level, TreeNode root, List<Integer> res) {
 
         if (root == null) {
             return;
         }
 
-        if (level == res.size()) {
-            res.add(Integer.MIN_VALUE);
-        }
-
-
-        res.set(level, res.get(level) < root.val ? root.val : res.get(level));
-
-        recur(level + 1, root.left, res);
-        recur(level + 1, root.right, res);
-
-
-
-
-
-
-
-
-
-    }
-
-
-    private void dfsOpt(int level, List<Integer> res, TreeNode node) {
-
-        if (node == null) {
-            return;
-        }
-
-        //当前层逻辑
-        //递归是从浅到深，因此第一条路遍历完会将res初始化完
+        //这里也可以直接设一个最小的默认值然后都进行else的操作，但是感觉没多大必要
         if (res.size() == level) {
-            res.add(node.val);
+            res.add(root.val);
         } else {
-            //习惯写成了add(index,element)这种，它会在index位置加入一个元素，而不是替代，找了好久原因
-//            res.add(level, Math.max(res.get(level), node.val));
-            res.set(level, Math.max(res.get(level), node.val));
+            res.set(level, root.val > res.get(level) ? root.val : res.get(level));
         }
 
-        //下探
-        //这里的!=null其实也相当于终止条件了，正常模板下探前没有！=null判断，
-        // 然后是在递归开始判断if(node==null) return；这里其实没什么区别，就是不进下一层和进下一层直接退出而已
-//        if (node.left != null) {
-            dfsOpt(level + 1, res, node.left);
-//        }
-
-//        if (node.right != null) {
-            dfsOpt(level + 1, res, node.right);
-//        }
-
-
+        dfs(level + 1, root.left, res);
+        dfs(level + 1, root.right, res);
 
     }
 
-    private void dfs(int level, List<Integer> res, TreeNode node, Map<Integer, Integer> levelMaxMap) {
 
-
-
-        //当前层逻辑
-        int maxLevel = levelMaxMap.getOrDefault(level, Integer.MIN_VALUE);
-        levelMaxMap.put(level, Math.max(node.val, maxLevel));
-
-        //这儿的!=null其实也是终止条件
-        if (node.left != null) {
-            dfs(level + 1, res, node.left, levelMaxMap);
-        }
-
-        if (node.right != null) {
-            dfs(level + 1, res, node.right, levelMaxMap);
-        }
-
-
-    }
 }
 //leetcode submit region end(Prohibit modification and deletion)
 public class TreeNode {

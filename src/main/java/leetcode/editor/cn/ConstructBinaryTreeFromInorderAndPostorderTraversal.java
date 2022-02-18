@@ -22,6 +22,10 @@
 
   
 package leetcode.editor.cn;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class ConstructBinaryTreeFromInorderAndPostorderTraversal{
       public static void main(String[] args) {
            Solution solution = new ConstructBinaryTreeFromInorderAndPostorderTraversal().new Solution();
@@ -44,7 +48,35 @@ public class ConstructBinaryTreeFromInorderAndPostorderTraversal{
  */
 class Solution {
     public TreeNode buildTree(int[] inorder, int[] postorder) {
-        return null;
+
+        if (inorder == null || postorder == null) {
+            return null;
+        }
+
+        Map<Integer, Integer> indexMap = new HashMap<>();
+        for (int i = 0; i < inorder.length; i++) indexMap.put(inorder[i], i);
+        return recur(postorder, 0, postorder.length - 1, 0, indexMap);
+
+    }
+
+    /**
+     * [9,3,15,20,7]
+     * [9,15,7,20,3]
+     */
+    private TreeNode recur(int[] postOrder, int postOrderLeft, int postOrderRight, int inOrderLeft, Map<Integer, Integer> indexMap) {
+
+        if (postOrderLeft > postOrderRight) {
+            return null;
+        }
+
+        TreeNode root = new TreeNode(postOrder[postOrderRight]);
+        int inOrderRootIndex = indexMap.get(postOrder[postOrderRight]);
+        int leftSize = inOrderRootIndex - inOrderLeft;
+
+        root.left = recur(postOrder, postOrderLeft, postOrderLeft + leftSize - 1, inOrderLeft, indexMap);
+        root.right = recur(postOrder, postOrderLeft + leftSize, postOrderRight - 1, inOrderRootIndex + 1, indexMap);
+
+        return root;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
