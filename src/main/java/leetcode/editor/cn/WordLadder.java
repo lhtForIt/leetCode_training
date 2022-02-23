@@ -113,13 +113,65 @@ class Solution {
         return 0;
 
 
+        /**
+         * note at 2022-02-23
+         *
+         * 大部分逻辑的单向BFS是一致的，在用set替代queue的时候需要注意一下
+         *
+         *  因为是用set模拟的queue所以需要用一个新的set去装数据然后将原来的set替换掉，
+         *  否则会一直重复以前的遍历过程导致超时
+         *
+         *
+         *
+         */
 
-
-
-
-
-
-
+//        Set<String> wordSet = new HashSet<>();
+//        for (String word:wordList) wordSet.add(word);
+//
+//        if (beginWord.length() != endWord.length() || !wordSet.contains(endWord)) return 0;
+//
+//        Set<String> beginSet = new HashSet<>();
+//        Set<String> endSet = new HashSet<>();
+//
+//        beginSet.add(beginWord);
+//        endSet.add(endWord);
+//
+//        int step = 1;
+//        //始终保证最小的进行遍历
+//        while (!beginSet.isEmpty()) {
+//
+//            if (endSet.size() < beginSet.size()) {
+//                Set<String> temp = beginSet;
+//                beginSet = endSet;
+//                endSet = temp;
+//            }
+//
+//            //这里因为是用set模拟的queue所以需要用一个新的set去装数据然后将原来的set替换掉，否则会一直重复以前的遍历过程
+//            //导致超时
+//            Set<String> set = new HashSet<>();
+//            for (String s : beginSet) {
+//                char[] chars = s.toCharArray();
+//                for (int i = 0; i < s.length(); i++) {
+//                    char t = chars[i];
+//                    for (char j = 'a'; j <= 'z'; j++) {
+//                        if (j==chars[i]) continue;
+//                        chars[i] = j;
+//                        String target = new String(chars);
+//                        if (endSet.contains(target)) return step + 1;
+//                        if (wordSet.contains(target)) {
+//                            wordSet.remove(target);
+//                            set.add(target);
+//                        }
+//                    }
+//                    chars[i] = t;
+//                }
+//            }
+//
+//            beginSet = set;
+//            step++;
+//        }
+//
+//        return 0;
 
 
 
