@@ -179,6 +179,7 @@ class Solution {
 
 //        ListNode curr = head;
 //        int count = 0;
+//        //这里如果在while里面用count++或者++count都会在判断时多执行一次+1操作导致下面的if条件进不去，所以只能在循环里面写count++。
 //        while (curr != null && count != k) {
 //            curr = curr.next;
 //            count++;
@@ -192,8 +193,8 @@ class Solution {
 //                curr = head;
 //                head = temp;
 //            }
-        //没有这个链表中间会断掉，不知道为什么
-        //原因：因为这时候是curr指向head,所以curr是反转后改层第二个数，head才是第一个数，因此要将head给curr,不然第一个数就没了
+//        没有这个链表中间会断掉，不知道为什么
+//        原因：因为这时候是curr指向head,所以curr是反转后改层第二个数，head才是第一个数，因此要将head给curr,不然第一个数就没了
 //            head = curr;
 //        }
 //        return head;

@@ -205,7 +205,7 @@ class Solution {
 //                int curHeight = heights[stack.pop()];
 //                int rightBoundary = i - 1;
 //                int leftBoundary = stack.isEmpty() ? 0 : stack.peek() + 1;
-//                int width = rightBoundary - leftBoundary + 1;
+//                int width = rightBoundary - leftBoundary + 1;//这儿需要+1，不然会出现0-0的情况，但是第一个元素其实应该算的。
 //                maxArea = Math.max(maxArea, (curHeight * width));
 //            }
 //        }

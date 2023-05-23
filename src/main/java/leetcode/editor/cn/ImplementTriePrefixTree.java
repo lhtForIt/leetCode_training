@@ -387,6 +387,8 @@ class Trie {
         class TrieNode{
             Map<Character, TrieNode> charToNode;
             boolean isEnd = false;
+            //这里甚至可以记录访问次数，最后用于推荐
+            int count = 0;
             public TrieNode(){
                 charToNode = new HashMap();
             }
