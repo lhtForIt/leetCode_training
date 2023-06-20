@@ -46,75 +46,84 @@ package leetcode.editor.cn;
 public class LongestPalindromicSubstring {
     public static void main(String[] args) {
         Solution solution = new LongestPalindromicSubstring().new Solution();
+        solution.longestPalindrome("babad");
     }
     //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-
-    private int lo, maxLen;
-    public String longestPalindrome(String s) {
-
-        int len = s.length();
-        if (len < 2)
-            return s;
-
-        for (int i = 0; i < len-1; i++) {
-            extendPalindrome(s, i, i);  //assume odd length, try to extend Palindrome as possible
-            extendPalindrome(s, i, i+1); //assume even length.
-        }
-        return s.substring(lo, lo + maxLen);
-
-//        int start = 0;
-//        int end = 0;
-//        for (int i = 0; i < s.length(); i++) {
-//            //StringBuffer sb = new StringBuffer();
-//            //sb.append(s.charAt[i]);
-//            char c = s.charAt(i);
-//            int left = i;
-//            int right = i;
-//
-//            while (left >= 0 && s.charAt(left) == c) {
-//                left--;
-//            }
-//
-//            while (right < s.length() && s.charAt(right) == c) {
-//                right++;
-//            }
-//
-//            while (left >= 0 && right < s.length()) {
-//                if (s.charAt(left) != s.charAt(right)) {
-//                    break;
+        //我一开始以为需要最低位，最高位和最大长度三个变量，其实最高位是不需要使用的，直接只要最低位和最大长度即可。
+        int low, max = 0;
+        public String longestPalindrome(String s) {
+            /**
+             * dp 时间复杂度O(n^2)，空间复杂度O(n)
+             */
+//            String result = "";
+//            int len = 0;
+//            boolean[][] isPali = new boolean[s.length()][s.length()];
+//            for (int i = s.length() - 1; i >= 0; i--) {
+//                for (int j = i; j < s.length(); j++) {
+//                    if (s.charAt(i) == s.charAt(j) && (j - i < 2 || isPali[i + 1][j - 1])) {
+//                        isPali[i][j] = true;
+//                        if (j - i + 1 > len) {
+//                            result = s.substring(i, j + 1);
+//                            len = j - i + 1;
+//                        }
+//                    }
 //                }
-//                left--;
-//                right++;
 //            }
-//
-//
-//            // left + 1 and right - 1 are actually the start and end index of the Palindromic string
-//            // we don't set "right" because String.substring function required end index exclusively
-//            left = left + 1;
-//            if (end - start < right - left) {
-//                start = left;
-//                end = right;
+//            return result;
+            /**
+             * 分奇偶数，分别向外扩展
+             */
+            if (s.length() < 2) return s;
+            char[] chars = s.toCharArray();
+            for (int i = 0; i < s.length(); i++) {
+                //奇数验证,第一个参数是左边位置，第二个参数是右边位置
+                doValid(chars, i, i);
+                //偶数验证
+                doValid(chars, i, i + 1);
+            }
+            return s.substring(low, low + max);
+            /**
+             * 全球站另一种解法，不再判断奇偶数
+             */
+//            if (s == null || s.trim().equals("")) {
+//                return s;
 //            }
-//        }
-//
-//        return s.substring(start, end);
-    }
-
-    private void extendPalindrome(String s, int j, int k) {
-        while (j >= 0 && k < s.length() && s.charAt(j) == s.charAt(k)) {
-            j--;
-            k++;
+//            int len = s.length();
+//            int begin = 0;
+//            int maxLen = 0;
+//            for (int i = 0; i < len - maxLen / 2; i++) {
+//                int j = i;
+//                int k = i;
+//                while (k < len - 1 && s.charAt(k) == s.charAt(k + 1)) { // Skip duplicated characters to the right
+//                    k++;
+//                }
+//                while (j > 0 && k < len - 1 && s.charAt(j-1) == s.charAt(k+1)) { // Expand both left and right
+//                    j--;
+//                    k++;
+//                }
+//                int newLen = k - j + 1;
+//                if (newLen > maxLen) {
+//                    begin = j;
+//                    maxLen = newLen;
+//                }
+//            }
+//            return s.substring(begin, begin + maxLen);
         }
-        if (maxLen < k - j - 1) {
-            lo = j + 1;
-            maxLen = k - j - 1;
+        private void doValid(char[] chars, int start, int end) {
+            while (start >= 0 && end < chars.length && chars[start] == chars[end]) {
+                start--;
+                end++;
+            }
+            /**
+             * 上面遍历出来的是的start和end意味着越界或者不相等的字符，但是我们要的其实是相等的或者不越界的字符，那么最左边就是start+1,最右边就是end-1，最大长度就是
+             * end-1-start。
+             */
+            if (max < end - start - 1) {
+                low = start + 1;
+                max = end - start - 1;
+            }
         }
-    }
-
-
-
-
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

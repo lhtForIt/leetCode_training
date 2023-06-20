@@ -24,45 +24,41 @@
 // 👍 336 👎 0
 
 package leetcode.editor.cn;
+
 public class ValidPalindromeIi {
     public static void main(String[] args) {
         Solution solution = new ValidPalindromeIi().new Solution();
+        System.out.println(solution.validPalindrome("abca"));
     }
+
     //leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public boolean validPalindrome(String s) {
-
-        /**
-         * 贪心算法，双指针
-         */
-        int low = 0, high = s.length() - 1;
-        while (low < high) {
-            char c1 = s.charAt(low), c2 = s.charAt(high);
-            if (c1 == c2) {
-                ++low;
-                --high;
-            } else {
-                return validPalindrome(s, low, high - 1) || validPalindrome(s, low + 1, high);
+    class Solution {
+        public boolean validPalindrome(String s) {
+            /**
+             * 时间复杂度O(2m+(m-n))m是删除之后的字符串长度，空间复杂度O(1)
+             * 这个我一直觉得像以前字符串处理一样，一个循环可以搞定，
+             * 确实是一个循环可以，但是这种其实明显拆成了子问题，可以直接拆成两个简答的子问题解。
+             *
+             * 如果不等，左边+1或者右边-1分别去比对就好。
+             */
+            char[] chars = s.toCharArray();
+            int left = 0, right = s.length() - 1;
+            while (left < right) {
+                if (chars[left] != chars[right]) {
+                    return vilid(chars, left + 1, right) || vilid(chars, left, right - 1);
+                }
+                left++;
+                right--;
             }
+            return true;
         }
-        return true;
 
-
-
-
-
-    }
-
-    private boolean validPalindrome(String s, int low, int high) {
-        for (int i = low, j = high; i < j; ++i, --j) {
-            char c1 = s.charAt(i), c2 = s.charAt(j);
-            if (c1 != c2) {
-                return false;
+        private boolean vilid(char[] chars, int left, int right) {
+            while (left < right) {
+                if (chars[left++] != chars[right--]) return false;
             }
+            return true;
         }
-        return true;
     }
-}
 //leetcode submit region end(Prohibit modification and deletion)
-
 }

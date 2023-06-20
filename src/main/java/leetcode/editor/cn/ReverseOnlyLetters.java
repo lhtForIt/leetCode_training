@@ -52,31 +52,30 @@
 // 👍 126 👎 0
 
 package leetcode.editor.cn;
+
 public class ReverseOnlyLetters {
     public static void main(String[] args) {
         Solution solution = new ReverseOnlyLetters().new Solution();
     }
+
     //leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
+    class Solution {
         public String reverseOnlyLetters(String s) {
-            char[] schar = s.toCharArray();
-            revert(0, s.length() - 1, schar);
-            return new String(schar);
+            /**
+             * 时间复杂度O(n),空间复杂度O(n)
+             */
+            char[] chars = s.toCharArray();
+            revert(chars, 0, s.length() - 1);
+            return new String(chars);
         }
 
-        private void revert(int start, int end, char[] s) {
+        private void revert(char[] chars, int start, int end) {
             while (start < end) {
-                if (!Character.isLetter(s[start])) {
-                    start++;
-                } else if (!Character.isLetter(s[end])) {
-                    end--;
-                } else {
-                    char temp = s[start];
-                    s[start] = s[end];
-                    s[end] = temp;
-                    start++;
-                    end--;
-                }
+                while (start < end && !Character.isLetter(chars[start])) start++;
+                while (start < end && !Character.isLetter(chars[end])) end--;
+                char temp = chars[start];
+                chars[start++] = chars[end];
+                chars[end--] = temp;
             }
         }
     }

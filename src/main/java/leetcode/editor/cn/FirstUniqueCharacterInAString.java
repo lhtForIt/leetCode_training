@@ -62,22 +62,13 @@ class Solution {
          * hash表底层是数组，在对于目标size已知的情况下可以直接用数组存储
          */
 
-        //代表'a'-'z'这些字符出现的次数
-        int[] chars = new int[26];
-
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            //这儿可以'z'-c也可以c-'a'，是一样的，保证统一即可
-            chars['z' - c]++;
+        int[] nums = new int[26];
+        for (char c : s.toCharArray()) {
+            nums[c - 'a']++;
         }
-
         for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (chars['z' - c] == 1) {
-                return i;
-            }
+            if (nums[s.charAt(i) - 'a'] == 1) return i;
         }
-
         return -1;
 
 

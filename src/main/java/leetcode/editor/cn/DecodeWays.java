@@ -68,126 +68,106 @@ package leetcode.editor.cn;
 public class DecodeWays{
       public static void main(String[] args) {
            Solution solution = new DecodeWays().new Solution();
-          solution.numDecodings("06");
+          solution.numDecodings("226");
       }
       //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int numDecodings(String s) {
-        /**
-         * 动态规划：
-         * 1、重复子问题：program(i)=subProgram(i-1)+一个字符+subProgram(i-2)+两个字符组合
-         * 2、状态转移数组：dp[]，dp值代表编码总数
-         * 3、状态转移方程：dp[i]=dp[i-1]+一个字符+dp[i-2]+两个字符（这时候一个两个字符要分情况讨论）
-         *
-         * 字符串分情况讨论：
-         * 1、当末尾为0，即s.charAt(i)=='0'，这时候只有i-1为1和2才会有效，数字为10/20,超过2找不到编码字母，
-         * 前面多少种就是多少种，因此dp[i]=dp[i-2]，不是1或者2则是0
-         * 2、i-1为1，i可以为任意数，且可以组成一个或者组成两个dp[i]=dp[i-1]+dp[i-2]
-         * 3、i-1为2，i只能小于7，前面已经排除0了，因此是1-6，dp[i]=dp[i-1]+dp[i-2]else dp[i]=dp[i-2]
-         *
-         */
-
-
-//        if (s.equals("0")) {
-//            return 0;
-//        }
-//        int[] dp = new int[s.length() + 1];
-//        //这里的dp[0]我理解知识一个凑数的，为了算出dp[2]
-//        dp[0] = 1;
-//        //比如"06"这种，不能直接赋值成1，要根据第一位是什么再赋值
-//        dp[1] = s.charAt(0) == '0' ? 0 : 1;
-//
-//
-//        for (int i = 1; i < s.length(); i++) {
-//            if (s.charAt(i) == '0') {
-//                if (s.charAt(i - 1) == '1' || s.charAt(i - 1) == '2') {
-//                    dp[i + 1] = dp[i - 1];
-//                } else {
-//                    return 0;
-//                }
-//            } else if (s.charAt(i - 1) == '1' || s.charAt(i - 1) == '2' && s.charAt(i) < '7') {
-//                dp[i + 1] = dp[i] + dp[i - 1];
-//            } else {
-//                dp[i + 1] = dp[i];
-//            }
-//        }
-//
-//        return dp[s.length()];
-
-
-        /**
-         * 和上面相似的写法
-         */
-
-//        if (s.equals('0')) {
-//            return 0;
-//        }
-//
-//        int[] dp = new int[s.length() + 1];
-//        dp[0] = 1;
-//        dp[1] = s.charAt(0) == '0' ? 0 : 1;
-//
-//        for (int i = 1; i < s.length(); i++) {
-//            if (s.charAt(i-1) == '1' || s.charAt(i-1) == '2' && s.charAt(i) < '7') {
-//                if (s.charAt(i) == '0') {
-//                    dp[i + 1] = dp[i - 1];
-//                } else {
-//                    dp[i + 1] = dp[i] + dp[i - 1];
-//                }
-//            } else if (s.charAt(i) == '0') {
+            /**
+             * 递归换一种解法+缓存
+             */
+//            Integer[] mem = new Integer[s.length()];
+//            return recur2(0, s, mem);
+            /**
+             * 缓存+递归 用数组遍历
+             */
+            Integer[] mem = new Integer[s.length()];
+            return recur(0, s.toCharArray(), mem);
+            /**
+             * 递归+缓存 直接用string
+             */
+//            Integer[] mem = new Integer[s.length()];
+//            return recur1(0, s, mem);
+            /**
+             * DP 正推 比较符合思维
+             *
+             * 思路：DP(0)代表空串(但是因为题目已经非空了，这里初始化为1是为了使后面的dp(i-2)有效)，
+             * dp(1)代表只有一个字符
+             *
+             * 然后再遍历的时候我需要按照一个字符和两个字符去判断。
+             *
+             * 一个字符是只要不为0就行，两个字符需要这两位在1~26范围内，包括两边。
+             *
+             *
+             * 所以状态转移方程为：
+             *
+             * if（char(i-1)!='0'） dp[i]+=dp[i-1];
+             * if(char(i-2)=='1'||char(i-2)=='2'&&char(i-1)<'7') dp[i]+=dp[i-2];
+             */
+//            if (s == null || s.length() == 0) {
 //                return 0;
-//            } else {
-//                dp[i + 1] = dp[i];
 //            }
-//        }
-//
-//        return dp[s.length()];
-
-
-        /**
-         * 全球站上高赞解法，理解这个就好，前面的写的有点丑
-         */
-
-//        if (s == null || s.length() == 0) {
-//            return 0;
-//        }
-//        int n = s.length();
-//        int[] dp = new int[n + 1];
-//        dp[0] = 1;
-//        dp[1] = s.charAt(0) != '0' ? 1 : 0;
-//        for (int i = 2; i <= n; i++) {
-//            int first = Integer.valueOf(s.substring(i - 1, i));
-//            int second = Integer.valueOf(s.substring(i - 2, i));
-//            if (first >= 1 && first <= 9) {
-//                dp[i] += dp[i-1];
+//            int n = s.length();
+//            int[] dp = new int[n + 1];
+//            dp[0] = 1;
+//            dp[1] = s.charAt(0) != '0' ? 1 : 0;
+//            for (int i = 2; i <= n; i++) {
+//                if (s.charAt(i - 1) != '0') {
+//                    dp[i] += dp[i - 1];
+//                }
+//                if (s.charAt(i - 2) == '1' || s.charAt(i - 2) == '2' && s.charAt(i - 1) < '7') {
+//                    dp[i] += dp[i - 2];
+//                }
 //            }
-//            if (second >= 10 && second <= 26) {
-//                dp[i] += dp[i-2];
-//            }
-//        }
-//        return dp[n];
-
-        /**
-         * 全球站法二
-         */
-
-        if(s == null || s.length()==0){
-            return 0;
+//            return dp[n];
+            /**
+             * DP 反推
+             *
+             * 不太符合我的思维，只看正推即可
+             *
+             */
+//            int n = s.length();
+//            int[] dp = new int[n + 1];
+//            dp[n] = 1;
+//            for (int i = n - 1; i >= 0; i--)
+//                if (s.charAt(i) != '0') {
+//                    dp[i] = dp[i + 1];
+//                    if (i < n - 1 && (s.charAt(i) == '1' || s.charAt(i) == '2' && s.charAt(i + 1) < '7'))
+//                        dp[i] += dp[i + 2];
+//                }
+//            return dp[0];
         }
-        int[] dp = new int[s.length()];
-        dp[0] = s.charAt(0)=='0'? 0 : 1;
-        for(int i=1; i<s.length();i++){
-            int cur = s.charAt(i)-'0';
-            int pre = (s.charAt(i-1)-'0')*10+cur;
-            if(cur!=0){
-                dp[i] += dp[i-1];
+        private int recur2 ( int index, String s, Integer[]mem){
+            if (index == s.length()) return 1;
+            if (s.charAt(index) == '0') return 0;
+            if (mem[index] != null) return mem[index];
+            int res = recur2(index + 1, s, mem);
+            if (index < s.length() - 1 && ((s.charAt(index) - '0') * 10 + (s.charAt(index + 1) - '0') < 27)) {
+                res += recur2(index + 2, s, mem);
             }
-            if(pre>=10 && pre<=26){
-                dp[i] += i>=2? dp[i-2] : 1;
-            }
+            return mem[index] = res;
         }
-        return dp[s.length()-1];
-    }
+
+        private int recur1 ( int level, String s, Integer[]mem){
+            if (level == s.length()) return 1;
+            if (s.charAt(level) == '0') return 0;
+            if (mem[level] != null) return mem[level];
+            int res = recur1(level + 1, s, mem);
+            if (level < s.length() - 1 && (s.charAt(level) == '1' || (s.charAt(level) == '2' && s.charAt(level + 1) < '7'))) {
+                res += recur1(level + 2, s, mem);
+            }
+            return mem[level] = res;
+        }
+        private int recur ( int level, char[] cs, Integer[] mem){
+            if (level == cs.length) return 1;
+            if (cs[level] == '0') return 0;
+            if (mem[level] != null) return mem[level];
+            int res = recur(level + 1, cs, mem);
+            if (level < cs.length - 1 && (cs[level] == '1' || cs[level] == '2' && cs[level + 1] < '7')) {
+                res += recur(level + 2, cs, mem);
+            }
+            return mem[level] = res;
+        }
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

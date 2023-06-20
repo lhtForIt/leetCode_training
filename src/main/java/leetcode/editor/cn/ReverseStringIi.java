@@ -25,39 +25,44 @@
 // Related Topics 字符串 
 // 👍 118 👎 0
 
-  
+
 package leetcode.editor.cn;
-public class ReverseStringIi{
-      public static void main(String[] args) {
-           Solution solution = new ReverseStringIi().new Solution();
-          solution.reverseStr("abcdefg", 8);
-      }
-      //leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-          public String reverseStr(String s, int k) {
 
-              if (s.isEmpty()) {
-                  return s;
-              }
+public class ReverseStringIi {
+    public static void main(String[] args) {
+        Solution solution = new ReverseStringIi().new Solution();
+        solution.reverseStr("abcdefg", 8);
+    }
 
-              char[] chars = s.toCharArray();
-              for (int i = 0; i < chars.length; i += k << 1) {
-                  //每次取前K个进行转换
-                  int p = i, q = Math.min(i + k - 1, chars.length - 1);
-                  while (p < q) {
-                      char temp = chars[p];
-                      chars[p] = chars[q];
-                      chars[q] = temp;
-                      p++;
-                      q--;
-                  }
-              }
+    //leetcode submit region begin(Prohibit modification and deletion)
+    class Solution {
+        public String reverseStr(String s, int k) {
+            /**
+             * 这SB题给那么多条件，其实总结起来就一句话，在2k的数组里，一直翻转前k个数组，有就翻转，没有就不管。
+             *
+             * 那么多题设全是屁话，没一点用
+             *
+             * 所以我们只要知道左右边界做翻转就行，如果没有达到k，就拿size去翻转，否则用k翻转
+             */
+            int l = 0, r = 0;
+            char[] chars = s.toCharArray();
+            while (l < s.length()) {
+                r = l + k - 1;
+                revert(chars, l, Math.min(r, s.length() - 1));
+                l += 2 * k;
+            }
+            return new String(chars);
+        }
 
-              return new String(chars);
-
-
-          }
-}
+        private void revert(char[] c, int l, int r) {
+            while (l < r) {
+                char temp = c[l];
+                //因为这个元素后面不会用了，所以可以直接++和--
+                c[l++] = c[r];
+                c[r--] = temp;
+            }
+        }
+    }
 //leetcode submit region end(Prohibit modification and deletion)
 
-  }
+}

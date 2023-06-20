@@ -32,6 +32,34 @@ public class JewelsAndStones {
 class Solution {
         public int numJewelsInStones(String jewels, String stones) {
 
+//            int count = 0;
+//            for (int i = 0; i < stones.length(); i++) {
+//                //string里面的contain时间复杂度是O(n)，因为Index其实还是遍历整个字符串，
+//                //但是hash里面的contain是O(1),因为它不需要遍历，只是用map.getKey查一下有没有返回值即可。
+//                if (jewels.contains(String.valueOf(stones.charAt(i)))) {
+//                    count++;
+//                }
+//            }
+//            return count;
+
+//            int count = 0;
+//            Set<Character> set = new HashSet<>();
+//            for (char c : jewels.toCharArray()) set.add(c);
+//            for (char c : stones.toCharArray()) {
+//                if (set.contains(c)) count++;
+//            }
+//            return count;
+
+            int count = 0;
+            boolean[] jewel = new boolean['z' - 'A' + 1];
+            for (int i = 0; i < jewels.length(); i++) jewel[jewels.charAt(i) - 'A'] = true;
+            for (char c : stones.toCharArray()) {
+                if (jewel[c-'A']) count++;
+            }
+            return count;
+
+            //replaceAll(^abc，""),将替换所有不是abc的元素为空串，但是这种时间复杂度很高。不太建议。
+//            return stones.replaceAll("[^" + jewels + "]", "").length();
             /**
              * 暴力
              * 时间复杂度O(mn) m,n为两个字符串长度
@@ -58,18 +86,18 @@ class Solution {
              * 空间复杂度O(1)
              */
 
-            int[] chars = new int[128];
-
-            for (char c : jewels.toCharArray()) {
-                chars[c]++;
-            }
-
-            int res = 0;
-            for (char c : stones.toCharArray()) {
-                res += chars[c];
-            }
-
-            return res;
+//            int[] chars = new int[128];
+//
+//            for (char c : jewels.toCharArray()) {
+//                chars[c]++;
+//            }
+//
+//            int res = 0;
+//            for (char c : stones.toCharArray()) {
+//                res += chars[c];
+//            }
+//
+//            return res;
 
 
 

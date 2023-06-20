@@ -43,73 +43,53 @@ import java.util.*;
 public class FindAllAnagramsInAString {
     public static void main(String[] args) {
         Solution solution = new FindAllAnagramsInAString().new Solution();
+        solution.findAnagrams("aa", "bb");
     }
     //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public List<Integer> findAnagrams(String s, String p) {
-//        List<Integer> result = new LinkedList<>();
-//        if(p.length()> s.length()) return result;
-//        Map<Character, Integer> map = new HashMap<>();
-//        for(char c : p.toCharArray()){
-//            map.put(c, map.getOrDefault(c, 0) + 1);
+        /**
+         * 时间复杂度O((m-n)*n),空间复杂度O(26*2+s.len/p.len)
+         */
+//        List<Integer> res = new ArrayList<>();
+//        if (s.length()<p.length()) return res;
+//        char[] chars = new char[26];
+//        for (char c : p.toCharArray()) {
+//            chars[c - 'a']++;
 //        }
-//        int counter = map.size();
-//
-//        int begin = 0, end = 0;
-//
-//
-//        while(end < s.length()){
-//            char c = s.charAt(end);
-//            if( map.containsKey(c) ){
-//                map.put(c, map.get(c)-1);
-//                if(map.get(c) == 0) counter--;
+//        char[] chars1 = s.toCharArray();
+//        for (int i = 0; i <= s.length() - p.length(); i++) {
+//            char[] chars2 = new char[26];
+//            for (int j = i; j < i + p.length(); j++) {
+//                chars2[chars1[j] - 'a']++;
 //            }
-//            end++;
-//
-//            while(counter == 0){
-//                char tempc = s.charAt(begin);
-//                if(map.containsKey(tempc)){
-//                    map.put(tempc, map.get(tempc) + 1);
-//                    if(map.get(tempc) > 0){
-//                        counter++;
-//                    }
-//                }
-//                if(end-begin == p.length()){
-//                    result.add(begin);
-//                }
-//                begin++;
-//            }
-//
+//            if (Arrays.equals(chars,chars2)) res.add(i);
 //        }
-//        return result;
-
-        List<Integer> list = new ArrayList<>();
-        if (s == null || s.length() == 0 || p == null || p.length() == 0) return list;
-        int[] hash = new int[256]; //character hash
-        //record each character in p to hash
-        for (char c : p.toCharArray()) {
-            hash[c]++;
+//        return res;
+        /**
+         * 我想的是每个去给它构建一个状态数组然后比较，但是其实没必要每个构建一个，我可以只用一个，
+         * 只要在下次使用前把前面的状态清掉就可以了。
+         *
+         * 时间复杂度O(n)，空间复杂度O(26)->O(1)
+         */
+        List<Integer> res = new ArrayList<>();
+        if (s.length()<p.length()) return res;
+        char[] pWin = new char[26];
+        char[] sWin = new char[26];
+        for (int i = 0; i < p.length(); i++) {
+            pWin[p.charAt(i) - 'a']++;
+            sWin[s.charAt(i) - 'a']++;
         }
-        //two points, initialize count to p's length
-        int left = 0, right = 0, count = p.length();
-        while (right < s.length()) {
-            //move right everytime, if the character exists in p's hash, decrease the count
-            //current hash value >= 1 means the character is existing in p
-            if (hash[s.charAt(right++)]-- >= 1) count--;
-
-            //when the count is down to 0, means we found the right anagram
-            //then add window's left to result list
-            if (count == 0) list.add(left);
-
-            //if we find the window's size equals to p, then we have to move left (narrow the window) to find the new match window
-            //++ to reset the hash because we kicked out the left
-            //only increase the count if the character is in p
-            //the count >= 0 indicate it was original in the hash, cuz it won't go below 0
-            if (right - left == p.length() && hash[s.charAt(left++)]++ >= 0) count++;
+        if (Arrays.equals(pWin,sWin)) res.add(0);
+        char[] chars = s.toCharArray();
+        for (int i = p.length(); i < s.length(); i++) {
+            //清除状态
+            sWin[chars[i - p.length()] - 'a']--;
+            //重新计算
+            sWin[chars[i] - 'a']++;
+            if (Arrays.equals(pWin,sWin)) res.add(i - p.length() + 1);
         }
-        return list;
-
-
+        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

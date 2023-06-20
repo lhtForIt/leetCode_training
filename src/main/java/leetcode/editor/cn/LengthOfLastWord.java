@@ -39,36 +39,27 @@ class Solution {
     public int lengthOfLastWord(String s) {
 
         /**
-         * 调api，很低效
+         * 我这种写法其实也是调的api，时间复杂度是O(2n)
          */
-//        String[] strs = s.split(" ");
-//        if (strs.length == 0) {
-//            return 0;
-//        }
-//        return strs[strs.length - 1].length();
+        //这里会有后面有空格的情况，那么长度就会错误判断为0，需要提前去空格
+//            String t = s.trim();
+//            //这个从0开始的，要+1
+//            int last = t.lastIndexOf(" ") + 1;
+//            return t.length() - last;
 
         /**
-         * 从字符串末尾开始向前遍历，其中主要有两种情况
-         * 第一种情况，以字符串"Hello World"为例，从后向前遍历直到遍历到头或者遇到空格为止，即为最后一个单词"World"的长度5
-         * 第二种情况，以字符串"Hello World "为例，需要先将末尾的空格过滤掉，再进行第一种情况的操作，即认为最后一个单词为"World"，长度为5
-         * 所以完整过程为先从后过滤掉空格找到单词尾部，再从尾部向前遍历，找到单词头部，最后两者相减，即为单词的长度
-         * 时间复杂度：O(n)，n为结尾空格和结尾单词总体长度
+         * 思路很简单，从后往前，找到非空格元素，然后从这个元素往前遍历知道遇到空格得到长度，需要注意下标是否越界。
+         *
+         * 比如"hello"这种需要加上end >= 0的条件。
          */
+        int len = 0;
         int end = s.length() - 1;
-        while (end >= 0 && s.charAt(end) == ' ') end--;
-
-        //只有一个空格的情况" "
-        if (end<0) return 0;
-
-        int start = end;
-        while (start >= 0 && s.charAt(start) != ' ') start--;
-
-        return end - start;
-
-
-
-
-
+        while (end >= 0&& s.charAt(end) == ' ') end--;
+        while (end >= 0 && s.charAt(end) != ' ') {
+            len++;
+            end--;
+        }
+        return len;
 
     }
 

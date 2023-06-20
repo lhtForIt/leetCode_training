@@ -157,28 +157,6 @@ class Solution {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //        int i = 0, j = 0, match = 0, starIdx = -1;
 //        while (i < s.length()){
 //            // 移动i,j指针

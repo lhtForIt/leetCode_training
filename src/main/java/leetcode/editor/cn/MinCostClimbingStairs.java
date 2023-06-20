@@ -41,22 +41,24 @@ public class MinCostClimbingStairs {
     //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int minCostClimbingStairs(int[] cost) {
+
         /**
-         * 分解为子问题：S(i)=Math.min(S(i-1)+cost[i],S(i-2)+cost[i-1])
-         * 状态转移数组：dp[],表示第N个位置花费的最小体力值
-         * 状态转移方程：dp[i]=Math.min(dp[i-1]+cost[i],dp[i-2]+cost[i-1])
+         * dp(i)=min(dp(i-2)+cost(i-2),dp(i-1)+cost(i-1))
+         *
+         * 今天解动态规划有点感觉了，我的思路是先列举前几个数据的答案，然后找规律，推到出状态转移方程。
+         * 转移方程出来之后，因为有i-x的操作，直接遍历会下标越界，所以就需要将一些前面的数据初始化，对于初始
+         * 化的值根据题意能很好的知道，然后开始遍历验证状态转移方程是否正确。
+         *
          */
-
-        int[] dp = new int[cost.length];
+        int[] dp = new int[cost.length + 1];
+        //从下标为0的开始爬,从0这个点是没有花费的
         dp[0] = 0;
-        dp[1] = Math.min(cost[0], cost[1]);
-
-        for (int i = 2; i < cost.length; i++) {
-            dp[i] = Math.min(dp[i - 1] + cost[i], dp[i - 2] + cost[i - 1]);
+        //从下标为1的开始爬,从1这个点也是没有花费的
+        dp[1] = 0;
+        for (int i = 2; i <=cost.length; i++) {
+            dp[i] = Math.min(dp[i - 2] + cost[i - 2], dp[i - 1] + cost[i - 1]);
         }
-
-        return dp[cost.length - 1];
-
+        return dp[cost.length];
 
 
     }

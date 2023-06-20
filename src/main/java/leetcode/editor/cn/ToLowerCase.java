@@ -33,28 +33,17 @@ public class ToLowerCase {
 class Solution {
         public String toLowerCase(String str) {
 
-
-            if (str == null | str.length() == 0) {
-                return "";
-            }
-
-//            char[] chars = new char[26];
-//
-//            for (int i = 0; i < 26; i++) {
-//                chars[i] = (char) ('a' + i);
-//            }
-
-            char[] charArray = str.toCharArray();
-            for (int i = 0; i < charArray.length; i++) {
-                if (charArray[i]>='A'&&charArray[i]<='Z') {
-//                    charArray[i] = chars[str.charAt(i) - 'A'];
-                    // 利用所有大写字母ASCII码可以通过+32变成小写字母
-                    charArray[i] += 32;
+            //toCharArray是新创建一个char数组，然后将数据copy过来，对原来的数据是没有任何影响的
+            //A的ascii码是65,Z是90，a是97，所以A变成a只需要+32即可。
+            char[] chars = str.toCharArray();
+            for (int i = 0; i < chars.length; i++) {
+                if (chars[i] <= 90 && chars[i] >= 65) {
+//                    chars[i] += 32;
+                    //位运算会更快
+                    chars[i] |= 32;
                 }
             }
-
-
-            return new String(charArray);
+            return new String(chars);
         }
 }
 //leetcode submit region end(Prohibit modification and deletion)
