@@ -125,6 +125,9 @@ class Solution {
         /**
          * 借助栈，如果是左括号就压入栈中，右括号就和栈顶元素比，
          * 如果匹配就栈顶元素弹出
+         *
+         * 时间复杂度O(n),空间复杂度O(n)
+         *
          */
 
 //        if (s.isEmpty() || s.length() % 2 == 1) {
@@ -148,6 +151,30 @@ class Solution {
 //        //"(("这种情况要判断栈是否为空
 //        return stack.isEmpty();
 
+        /**
+         * 自己用数组实现栈，jdk的栈现在不能打败100%了
+         *
+         * 时间复杂度O(n),空间复杂度O(n)
+         */
+//        if ((s.length() & 1) == 1) {
+//            return false;
+//        }
+//        char[] stack = new char[s.length()];
+//        int top = -1;
+//        for (char c : s.toCharArray()) {
+//            if (c == '(') {
+//                stack[++top] = ')';
+//            } else if (c == '[') {
+//                stack[++top] = ']';
+//            } else if (c == '{') {
+//                stack[++top] = '}';
+//            } else {
+//                if (top == -1 || stack[top--] != c) {
+//                    return false;
+//                }
+//            }
+//        }
+//        return top == -1;
     }
       }
 //leetcode submit region end(Prohibit modification and deletion)
