@@ -57,23 +57,32 @@ class Solution {
     public int removeDuplicates(int[] nums) {
 
         /**
-         * 至少会有一个元素
-         * 所以一定是从第二位开始交换的，交换完以后记录交换的下标其实就是个数
+         * 默认第一位不管，比较后面
+         * 时间复杂度O(n)，空间复杂度O(1)
          */
-
         int j = 1;
         for (int i = 1; i < nums.length; i++) {
-            if (nums[i]!=nums[i-1]) nums[j++] = nums[i];
+            if (nums[i]!=nums[j-1]) nums[j++] = nums[i];
         }
-
         return j;
-
-
-
-
-
-
-
+        /**
+         * 从第零位开始比较，注意这里j是从第一位到最后一位，所以需要加上第零位的数，需要+1
+         * 时间复杂度O(n),空间复杂度O(1)
+         */
+//        int j = 0;
+//        for (int i = 1; i < nums.length; i++) {
+//            if (nums[i]!=nums[j]) nums[++j] = nums[i];
+//        }
+//        return j + 1;
+        /**
+         * 这里用的nums[i]和nums[i-1]去对比
+         * 时间复杂度O(n),空间复杂度O(1)
+         */
+//        int j = 1;
+//        for (int i = 1; i < nums.length; i++) {
+//            if (nums[i]!=nums[i-1]) nums[j++] = nums[i];
+//        }
+//        return j;
 
 
 
