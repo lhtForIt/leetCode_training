@@ -75,7 +75,21 @@ class Solution {
 //
 //        return -1;
 
-
+        /**
+         * 全球站最高赞解法
+         *
+         * 如果当前元素比右边大就往右走，否则保持原位。
+         */
+        int l = 0, r = nums.length - 1;
+        while (l < r) {
+            int mid = (l + r) / 2;
+            if (nums[mid] > nums[r]) {
+                l = mid + 1;
+            } else {
+                r = mid;
+            }
+        }
+        return nums[l];
 
 
 
@@ -84,21 +98,21 @@ class Solution {
         /**
          * 这个方法写的不好，不推荐
          */
-        if (nums[nums.length - 1] > nums[0]) {
-            return nums[0];
-        }
-        int left = 0, right = nums.length - 1;
-        while (left < right) {
-            int mid = left + ((right - left) >> 1);
-            if (mid + 1 < nums.length && nums[mid] > nums[mid + 1]) {
-                return nums[mid + 1];
-            } else if (nums[mid] >= nums[left]) {
-                left = mid + 1;
-            } else {
-                right = mid;
-            }
-        }
-        return nums[right];
+//        if (nums[nums.length - 1] > nums[0]) {
+//            return nums[0];
+//        }
+//        int left = 0, right = nums.length - 1;
+//        while (left < right) {
+//            int mid = left + ((right - left) >> 1);
+//            if (mid + 1 < nums.length && nums[mid] > nums[mid + 1]) {
+//                return nums[mid + 1];
+//            } else if (nums[mid] >= nums[left]) {
+//                left = mid + 1;
+//            } else {
+//                right = mid;
+//            }
+//        }
+//        return nums[right];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
